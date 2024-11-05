@@ -32,6 +32,8 @@ public abstract class LevelParent extends Observable {
 	
 	private int currentNumberOfEnemies;
 	private LevelView levelView;
+	private boolean hasAlerted = false;
+	private boolean isTransitioned = false;
 
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
 		this.root = new Group();
@@ -49,6 +51,8 @@ public abstract class LevelParent extends Observable {
 		this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
 		this.levelView = instantiateLevelView();
 		this.currentNumberOfEnemies = 0;
+		this.hasAlerted = false;
+		this.isTransitioned = false;
 		initializeTimeline();
 		friendlyUnits.add(user);
 	}
@@ -73,9 +77,17 @@ public abstract class LevelParent extends Observable {
 		timeline.play();
 	}
 
+	public boolean isTransitioned(){
+		return isTransitioned;
+	}
+
 	public void goToNextLevel(String levelName) {
-		setChanged();
-		notifyObservers(levelName);
+		if(!hasAlerted){
+			setChanged();
+			notifyObservers(levelName);
+			hasAlerted = true;
+			isTransitioned = true;
+		}
 	}
 
 	private void updateScene() {

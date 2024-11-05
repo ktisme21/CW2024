@@ -1,0 +1,9 @@
+// Observable
+
+1) Changes
+- ShieldImage.
+jpg to png for the shield image
+
+2) Need to Change
+- Controller
+Observable function refactor
