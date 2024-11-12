@@ -9,7 +9,14 @@ import javafx.scene.input.MouseEvent;
 
 public class GameStartScreen extends VBox {
 
+    private static final int SCREEN_WIDTH = 1300; 
+    private static final int SCREEN_HEIGHT = 750; 
+
     public GameStartScreen(EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onHowToPlay) {
+        // Set the preferred width and height to match Main.java
+        this.setPrefWidth(SCREEN_WIDTH);
+        this.setPrefHeight(SCREEN_HEIGHT);
+
         // Title text
         Text title = new Text("Welcome to Sky Battle!");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
@@ -32,6 +39,7 @@ public class GameStartScreen extends VBox {
         // Layout setup
         this.setAlignment(Pos.CENTER);
         this.setSpacing(20);
+        
         this.getChildren().addAll(title, startButton, settingsButton, howToPlayButton);
     }
 }

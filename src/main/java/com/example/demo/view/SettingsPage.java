@@ -10,9 +10,15 @@ import javafx.scene.text.Text;
 
 public class SettingsPage extends VBox {
 
+    private static final int SCREEN_WIDTH = 1300; 
+    private static final int SCREEN_HEIGHT = 750; 
     private boolean isMuted = false;
 
     public SettingsPage(EventHandler<MouseEvent> onBackToMain) {
+        // Set the preferred width and height to match Main.java
+        this.setPrefWidth(SCREEN_WIDTH);
+        this.setPrefHeight(SCREEN_HEIGHT);
+        
         // Title text for settings page
         Text title = new Text("Settings");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
@@ -25,7 +31,7 @@ public class SettingsPage extends VBox {
         Slider volumeSlider = new Slider(0, 100, 50); // Min: 0, Max: 100, Initial: 50
         volumeSlider.setMinorTickCount(4);
         volumeSlider.setBlockIncrement(10);
-        volumeSlider.setPrefWidth(200); 
+        volumeSlider.setPrefWidth(SCREEN_WIDTH); 
 
         // // Mute button
         Button muteButton = new Button("Mute");
