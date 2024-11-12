@@ -17,6 +17,9 @@ public class SettingsPage extends VBox {
     private boolean isMuted = false;
 
     public SettingsPage(EventHandler<MouseEvent> onBackToMain) {
+        // Set the background image using the utility
+        BackgroundUtil.setBackgroundImage(this);
+        
         // Set the preferred width and height to match Main.java
         this.setPrefWidth(SCREEN_WIDTH);
         this.setPrefHeight(SCREEN_HEIGHT);

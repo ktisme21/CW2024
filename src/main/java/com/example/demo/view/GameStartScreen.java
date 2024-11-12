@@ -1,6 +1,12 @@
 package com.example.demo.view;
 
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.scene.text.Text;
@@ -16,6 +22,9 @@ public class GameStartScreen extends VBox {
         // Set the preferred width and height to match Main.java
         this.setPrefWidth(SCREEN_WIDTH);
         this.setPrefHeight(SCREEN_HEIGHT);
+
+        // Set the background image using the utility
+        BackgroundUtil.setBackgroundImage(this);
 
         // Title text
         Text title = new Text("Welcome to Sky Battle!");

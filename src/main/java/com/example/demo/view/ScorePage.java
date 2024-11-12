@@ -10,6 +10,9 @@ import javafx.scene.input.MouseEvent;
 public class ScorePage extends VBox {
 
     public ScorePage(EventHandler<MouseEvent> onBackToMain) {
+        // Set the background image using the utility
+        BackgroundUtil.setBackgroundImage(this);
+        
         // Title text
         Text title = new Text("Rankings");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
