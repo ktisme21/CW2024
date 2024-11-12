@@ -24,7 +24,8 @@ public class Main extends Application {
 		stage.setWidth(SCREEN_WIDTH);
 
 		// Set up the GameStartScreen with an event to start the game
-        GameStartScreen startScreen = new GameStartScreen(event -> {
+        GameStartScreen startScreen = new GameStartScreen(
+            event -> {
             myController = new Controller(stage);
             try {
                 myController.launchGame();
