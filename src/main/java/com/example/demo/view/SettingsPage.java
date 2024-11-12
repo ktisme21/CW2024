@@ -1,6 +1,7 @@
 package com.example.demo.view;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
@@ -19,7 +20,11 @@ public class SettingsPage extends VBox {
         // Set the preferred width and height to match Main.java
         this.setPrefWidth(SCREEN_WIDTH);
         this.setPrefHeight(SCREEN_HEIGHT);
-        
+
+        // Add padding and center alignment for overall layout
+        this.setPadding(new Insets(20));
+        this.setAlignment(Pos.CENTER);
+
         // Title text for settings page
         Text title = new Text("Settings");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
@@ -32,17 +37,17 @@ public class SettingsPage extends VBox {
         Slider volumeSlider = new Slider(0, 100, 50); // Min: 0, Max: 100, Initial: 50
         volumeSlider.setMinorTickCount(4);
         volumeSlider.setBlockIncrement(10);
-        volumeSlider.setPrefWidth(50); 
+        volumeSlider.setPrefWidth(300); // Adjusted for better centering
 
-        // // Decrement button
+        // Decrement button
         Button decrementButton = new Button("-");
         decrementButton.setStyle("-fx-font-size: 18px;");
-        decrementButton.setOnMouseClicked(event -> volumeSlider.setValue(volumeSlider.getValue() - 5)); // Decrease slider by 5
-        
-        // // Increment button
+        decrementButton.setOnMouseClicked(event -> volumeSlider.setValue(volumeSlider.getValue() - 5));
+
+        // Increment button
         Button incrementButton = new Button("+");
         incrementButton.setStyle("-fx-font-size: 18px;");
-        incrementButton.setOnMouseClicked(event -> volumeSlider.setValue(volumeSlider.getValue() + 5)); // Toggle mute state on click
+        incrementButton.setOnMouseClicked(event -> volumeSlider.setValue(volumeSlider.getValue() + 5));
 
         // Horizontal box to hold decrement button, slider, and increment button
         HBox sliderBox = new HBox(10, decrementButton, volumeSlider, incrementButton);
@@ -51,31 +56,30 @@ public class SettingsPage extends VBox {
         // Mute button
         Button muteButton = new Button("Mute");
         muteButton.setStyle("-fx-font-size: 18px;");
-        muteButton.setOnMouseClicked(event -> toggleMute(volumeSlider, muteButton)); // Toggle mute state on click
+        muteButton.setOnMouseClicked(event -> toggleMute(volumeSlider, muteButton));
 
         // Back to Main Menu button
         Button backButton = new Button("Back to Main Menu");
         backButton.setStyle("-fx-font-size: 18px;");
-        backButton.setOnMouseClicked(onBackToMain);  // Set the action for going back to main screen
+        backButton.setOnMouseClicked(onBackToMain);
 
-        // Layout setup
-        this.setAlignment(Pos.CENTER);
+        // Add all elements and center them
+        VBox volumeSection = new VBox(10, volumeLabel, sliderBox, muteButton);
+        volumeSection.setAlignment(Pos.CENTER);
+
         this.setSpacing(20);
-
-        this.getChildren().addAll(title, volumeLabel, volumeSlider, decrementButton, incrementButton, muteButton, backButton);
+        this.getChildren().addAll(title, volumeSection, backButton);
     }
 
     private void toggleMute(Slider volumeSlider, Button muteButton) {
         if (isMuted) {
-            // Unmute: Restore slider to previous value and change button text
             volumeSlider.setDisable(false);
             muteButton.setText("Mute");
         } else {
-            // Mute: Set slider to zero, disable it, and change button text
             volumeSlider.setValue(0);
             volumeSlider.setDisable(true);
             muteButton.setText("Unmute");
         }
-        isMuted = !isMuted; // Toggle the mute state
+        isMuted = !isMuted;
     }
 }
