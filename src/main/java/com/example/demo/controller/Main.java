@@ -23,6 +23,8 @@ public class Main extends Application {
 		stage.setHeight(SCREEN_HEIGHT);
 		stage.setWidth(SCREEN_WIDTH);
 
+        showMainMenu(stage);
+
 		// Set up the GameStartScreen with an event to start the game
         GameStartScreen startScreen = new GameStartScreen(
             event -> {
@@ -53,7 +55,7 @@ public class Main extends Application {
         stage.setScene(settingsScene);
     }
 
-    private void showMainMenu(Stage stage) {
+    public void showMainMenu(Stage stage) {
         // Recreate the main menu screen
         GameStartScreen startScreen = new GameStartScreen(
             event -> {

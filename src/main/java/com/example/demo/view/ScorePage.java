@@ -1,27 +1,22 @@
 package com.example.demo.view;
 
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-
-import com.example.demo.controller.Main;
-
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.text.Text;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 public class ScorePage extends VBox {
 
-    public void GameStartScreen(EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onBackToMain) {
-
+    public ScorePage(EventHandler<MouseEvent> onBackToMain) {
         // Title text
-        Text title = new Text("Ranking");
+        Text title = new Text("Rankings");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
-        // Start Game button
-        Button startButton = new Button("Start Game");
-        startButton.setStyle("-fx-font-size: 18px;");
-        startButton.setOnMouseClicked(onStartGame);  // Set the action for starting the game
+        // Display score (placeholder)
+        Text scoreText = new Text("Your Score: 1234"); // Replace with actual score data
+        scoreText.setStyle("-fx-font-size: 18px;");
 
         // Back to Main Menu button
         Button backButton = new Button("Back to Main Menu");
@@ -32,11 +27,7 @@ public class ScorePage extends VBox {
         this.setAlignment(Pos.CENTER);
         this.setSpacing(20);
 
-        this.getChildren().addAll(title, backButton);
-        // Layout setup
-        this.setAlignment(Pos.CENTER);
-        this.setSpacing(20);
-        
-        this.getChildren().addAll(title, startButton);
+        // Add components to layout
+        this.getChildren().addAll(title, scoreText, backButton);
     }
 }

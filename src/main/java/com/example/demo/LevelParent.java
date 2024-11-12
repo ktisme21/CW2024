@@ -3,12 +3,16 @@ package com.example.demo;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.example.demo.controller.Main;
+import com.example.demo.view.ScorePage;
+
 import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public abstract class LevelParent extends Observable {
@@ -220,11 +224,37 @@ public abstract class LevelParent extends Observable {
 	protected void winGame() {
 		timeline.stop();
 		levelView.showWinImage();
+		addQuitEventHandler();
 	}
 
 	protected void loseGame() {
 		timeline.stop();
 		levelView.showGameOverImage();
+		addQuitEventHandler();
+	}
+
+	private void addQuitEventHandler(){
+		scene.setOnKeyPressed(event->{
+			if(event.getCode() == KeyCode.Q){
+				goToScorePage();
+			}
+		});
+	}
+
+	private void goToScorePage() {
+		ScorePage scorePage = new ScorePage(
+			event -> returnToMainMenu()  // Event handler to go back to the main menu
+		);
+
+		Scene scoreScene = new Scene(scorePage, screenWidth, screenHeight);
+		Stage stage = (Stage) scene.getWindow();
+		stage.setScene(scoreScene);
+		stage.show();
+	}
+
+	private void returnToMainMenu() {
+		Main main = new Main();
+		main.showMainMenu((Stage) scene.getWindow());
 	}
 
 	protected UserPlane getUser() {
