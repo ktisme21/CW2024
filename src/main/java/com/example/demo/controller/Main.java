@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
-import java.lang.reflect.InvocationTargetException;
-
 import com.example.demo.view.GameStartScreen;
+import com.example.demo.view.SettingsPage;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -17,8 +17,7 @@ public class Main extends Application {
 	private Controller myController;
 
 	@Override
-	public void start(Stage stage) throws ClassNotFoundException, NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void start(Stage stage) {
 		stage.setTitle(TITLE);
 		stage.setResizable(false);
 		stage.setHeight(SCREEN_HEIGHT);
@@ -33,7 +32,7 @@ public class Main extends Application {
                 e.printStackTrace();
             }
 		},
-			event -> showSettings(),
+			event -> showSettings(stage),
 			event -> showHowToPlay()
 		);
 
@@ -44,13 +43,33 @@ public class Main extends Application {
         stage.show();
 	}
 
-	private void showSettings() {
-        // Display a placeholder alert for settings (replace with actual settings page logic)
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Settings");
-        alert.setHeaderText(null);
-        alert.setContentText("Settings page is under construction.");
-        alert.showAndWait();
+	private void showSettings(Stage stage) {
+        // Create SettingsPage with an event to go back to the main menu
+        SettingsPage settingsPage = new SettingsPage(event -> showMainMenu(stage));
+
+        // Set the scene to the settings page
+        Scene settingsScene = new Scene(settingsPage, SCREEN_WIDTH, SCREEN_HEIGHT);
+        stage.setScene(settingsScene);
+    }
+
+    private void showMainMenu(Stage stage) {
+        // Recreate the main menu screen
+        GameStartScreen startScreen = new GameStartScreen(
+            event -> {
+                myController = new Controller(stage);
+                try {
+                    myController.launchGame();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            },
+            event -> showSettings(stage),
+            event -> showHowToPlay()
+        );
+
+        // Set the main menu scene
+        Scene scene = new Scene(startScreen, SCREEN_WIDTH, SCREEN_HEIGHT);
+        stage.setScene(scene);
     }
 
 	private void showHowToPlay() {
