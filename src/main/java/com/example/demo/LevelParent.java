@@ -59,6 +59,7 @@ public abstract class LevelParent extends Observable {
 		this.isTransitioned = false;
 		initializeTimeline();
 		friendlyUnits.add(user);
+		
 	}
 
 	protected abstract void initializeFriendlyUnits();

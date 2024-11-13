@@ -2,21 +2,12 @@ package com.example.demo;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
 
 public class WinImage extends ImageView {
 	
 	private static final String IMAGE_NAME = "/com/example/demo/images/youwin.png";
 	private static final int HEIGHT = 500;
 	private static final int WIDTH = 600;
-	private Label pressAnyKeyLabel;
-	
 	public WinImage(double xPosition, double yPosition) {
 		this.setImage(new Image(getClass().getResource(IMAGE_NAME).toExternalForm()));
 		this.setVisible(false);
