@@ -20,9 +20,18 @@ public class Main extends Application {
     public void start(Stage stage) {
         stage.setTitle(TITLE);
         stage.setResizable(false);
-        stage.setFullScreen(true);  // Enable full-screen mode
         stage.setFullScreenExitHint(""); // Removes the exit hint message
         stage.setFullScreenExitKeyCombination(null); // Disables the exit key combination (e.g., ESC)
+
+        // Set fixed size
+        stage.setWidth(SCREEN_WIDTH);
+        stage.setHeight(SCREEN_HEIGHT);
+        
+        // Alternatively, set min and max to the same value to enforce fixed size
+        stage.setMinWidth(SCREEN_WIDTH);
+        stage.setMaxWidth(SCREEN_WIDTH);
+        stage.setMinHeight(SCREEN_HEIGHT);
+        stage.setMaxHeight(SCREEN_HEIGHT);
 
         // Show the main menu
         showMainMenu(stage);
