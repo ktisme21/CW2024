@@ -9,32 +9,26 @@ public class MusicPlayer {
     private static MediaPlayer mediaPlayer;
 
     public static void startMusic() {
+        // Initialize and play background music
         if (mediaPlayer == null) {
-            // Load the music file
-            Media music = new Media(MusicPlayer.class.getResource(MUSIC_FILE_PATH).toExternalForm());
-            mediaPlayer = new MediaPlayer(music);
-            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop the music indefinitely
+            mediaPlayer = new MediaPlayer(new javafx.scene.media.Media(
+                MusicPlayer.class.getResource(MUSIC_FILE_PATH).toExternalForm()
+            ));
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            mediaPlayer.play();
         }
-        mediaPlayer.play(); // Start playing the music
+    }
+
+    public static void setVolume(double volume) {
+        if (mediaPlayer != null) {
+            mediaPlayer.setVolume(volume);
+        }
     }
 
     public static void stopMusic() {
         if (mediaPlayer != null) {
-            mediaPlayer.stop(); // Stop the music
-            mediaPlayer.dispose();
+            mediaPlayer.stop();
             mediaPlayer = null;
-        }
-    }
-
-    public static void pauseMusic() {
-        if (mediaPlayer != null) {
-            mediaPlayer.pause(); // Pause the music
-        }
-    }
-
-    public static void resumeMusic() {
-        if (mediaPlayer != null) {
-            mediaPlayer.play(); // Resume the music
         }
     }
 }
