@@ -11,7 +11,7 @@ public class LevelTwo extends LevelParent {
 	public LevelTwo(double screenHeight, double screenWidth) {
 		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, PLAYER_INITIAL_HEALTH);
 		boss = new Boss();
-		this.shieldImage = new ShieldImage(1150, 500);
+		this.shieldImage = new ShieldImage(0,0);
 	}
 
 	@Override
@@ -57,9 +57,23 @@ public class LevelTwo extends LevelParent {
         // Update shield visibility based on boss state
         if (boss.isShielded()) {
             shieldImage.showShield();
+			updateShieldPosition();
         } else {
             shieldImage.hideShield();
         }
+    }
+
+	private void updateShieldPosition() {
+        // Position the shield slightly in front and above the boss
+        double shieldOffsetX = -20; // Horizontal offset
+        double shieldOffsetY = -20; // Vertical offset
+
+        shieldImage.setLayoutX(boss.getLayoutX() + boss.getTranslateX() + shieldOffsetX);
+        shieldImage.setLayoutY(boss.getLayoutY() + boss.getTranslateY() + shieldOffsetY);
+
+		// // Position the shield in front of the boss
+        // shieldImage.setLayoutX(boss.getLayoutX() + boss.getTranslateX());
+        // shieldImage.setLayoutY(boss.getLayoutY() + boss.getTranslateY());
     }
 
 }
