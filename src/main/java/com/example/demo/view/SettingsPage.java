@@ -9,10 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class SettingsPage extends VBox {
+public class SettingsPage extends StackPane {
 
     private static final int SCREEN_WIDTH = 1300;
     private static final int SCREEN_HEIGHT = 750;
@@ -23,13 +24,13 @@ public class SettingsPage extends VBox {
         // Set the background image using the utility
         BackgroundUtil.setBackgroundImage(this);
         
-        // Set the preferred width and height to match Main.java
-        this.setPrefWidth(SCREEN_WIDTH);
-        this.setPrefHeight(SCREEN_HEIGHT);
+        // Set the preferred size
+        this.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        // Add padding and center alignment for overall layout
-        this.setPadding(new Insets(20));
-        this.setAlignment(Pos.CENTER);
+        // Create a VBox for the content
+        VBox contentBox = new VBox(20);
+        contentBox.setAlignment(Pos.CENTER);
+        contentBox.setPadding(new Insets(20));
 
         // Title text for settings page
         Text title = new Text("Settings");
@@ -82,13 +83,11 @@ public class SettingsPage extends VBox {
         Button backButton = new Button("Back to Main Menu");
         backButton.setStyle("-fx-font-size: 18px;");
         backButton.setOnMouseClicked(onBackToMain);
+        
+        contentBox.getChildren().addAll(title, volumeLabel, sliderBox, muteButton, backButton);
 
-        // Add all elements and center them
-        VBox volumeSection = new VBox(10, volumeLabel, sliderBox, muteButton);
-        volumeSection.setAlignment(Pos.CENTER);
-
-        this.setSpacing(20);
-        this.getChildren().addAll(title, volumeSection, backButton);
+        // Add the content box to the center of the StackPane
+        this.getChildren().add(contentBox);
     }
 
     private void toggleMute(Slider volumeSlider, Button muteButton) {
