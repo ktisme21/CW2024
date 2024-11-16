@@ -208,7 +208,7 @@ public abstract class LevelParent extends Observable {
 		}
 	}
 
-	private void updateLevelView() {
+	protected void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
 	}
 
@@ -243,20 +243,20 @@ public abstract class LevelParent extends Observable {
 	}
 
 	private void goToScorePage() {
-		ScorePage scorePage = new ScorePage(
-			event -> returnToMainMenu()  // Event handler to go back to the main menu
-		);
+        ScorePage scorePage = new ScorePage(
+            event -> returnToMainMenu()  // Updated to work with MouseEvent
+        );
 
-		Scene scoreScene = new Scene(scorePage, screenWidth, screenHeight);
-		Stage stage = (Stage) scene.getWindow();
-		stage.setScene(scoreScene);
-		stage.show();
-	}
+        Scene scoreScene = new Scene(scorePage, screenWidth, screenHeight);
+        Stage stage = (Stage) scene.getWindow();
+        stage.setScene(scoreScene);
+        stage.show();
+    }
 
-	private void returnToMainMenu() {
-		Main main = new Main();
-		main.showMainMenu((Stage) scene.getWindow());
-	}
+    private void returnToMainMenu() {
+        Main main = new Main();
+        main.showMainMenu((Stage) scene.getWindow());
+    }
 
 	protected UserPlane getUser() {
 		return user;
