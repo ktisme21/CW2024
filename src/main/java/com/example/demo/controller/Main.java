@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.view.GameStartScreen;
+import com.example.demo.view.ScorePage;
 import com.example.demo.view.SettingsPage;
 import com.example.demo.MusicPlayer;
 import javafx.application.Application;
@@ -79,6 +80,16 @@ public class Main extends Application {
         alert.setContentText("How To Play page is under construction.");
         alert.showAndWait();
     }
+
+    public void showScorePage(Stage stage) {
+        // Create ScorePage and provide the back-to-main-menu action
+        ScorePage scorePage = new ScorePage(event -> showMainMenu(stage));
+
+        // Set the scene to the ScorePage
+        Scene scoreScene = new Scene(scorePage, SCREEN_WIDTH, SCREEN_HEIGHT);
+        stage.setScene(scoreScene);
+    }
+
 
     @Override
     public void stop() {
