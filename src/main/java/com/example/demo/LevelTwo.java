@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import com.example.demo.view.LevelView;
+import com.example.demo.view.LevelViewLevelTwo;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;

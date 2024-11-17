@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.demo.controller.Main;
+import com.example.demo.view.LevelView;
 import com.example.demo.view.ScorePage;
 
 import javafx.animation.*;
