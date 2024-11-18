@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class MusicPlayer {
@@ -30,5 +29,16 @@ public class MusicPlayer {
             mediaPlayer.stop();
             mediaPlayer = null;
         }
+    }
+
+    public static void playShootingSound(){
+        String shootingSoundPath = "/com/example/demo/music/shoot.mp3";
+        MediaPlayer shootingMediaPlayer = new MediaPlayer(new javafx.scene.media.Media(
+            MusicPlayer.class.getResource(shootingSoundPath).toExternalForm()
+        ));
+        shootingMediaPlayer.play();
+
+        // Stop and release resources after the sound is played
+        shootingMediaPlayer.setOnEndOfMedia(shootingMediaPlayer::dispose);
     }
 }

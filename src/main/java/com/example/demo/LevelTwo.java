@@ -78,8 +78,8 @@ public class LevelTwo extends LevelParent {
 
 	private void updateShieldPosition() {
         // Position the shield slightly in front and above the boss
-        double shieldOffsetX = -20; // Horizontal offset
-        double shieldOffsetY = -20; // Vertical offset
+        double shieldOffsetX = -10; // Horizontal offset
+        double shieldOffsetY = -10; // Vertical offset
 
         shieldImage.setLayoutX(boss.getLayoutX() + boss.getTranslateX() + shieldOffsetX);
         shieldImage.setLayoutY(boss.getLayoutY() + boss.getTranslateY() + shieldOffsetY);
