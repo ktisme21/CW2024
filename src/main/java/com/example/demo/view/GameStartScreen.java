@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.text.Text;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class GameStartScreen extends StackPane {
 

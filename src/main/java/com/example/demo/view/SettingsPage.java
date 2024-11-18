@@ -12,11 +12,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class SettingsPage extends StackPane {
 
-    private static final int SCREEN_WIDTH = 1300;
-    private static final int SCREEN_HEIGHT = 750;
     private static final double DEFAULT_VOLUME = 50; // Default volume
     private boolean isMuted = false;
 
@@ -24,8 +23,8 @@ public class SettingsPage extends StackPane {
         // Set the background image using the utility
         BackgroundUtil.setBackgroundImage(this);
         
-        // Set the preferred size
-        this.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        // Use stage dimensions for preferred size
+        this.setPrefSize(stage.getWidth(), stage.getHeight());
 
         // Create a VBox for the content
         VBox contentBox = new VBox(20);
