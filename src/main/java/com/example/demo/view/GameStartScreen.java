@@ -10,13 +10,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class GameStartScreen extends StackPane {
-
-    private static final int SCREEN_WIDTH = 1300; 
-    private static final int SCREEN_HEIGHT = 750; 
-
-    public GameStartScreen(EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onHowToPlay) {
-        // Set the preferred size
-        this.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    public GameStartScreen(Stage stage, EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onHowToPlay) {
+        // Use stage dimensions for preferred size
+        this.setPrefSize(stage.getWidth(), stage.getHeight());
 
         // Set the background image using the utility
         BackgroundUtil.setBackgroundImage(this);

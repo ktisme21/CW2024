@@ -19,7 +19,7 @@ public class SettingsPage extends StackPane {
     private static final double DEFAULT_VOLUME = 50; // Default volume
     private boolean isMuted = false;
 
-    public SettingsPage(EventHandler<MouseEvent> onBackToMain) {
+    public SettingsPage(Stage stage, EventHandler<MouseEvent> onBackToMain) {
         // Set the background image using the utility
         BackgroundUtil.setBackgroundImage(this);
         

@@ -244,20 +244,26 @@ public abstract class LevelParent extends Observable {
 	}
 
 	private void goToScorePage() {
-        ScorePage scorePage = new ScorePage(
-            event -> returnToMainMenu()  // Updated to work with MouseEvent
-        );
+		// Get the current stage
+		Stage stage = (Stage) scene.getWindow();
+	
+		// Create ScorePage and provide the back-to-main-menu action
+		ScorePage scorePage = new ScorePage(stage, event -> returnToMainMenu(stage));
+	
+		// Create the scene with dynamic stage dimensions
+		Scene scoreScene = new Scene(scorePage, stage.getWidth(), stage.getHeight());
+		
+		// Set the new scene to the stage
+		stage.setScene(scoreScene);
+		stage.show();
+	}
+	
 
-        Scene scoreScene = new Scene(scorePage, screenWidth, screenHeight);
-        Stage stage = (Stage) scene.getWindow();
-        stage.setScene(scoreScene);
-        stage.show();
-    }
-
-    private void returnToMainMenu() {
+    private void returnToMainMenu(Stage stage) {
         Main main = new Main();
-        main.showMainMenu((Stage) scene.getWindow());
+        main.showMainMenu(stage);
     }
+
 
 	protected UserPlane getUser() {
 		return user;

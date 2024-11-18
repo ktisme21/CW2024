@@ -43,8 +43,7 @@ public class Main extends Application {
     }
 
     public void showMainMenu(Stage stage) {
-        // Recreate the main menu screen
-        GameStartScreen startScreen = new GameStartScreen(
+        GameStartScreen startScreen = new GameStartScreen(stage,
             event -> {
                 myController = new Controller(stage);
                 try {
@@ -56,21 +55,19 @@ public class Main extends Application {
             event -> showSettings(stage),
             event -> showHowToPlay()
         );
-
+    
         // Set the main menu scene
-        Scene scene = new Scene(startScreen, SCREEN_WIDTH, SCREEN_HEIGHT);
+        Scene scene = new Scene(startScreen, stage.getWidth(), stage.getHeight());
         stage.setScene(scene);
         stage.show();
     }
 
     private void showSettings(Stage stage) {
-        // Create SettingsPage with an event to go back to the main menu
-        SettingsPage settingsPage = new SettingsPage(event -> showMainMenu(stage));
-
-        // Set the scene to the settings page
-        Scene settingsScene = new Scene(settingsPage, SCREEN_WIDTH, SCREEN_HEIGHT);
+        SettingsPage settingsPage = new SettingsPage(stage, event -> showMainMenu(stage));
+        Scene settingsScene = new Scene(settingsPage, stage.getWidth(), stage.getHeight());
         stage.setScene(settingsScene);
     }
+    
 
     private void showHowToPlay() {
         // Display a placeholder alert for settings (replace with actual settings page logic)
@@ -83,10 +80,10 @@ public class Main extends Application {
 
     public void showScorePage(Stage stage) {
         // Create ScorePage and provide the back-to-main-menu action
-        ScorePage scorePage = new ScorePage(event -> showMainMenu(stage));
+        ScorePage scorePage = new ScorePage(stage, event -> showMainMenu(stage));
 
         // Set the scene to the ScorePage
-        Scene scoreScene = new Scene(scorePage, SCREEN_WIDTH, SCREEN_HEIGHT);
+        Scene scoreScene = new Scene(scorePage, stage.getWidth(), stage.getHeight());
         stage.setScene(scoreScene);
     }
 

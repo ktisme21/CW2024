@@ -7,17 +7,15 @@ import javafx.geometry.Pos;
 import javafx.scene.text.Text;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class ScorePage extends StackPane {
-    private static final int SCREEN_WIDTH = 1300;
-    private static final int SCREEN_HEIGHT = 750;
-
-    public ScorePage(EventHandler<MouseEvent> onBackToMain) {
+    public ScorePage(Stage stage, EventHandler<MouseEvent> onBackToMain) {
         // Set the background image using the utility
         BackgroundUtil.setBackgroundImage(this);
 
-        // Set the preferred size
-        this.setPrefSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        // Use stage dimensions for preferred size
+        this.setPrefSize(stage.getWidth(), stage.getHeight());
 
         // Create a VBox for the content
         VBox contentBox = new VBox(20);
