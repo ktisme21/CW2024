@@ -13,6 +13,7 @@ public class GameStartScreen extends StackPane {
     public GameStartScreen(Stage stage, EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onHowToPlay) {
         // Use stage dimensions for preferred size
         this.setPrefSize(stage.getWidth(), stage.getHeight());
+        this.getStylesheets().add(getClass().getResource("/com/example/demo/style/style.css").toExternalForm());
 
         // Set the background image using the utility
         BackgroundUtil.setBackgroundImage(this);
@@ -23,21 +24,21 @@ public class GameStartScreen extends StackPane {
 
         // Title text
         Text title = new Text("Welcome to Sky Battle!");
-        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        title.getStyleClass().add("title-text"); 
 
         // Start Game button
         Button startButton = new Button("Start Game");
-        startButton.setStyle("-fx-font-size: 18px;");
+        startButton.getStyleClass().add("button"); 
         startButton.setOnMouseClicked(onStartGame);  // Set the action for starting the game
 
         // Settings button
         Button settingsButton = new Button("Settings");
-        settingsButton.setStyle("-fx-font-size: 18px;");
+        settingsButton.getStyleClass().add("button"); // Apply CSS class
         settingsButton.setOnMouseClicked(onSettings);  // Set the action for settings
 
         // How To Play button
         Button howToPlayButton = new Button("How To Play");
-        howToPlayButton.setStyle("-fx-font-size: 18px;");
+        howToPlayButton.getStyleClass().add("button"); // Apply CSS class
         howToPlayButton.setOnMouseClicked(onHowToPlay);  // Set the action for instruction
 
         // Add components to VBox
