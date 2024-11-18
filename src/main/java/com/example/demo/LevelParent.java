@@ -40,6 +40,10 @@ public abstract class LevelParent extends Observable {
 	private boolean hasAlerted = false;
 	private boolean isTransitioned = false;
 
+	private int elapsedTime; // To track elapsed time in seconds
+	private Timeline timerTimeline; // Timeline for the timer
+
+
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
 		this.root = new Group();
 		this.scene = new Scene(root, screenWidth, screenHeight);
@@ -75,12 +79,25 @@ public abstract class LevelParent extends Observable {
 		initializeBackground();
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
+		levelView.showTimer();
+    	initializeTimer(); // Initialize the timer
 		return scene;
 	}
+
+	private void initializeTimer() {
+		elapsedTime = 0;
+		timerTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+			elapsedTime++;
+			levelView.updateTimer(elapsedTime); // Update timer text
+		}));
+		timerTimeline.setCycleCount(Timeline.INDEFINITE);
+	}
+	
 
 	public void startGame() {
 		background.requestFocus();
 		timeline.play();
+		timerTimeline.play();
 	}
 
 	public boolean isTransitioned(){
@@ -269,12 +286,14 @@ public abstract class LevelParent extends Observable {
 
 	protected void winGame() {
 		timeline.stop();
+		timerTimeline.stop();
 		levelView.showWinImage();
 		addQuitEventHandler();
 	}
 
 	protected void loseGame() {
 		timeline.stop();
+		timerTimeline.stop();
 		levelView.showGameOverImage();
 		addQuitEventHandler();
 	}
