@@ -100,6 +100,7 @@ public abstract class LevelParent extends Observable {
 		spawnEnemyUnits();
 		updateActors();
 		generateEnemyFire();
+		// removeOffScreenProjectiles(); // Cleanup projectiles out of the screen
 		updateNumberOfEnemies();
 		handleEnemyPenetration();
 		handleUserProjectileCollisions();
@@ -158,6 +159,7 @@ public abstract class LevelParent extends Observable {
 			enemyProjectiles.add(projectile);
 		}
 	}
+	
 
 	private void updateActors() {
 		friendlyUnits.forEach(plane -> plane.updateActor());
@@ -165,6 +167,34 @@ public abstract class LevelParent extends Observable {
 		userProjectiles.forEach(projectile -> projectile.updateActor());
 		enemyProjectiles.forEach(projectile -> projectile.updateActor());
 	}
+
+	// private void removeOffScreenProjectiles() {
+	// 	// Filter and collect user projectiles that are off the screen
+	// 	List<ActiveActorDestructible> offScreenProjectiles = userProjectiles.stream()
+	// 		.filter(projectile -> isOffScreen(projectile))
+	// 		.collect(Collectors.toList());
+
+	// 	// Remove off-screen user projectiles from the rendering layer and list
+	// 	root.getChildren().removeAll(offScreenProjectiles);
+	// 	userProjectiles.removeAll(offScreenProjectiles);
+	
+	// 	// Filter and collect enemy projectiles that are off the screen
+	// 	List<ActiveActorDestructible> offScreenEnemyProjectiles = enemyProjectiles.stream()
+	// 		.filter(projectile -> isOffScreen(projectile)) // Check if the projectile is off the screen
+	// 		.collect(Collectors.toList());
+
+	// 	// Remove off-screen enemy projectiles from the rendering layer and list
+	// 	root.getChildren().removeAll(offScreenEnemyProjectiles);
+	// 	enemyProjectiles.removeAll(offScreenEnemyProjectiles);
+	// }
+	
+	// // If a given projectile is outside the bounds of the screen
+	// private boolean isOffScreen(ActiveActorDestructible projectile) {
+	// 	double x = projectile.getTranslateX();
+	// 	double y = projectile.getTranslateY();
+
+	// 	return x < 0 || x > screenWidth || y < 0 || y > screenHeight;
+	// }
 
 	private void removeAllDestroyedActors() {
 		removeDestroyedActors(friendlyUnits);
