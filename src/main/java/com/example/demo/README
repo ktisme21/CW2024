@@ -15,3 +15,54 @@ Observable function refactor
 - pause page
 - level 3
 - boss java dun have to duplicate
+
+
+Level 1: Destroy Enemy Planes
+Objective: Defeat 10 enemies to proceed to the next level.
+Controls:
+Arrow Keys:
+UP: Move up.
+DOWN: Move down.
+LEFT: Move left.
+RIGHT: Move right.
+SPACEBAR: Shoot projectiles at enemies.
+Tips:
+Stay agile! Move around to avoid incoming enemy attacks.
+Aim carefully and shoot down the enemies as quickly as possible.
+Keep an eye on your health bar!
+
+
+Level 2: Defeat the Boss
+Objective: Defeat the Boss Enemy with 100 health to proceed to the next level.
+Controls:
+Arrow Keys:
+UP: Move up.
+DOWN: Move down.
+LEFT: Move left.
+RIGHT: Move right.
+SPACEBAR: Shoot projectiles at the Boss Enemy.
+Boss Features:
+The Boss will have a shield that appears randomly.
+When the shield is active, your projectiles won’t reduce the Boss’s health.
+Wait for the shield to drop, then focus all firepower on the Boss.
+
+Level 3: Defeat 3 Bosses
+Objective: Defeat 3 Bosses to complete the game.
+Controls:
+Arrow Keys:
+UP: Move up.
+DOWN: Move down.
+LEFT: Move left.
+RIGHT: Move right.
+SPACEBAR: Shoot projectiles.
+1 Key: Toggle visibility of your plane:
+Visible Mode:
+Engage in combat with Bosses.
+You can shoot projectiles and attack the Bosses.
+Invisible Mode:
+Dodge attacks by becoming invisible.
+Note: You cannot attack while invisible.
+Tips:
+Strategically toggle visibility to evade attacks when overwhelmed.
+Focus on defeating one Boss at a time to manage combat effectively.
+Stay alert to enemy attacks and shield activations.

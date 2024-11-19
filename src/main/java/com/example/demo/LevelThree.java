@@ -65,7 +65,7 @@ public class LevelThree extends LevelParent {
 
     private void setupKeyListeners(javafx.scene.Scene scene) {
         scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.D) {
+            if (event.getCode() == KeyCode.DIGIT1) {
                 toggleUserPlaneVisibility();
             }
         });
