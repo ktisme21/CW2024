@@ -6,6 +6,8 @@ import com.example.demo.WinImage;
 
 import javafx.scene.Group;
 import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class LevelView {
     private static final double HEART_DISPLAY_X_POSITION = 5;
@@ -29,7 +31,8 @@ public class LevelView {
         this.winImage = new WinImage(WIN_IMAGE_X_POSITION, WIN_IMAGE_Y_POSITION);
         this.gameOverImage = new GameOverImage(LOSS_SCREEN_X_POSITION, LOSS_SCREEN_Y_POSITION);
         this.timerText = new Text(TIMER_X_POSITION, TIMER_Y_POSITION, "Time: 0");
-        timerText.getStyleClass().add("timer-text");
+        timerText.setFill(Color.WHITE);
+        timerText.setFont(new Font("Arial", 20));
     }
 
     public void showHeartDisplay() {

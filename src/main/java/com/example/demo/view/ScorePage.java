@@ -16,7 +16,6 @@ public class ScorePage extends StackPane {
 
         // Use stage dimensions for preferred size
         this.setPrefSize(stage.getWidth(), stage.getHeight());
-        this.getStylesheets().add(getClass().getResource("/com/example/demo/style/style.css").toExternalForm());
 
         // Create a VBox for the content
         VBox contentBox = new VBox(20);
@@ -24,15 +23,15 @@ public class ScorePage extends StackPane {
 
         // Title text
         Text title = new Text("Rankings");
-        title.getStyleClass().add("title-text");
+        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Display score (placeholder)
         Text scoreText = new Text("Your Score:"); // Replace with actual score data
-        scoreText.getStyleClass().add("score-text");
+        scoreText.setStyle("-fx-font-size: 18px;");
 
         // Back to Main Menu button
         Button backButton = new Button("Back to Main Menu");
-        backButton.getStyleClass().add("button");
+        backButton.setStyle("-fx-font-size: 18px;");
         backButton.setOnMouseClicked(onBackToMain); // Set the action for going back to main screen
 
         // Add components to VBox

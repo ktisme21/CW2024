@@ -25,7 +25,6 @@ public class SettingsPage extends StackPane {
 
         // Use stage dimensions for preferred size
         this.setPrefSize(stage.getWidth(), stage.getHeight());
-        this.getStylesheets().add(getClass().getResource("/com/example/demo/style/style.css").toExternalForm());
 
         // Create a VBox for the content
         VBox contentBox = new VBox(20);
@@ -34,17 +33,17 @@ public class SettingsPage extends StackPane {
 
         // Title text for settings page
         Text title = new Text("Settings");
-        title.getStyleClass().add("title-text");
+        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Volume Slider Label
         Text volumeLabel = new Text("Volume");
-        volumeLabel.getStyleClass().add("volume-label");
+        volumeLabel.setStyle("-fx-font-size: 18px;");
 
         // Volume Slider setup
         Slider volumeSlider = new Slider(0, 100, DEFAULT_VOLUME); // Min, Max, Initial
         volumeSlider.setMinorTickCount(4);
         volumeSlider.setBlockIncrement(10);
-        volumeSlider.getStyleClass().add("volume-slider");
+        volumeSlider.setPrefWidth(300); // Adjusted for better centering
 
         // Adjust background music volume in real-time
         volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -56,7 +55,7 @@ public class SettingsPage extends StackPane {
 
         // Decrement button
         Button decrementButton = new Button("-");
-        decrementButton.getStyleClass().add("button");
+        decrementButton.setStyle("-fx-font-size: 18px;");
         decrementButton.setOnMouseClicked(event -> {
             double newVolume = Math.max(0, volumeSlider.getValue() - 5);
             volumeSlider.setValue(newVolume);
@@ -64,7 +63,7 @@ public class SettingsPage extends StackPane {
 
         // Increment button
         Button incrementButton = new Button("+");
-        incrementButton.getStyleClass().add("button");
+        incrementButton.setStyle("-fx-font-size: 18px;");
         incrementButton.setOnMouseClicked(event -> {
             double newVolume = Math.min(100, volumeSlider.getValue() + 5);
             volumeSlider.setValue(newVolume);
@@ -76,12 +75,12 @@ public class SettingsPage extends StackPane {
 
         // Mute button
         Button muteButton = new Button("Mute");
-        muteButton.getStyleClass().add("button");
+        muteButton.setStyle("-fx-font-size: 18px;");
         muteButton.setOnMouseClicked(event -> toggleMute(volumeSlider, muteButton));
 
         // Back to Main Menu button
         Button backButton = new Button("Back to Main Menu");
-        backButton.getStyleClass().add("button");
+        backButton.setStyle("-fx-font-size: 18px;");
         backButton.setOnMouseClicked(onBackToMain);
 
         contentBox.getChildren().addAll(title, volumeLabel, sliderBox, muteButton, backButton);

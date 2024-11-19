@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 
 public class BackgroundUtil {
 
-    private static final String BACKGROUND_IMAGE_PATH = "/com/example/demo/images/background3.jpg";
+    private static final String BACKGROUND_IMAGE_PATH = "/com/example/demo/images/background4.jpg";
 
     public static void setBackgroundImage(Pane pane) {
         Image backgroundImage = new Image(BackgroundUtil.class.getResource(BACKGROUND_IMAGE_PATH).toExternalForm());
