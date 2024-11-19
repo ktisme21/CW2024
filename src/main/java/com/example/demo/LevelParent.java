@@ -185,34 +185,6 @@ public abstract class LevelParent extends Observable {
 		enemyProjectiles.forEach(projectile -> projectile.updateActor());
 	}
 
-	// private void removeOffScreenProjectiles() {
-	// 	// Filter and collect user projectiles that are off the screen
-	// 	List<ActiveActorDestructible> offScreenProjectiles = userProjectiles.stream()
-	// 		.filter(projectile -> isOffScreen(projectile))
-	// 		.collect(Collectors.toList());
-
-	// 	// Remove off-screen user projectiles from the rendering layer and list
-	// 	root.getChildren().removeAll(offScreenProjectiles);
-	// 	userProjectiles.removeAll(offScreenProjectiles);
-	
-	// 	// Filter and collect enemy projectiles that are off the screen
-	// 	List<ActiveActorDestructible> offScreenEnemyProjectiles = enemyProjectiles.stream()
-	// 		.filter(projectile -> isOffScreen(projectile)) // Check if the projectile is off the screen
-	// 		.collect(Collectors.toList());
-
-	// 	// Remove off-screen enemy projectiles from the rendering layer and list
-	// 	root.getChildren().removeAll(offScreenEnemyProjectiles);
-	// 	enemyProjectiles.removeAll(offScreenEnemyProjectiles);
-	// }
-	
-	// // If a given projectile is outside the bounds of the screen
-	// private boolean isOffScreen(ActiveActorDestructible projectile) {
-	// 	double x = projectile.getTranslateX();
-	// 	double y = projectile.getTranslateY();
-
-	// 	return x < 0 || x > screenWidth || y < 0 || y > screenHeight;
-	// }
-
 	private void removeAllDestroyedActors() {
 		removeDestroyedActors(friendlyUnits);
 		removeDestroyedActors(enemyUnits);
@@ -236,7 +208,10 @@ public abstract class LevelParent extends Observable {
 	}
 
 	private void handleEnemyProjectileCollisions() {
-		handleCollisions(enemyProjectiles, friendlyUnits);
+		// Only handle collisions with the user if the user is visible
+		if (getUser().isVisible()) {
+			handleCollisions(enemyProjectiles, friendlyUnits);
+		}
 	}
 
 	private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
@@ -262,10 +237,13 @@ public abstract class LevelParent extends Observable {
 
 
 	private void handleEnemyPenetration() {
-		for (ActiveActorDestructible enemy : enemyUnits) {
-			if (enemyHasPenetratedDefenses(enemy)) {
-				user.takeDamage();
-				enemy.destroy();
+		// Only allow enemies to penetrate if the user is visible
+		if (getUser().isVisible()) {
+			for (ActiveActorDestructible enemy : enemyUnits) {
+				if (enemyHasPenetratedDefenses(enemy)) {
+					user.takeDamage();
+					enemy.destroy();
+				}
 			}
 		}
 	}
@@ -273,6 +251,7 @@ public abstract class LevelParent extends Observable {
 	protected void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
 	}
+	
 
 	private void updateKillCount() {
 		for (int i = 0; i < currentNumberOfEnemies - enemyUnits.size(); i++) {

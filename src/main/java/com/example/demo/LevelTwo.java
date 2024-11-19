@@ -50,9 +50,11 @@ public class LevelTwo extends LevelParent {
 
 	
 	private void addShieldImage() {
-		shieldImage.setVisible(false); // Initially hidden
-		shieldImage.setOpacity(1.0); // Fully visible when not blinking
-		getRoot().getChildren().add(shieldImage); // Directly add ShieldImage
+		if (shieldImage.getParent() == null) { // Only add if not already in the scene graph
+			shieldImage.setVisible(false); // Initially hidden
+			shieldImage.setOpacity(1.0); // Fully visible when not blinking
+			getRoot().getChildren().add(shieldImage); // Add ShieldImage to the root
+		}
 	}
 
 
