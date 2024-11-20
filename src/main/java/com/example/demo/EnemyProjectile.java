@@ -24,20 +24,20 @@ public class EnemyProjectile extends Projectile {
 		updatePosition();
 	}
 
-	public Bounds getCollisionBounds() {
-		// Create a smaller bounding rectangle for collision detection
-		Bounds originalBounds = super.getBoundsInParent();
-		double shrinkWidth = originalBounds.getWidth() * SHRINK_FACTOR;
-		double shrinkHeight = originalBounds.getHeight() * SHRINK_FACTOR;
+	// public Bounds getCollisionBounds() {
+	// 	// Create a smaller bounding rectangle for collision detection
+	// 	Bounds originalBounds = super.getBoundsInParent();
+	// 	double shrinkWidth = originalBounds.getWidth() * SHRINK_FACTOR;
+	// 	double shrinkHeight = originalBounds.getHeight() * SHRINK_FACTOR;
 
-		// Center the smaller bounds within the original bounds
-		return new Rectangle(
-			originalBounds.getMinX() + (originalBounds.getWidth() - shrinkWidth) / 2,
-			originalBounds.getMinY() + (originalBounds.getHeight() - shrinkHeight) / 2,
-			shrinkWidth,
-			shrinkHeight
-		).getBoundsInParent();
-	}
+	// 	// Center the smaller bounds within the original bounds
+	// 	return new Rectangle(
+	// 		originalBounds.getMinX() + (originalBounds.getWidth() - shrinkWidth) / 2,
+	// 		originalBounds.getMinY() + (originalBounds.getHeight() - shrinkHeight) / 2,
+	// 		shrinkWidth,
+	// 		shrinkHeight
+	// 	).getBoundsInParent();
+	// }
 
 
 }

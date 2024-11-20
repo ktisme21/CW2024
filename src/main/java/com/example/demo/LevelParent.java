@@ -213,27 +213,38 @@ public abstract class LevelParent extends Observable {
 		}
 	}
 
-	private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
-    for (ActiveActorDestructible actor1 : actors1) {
-        for (ActiveActorDestructible actor2 : actors2) {
-            if (actor1 instanceof EnemyProjectile) {
-                // Use custom collision bounds for EnemyProjectile
-                EnemyProjectile projectile = (EnemyProjectile) actor1;
-                if (projectile.getCollisionBounds().intersects(actor2.getBoundsInParent())) {
-                    actor1.takeDamage();
-                    actor2.takeDamage();
-                }
-            } else {
-                // Default bounds for other actors
-                if (actor1.getBoundsInParent().intersects(actor2.getBoundsInParent())) {
-                    actor1.takeDamage();
-                    actor2.takeDamage();
-                }
-            }
-        }
-    }
-}
+	// private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
+    // for (ActiveActorDestructible actor1 : actors1) {
+    //     for (ActiveActorDestructible actor2 : actors2) {
+    //         if (actor1 instanceof EnemyProjectile) {
+    //             // Use custom collision bounds for EnemyProjectile
+    //             EnemyProjectile projectile = (EnemyProjectile) actor1;
+    //             if (projectile.getCollisionBounds().intersects(actor2.getBoundsInParent())) {
+    //                 actor1.takeDamage();
+    //                 actor2.takeDamage();
+    //             }
+    //         } else {
+    //             // Default bounds for other actors
+    //             if (actor1.getBoundsInParent().intersects(actor2.getBoundsInParent())) {
+    //                 actor1.takeDamage();
+    //                 actor2.takeDamage();
+    //             }
+    //         }
+    //     }
+    // }
+// }
 
+	private void handleCollisions(List<ActiveActorDestructible> actors1,
+		List<ActiveActorDestructible> actors2) {
+			for (ActiveActorDestructible actor : actors2) {
+			for (ActiveActorDestructible otherActor : actors1) {
+				if (actor.getBoundsInParent().intersects(otherActor.getBoundsInParent())) {
+					actor.takeDamage();
+					otherActor.takeDamage();
+				}
+			}
+		}
+	}
 
 	private void handleEnemyPenetration() {
 		// Only allow enemies to penetrate if the user is visible
