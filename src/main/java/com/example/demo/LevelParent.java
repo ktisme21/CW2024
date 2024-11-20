@@ -117,9 +117,7 @@ public abstract class LevelParent extends Observable {
 		spawnEnemyUnits();
 		updateActors();
 		generateEnemyFire();
-		// removeOffScreenProjectiles(); // Cleanup projectiles out of the screen
 		updateNumberOfEnemies();
-		handleEnemyPenetration();
 		handleUserProjectileCollisions();
 		handleEnemyProjectileCollisions();
 		handlePlaneCollisions();
@@ -127,6 +125,7 @@ public abstract class LevelParent extends Observable {
 		updateKillCount();
 		updateLevelView();
 		checkIfGameOver();
+
 	}
 
 	private void initializeTimeline() {
@@ -339,5 +338,7 @@ public abstract class LevelParent extends Observable {
 	private void updateNumberOfEnemies() {
 		currentNumberOfEnemies = enemyUnits.size();
 	}
+
+
 
 }
