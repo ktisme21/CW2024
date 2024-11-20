@@ -1,5 +1,6 @@
 package com.example.demo;
 
+
 public abstract class FighterPlane extends ActiveActorDestructible {
 
 	private int health;
@@ -18,6 +19,7 @@ public abstract class FighterPlane extends ActiveActorDestructible {
 			this.destroy();
 		}
 	}
+
 
 	protected double getProjectileXPosition(double xPositionOffset) {
 		return getLayoutX() + getTranslateX() + xPositionOffset;

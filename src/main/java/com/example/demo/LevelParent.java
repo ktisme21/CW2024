@@ -118,6 +118,7 @@ public abstract class LevelParent extends Observable {
 		updateActors();
 		generateEnemyFire();
 		updateNumberOfEnemies();
+		handleEnemyPenetration();
 		handleUserProjectileCollisions();
 		handleEnemyProjectileCollisions();
 		handlePlaneCollisions();
@@ -213,50 +214,43 @@ public abstract class LevelParent extends Observable {
 		}
 	}
 
-	// private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
-    // for (ActiveActorDestructible actor1 : actors1) {
-    //     for (ActiveActorDestructible actor2 : actors2) {
-    //         if (actor1 instanceof EnemyProjectile) {
-    //             // Use custom collision bounds for EnemyProjectile
-    //             EnemyProjectile projectile = (EnemyProjectile) actor1;
-    //             if (projectile.getCollisionBounds().intersects(actor2.getBoundsInParent())) {
-    //                 actor1.takeDamage();
-    //                 actor2.takeDamage();
-    //             }
-    //         } else {
-    //             // Default bounds for other actors
-    //             if (actor1.getBoundsInParent().intersects(actor2.getBoundsInParent())) {
-    //                 actor1.takeDamage();
-    //                 actor2.takeDamage();
-    //             }
-    //         }
-    //     }
-    // }
-// }
 
-	private void handleCollisions(List<ActiveActorDestructible> actors1,
-		List<ActiveActorDestructible> actors2) {
-			for (ActiveActorDestructible actor : actors2) {
-			for (ActiveActorDestructible otherActor : actors1) {
-				if (actor.getBoundsInParent().intersects(otherActor.getBoundsInParent())) {
-					actor.takeDamage();
-					otherActor.takeDamage();
+	private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
+		for (ActiveActorDestructible actor1 : actors1) {
+			for (ActiveActorDestructible actor2 : actors2) {
+				// Use custom collision bounds for both actors
+				if (actor1.getCollisionBounds().intersects(actor2.getCollisionBounds())) {
+					actor1.takeDamage();
+					actor2.takeDamage();
 				}
 			}
 		}
 	}
+
 
 	private void handleEnemyPenetration() {
-		// Only allow enemies to penetrate if the user is visible
-		if (getUser().isVisible()) {
-			for (ActiveActorDestructible enemy : enemyUnits) {
-				if (enemyHasPenetratedDefenses(enemy)) {
-					user.takeDamage();
-					enemy.destroy();
-				}
+		for (ActiveActorDestructible enemy : new ArrayList<>(enemyUnits)) {
+			if (enemy instanceof EnemyPlane && hasEnemyExitedScreen(enemy)) {
+				// Deduct one heart
+				user.takeDamage();
+
+				// Destroy the enemy plane
+				enemy.destroy();
+			} else if (enemyHasPenetratedDefenses(enemy)) {
+				// Handle enemy penetration logic
+				user.takeDamage();
+				enemy.destroy();
 			}
 		}
 	}
+	
+	private boolean hasEnemyExitedScreen(ActiveActorDestructible enemy) {
+		// Check if the enemy has exited the screen bounds
+		double enemyX = enemy.getLayoutX() + enemy.getTranslateX();
+		double screenWidth = getScreenWidth();
+		return enemyX + enemy.getBoundsInParent().getWidth() < 0 || enemyX > screenWidth;
+	}
+	
 
 	protected void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
