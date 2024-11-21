@@ -23,6 +23,7 @@ public abstract class LevelParent extends Observable {
 	private final double screenHeight;
 	private final double screenWidth;
 	private final double enemyMaximumYPosition;
+	
 
 	private final Group root;
 	private final Timeline timeline;
@@ -209,7 +210,7 @@ public abstract class LevelParent extends Observable {
 		}
 	}
 
-	private void updateLevelView() {
+	protected void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
 	}
 
@@ -266,5 +267,6 @@ public abstract class LevelParent extends Observable {
 		currentNumberOfEnemies = enemyUnits.size();
 	}
 
+	
 
 }
