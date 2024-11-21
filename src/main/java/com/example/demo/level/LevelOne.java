@@ -1,4 +1,8 @@
-package com.example.demo;
+package com.example.demo.level;
+
+import com.example.demo.model.ActiveActorDestructible;
+import com.example.demo.model.EnemyPlane;
+import com.example.demo.view.LevelView;
 
 public class LevelOne extends LevelParent {
 	
