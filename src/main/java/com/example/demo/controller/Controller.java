@@ -8,7 +8,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 public class Controller implements LevelChangeListener {
 

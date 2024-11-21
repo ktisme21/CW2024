@@ -1,6 +1,8 @@
 module com.example.demo {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
+    requires transitive javafx.graphics;
 
     opens com.example.demo.controller to javafx.fxml;
     opens com.example.demo.display to javafx.fxml;
