@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.example.demo.projectiles.EnemyProjectile;
+
 public class EnemyPlane extends FighterPlane {
 
 	private static final String IMAGE_NAME = "enemyplane.png";
