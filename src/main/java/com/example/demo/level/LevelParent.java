@@ -3,27 +3,35 @@ package com.example.demo.level;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.example.demo.LevelChangeListener;
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.FighterPlane;
 import com.example.demo.model.UserPlane;
 import com.example.demo.view.LevelView;
 
-import javafx.animation.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.*;
-import javafx.scene.input.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 
-public abstract class LevelParent extends Observable {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class LevelParent {
+
+	private LevelChangeListener listener;
 
 	private static final double SCREEN_HEIGHT_ADJUSTMENT = 150;
 	private static final int MILLISECOND_DELAY = 50;
 	private final double screenHeight;
 	private final double screenWidth;
 	private final double enemyMaximumYPosition;
-	
 
 	private final Group root;
 	private final Timeline timeline;
@@ -63,6 +71,10 @@ public abstract class LevelParent extends Observable {
 		friendlyUnits.add(user);
 	}
 
+	public void setLevelChangeListener(LevelChangeListener listener) {
+        this.listener = listener;
+    }
+
 	protected abstract void initializeFriendlyUnits();
 
 	protected abstract void checkIfGameOver();
@@ -89,12 +101,11 @@ public abstract class LevelParent extends Observable {
 	}
 
 	public void goToNextLevel(String levelName) {
-		if(!hasAlerted){
-			setChanged();
-			notifyObservers(levelName);
-			hasAlerted = true;
-			isTransitioned = true;
-		}
+		if (!hasAlerted && listener != null) {
+            listener.onLevelChange(levelName);
+            hasAlerted = true;
+            isTransitioned = true;
+        }
 	}
 
 	private void updateScene() {
