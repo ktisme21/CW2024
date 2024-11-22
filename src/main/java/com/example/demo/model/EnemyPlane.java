@@ -19,6 +19,7 @@ public class EnemyPlane extends FighterPlane {
 	@Override
 	public void updatePosition() {
 		moveHorizontally(HORIZONTAL_VELOCITY);
+		updateRedContainer();
 	}
 
 	@Override
@@ -34,6 +35,7 @@ public class EnemyPlane extends FighterPlane {
 	@Override
 	public void updateActor() {
 		updatePosition();
+		updateRedContainer();
 	}
 
 }

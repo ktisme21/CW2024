@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.demo.LevelChangeListener;
+import com.example.demo.model.ActiveActor;
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.FighterPlane;
 import com.example.demo.model.UserPlane;
@@ -21,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -79,7 +81,10 @@ public abstract class LevelParent {
         this.listener = listener;
     }
 
-	protected abstract void initializeFriendlyUnits();
+	protected void initializeFriendlyUnits() {
+		root.getChildren().add(getUser()); // Add user plane to the root
+		getUser().addRedContainerToRoot(root); // Add red container to the root
+	}
 
 	protected abstract void checkIfGameOver();
 
@@ -209,17 +214,29 @@ public abstract class LevelParent {
 		handleCollisions(enemyProjectiles, friendlyUnits);
 	}
 
-	private void handleCollisions(List<ActiveActorDestructible> actors1,
-			List<ActiveActorDestructible> actors2) {
-		for (ActiveActorDestructible actor : actors2) {
-			for (ActiveActorDestructible otherActor : actors1) {
-				if (actor.getBoundsInParent().intersects(otherActor.getBoundsInParent())) {
-					actor.takeDamage();
-					otherActor.takeDamage();
-				}
-			}
-		}
-	}
+	private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
+    for (ActiveActorDestructible actor1 : actors1) {
+        for (ActiveActorDestructible actor2 : actors2) {
+            if (actor1 instanceof ActiveActor && actor2 instanceof ActiveActor) {
+                Rectangle redContainer1 = ((ActiveActor) actor1).getRedContainer();
+                Rectangle redContainer2 = ((ActiveActor) actor2).getRedContainer();
+
+                // Check if the red containers intersect
+                if (redContainer1.getBoundsInParent().intersects(redContainer2.getBoundsInParent())) {
+                    actor1.takeDamage();
+                    actor2.takeDamage();
+                }
+            } else {
+                // Fallback to default bounds for other actors
+                if (actor1.getBoundsInParent().intersects(actor2.getBoundsInParent())) {
+                    actor1.takeDamage();
+                    actor2.takeDamage();
+                }
+            }
+        }
+    }
+}
+
 
 	private void handleEnemyPenetration() {
 		for (ActiveActorDestructible enemy : enemyUnits) {
@@ -301,6 +318,7 @@ public abstract class LevelParent {
 	protected void addEnemyUnit(ActiveActorDestructible enemy) {
 		enemyUnits.add(enemy);
 		root.getChildren().add(enemy);
+		enemy.addRedContainerToRoot(root);
 	}
 
 	protected double getEnemyMaximumYPosition() {

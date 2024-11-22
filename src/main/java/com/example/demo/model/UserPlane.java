@@ -51,11 +51,18 @@ public class UserPlane extends FighterPlane {
 				this.setTranslateX(initialTranslateX);
 			}
 		}
+
+		updateRedContainer();
 	}
 
 	@Override
 	public void updateActor() {
 		updatePosition();
+		updateRedContainer();
+		if (getParent() instanceof Group) {
+			Group root = (Group) getParent();
+			addRedContainerToRoot(root); // Ensure the red container is added to the scene graph
+		}
 	}
 	
 	@Override
