@@ -1,5 +1,8 @@
 package com.example.demo.level;
 
+import com.example.demo.controller.Main;
+import com.example.demo.view.ScorePage;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -138,17 +142,22 @@ public abstract class LevelParent {
 				KeyCode kc = e.getCode();
 				if (kc == KeyCode.UP) user.moveUp();
 				if (kc == KeyCode.DOWN) user.moveDown();
+				if (kc == KeyCode.LEFT) user.moveLeft();
+				if (kc == KeyCode.RIGHT) user.moveRight();
 				if (kc == KeyCode.SPACE) fireProjectile();
 			}
 		});
+		
 		background.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent e) {
 				KeyCode kc = e.getCode();
-				if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stop();
+				if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stopVertical();
+				if (kc == KeyCode.LEFT || kc == KeyCode.RIGHT) user.stopHorizontal();
 			}
 		});
 		root.getChildren().add(background);
 	}
+
 
 	private void fireProjectile() {
 		ActiveActorDestructible projectile = user.fireProjectile();
@@ -238,11 +247,43 @@ public abstract class LevelParent {
 	protected void winGame() {
 		timeline.stop();
 		levelView.showWinImage();
+		addQuitEventHandler();
 	}
 
 	protected void loseGame() {
 		timeline.stop();
 		levelView.showGameOverImage();
+		addQuitEventHandler();
+	}
+
+	private void addQuitEventHandler(){
+		scene.setOnKeyPressed(event->{
+			if(event.getCode() == KeyCode.Q){
+				goToScorePage();
+			}
+		});
+	}
+
+	private void goToScorePage() {
+		// Get the current stage
+		Stage stage = (Stage) scene.getWindow();
+	
+		// Create ScorePage and provide the back-to-main-menu action
+		ScorePage scorePage = new ScorePage(stage, event -> returnToMainMenu(stage));
+	
+		// Create the scene with dynamic stage dimensions
+		Scene scoreScene = new Scene(scorePage, stage.getWidth(), stage.getHeight());
+		
+		// Set the new scene to the stage
+		stage.setScene(scoreScene);
+		stage.show();
+	}
+	
+	
+
+	private void returnToMainMenu(Stage stage) {
+		Main main = new Main();
+		main.showMainMenu(stage);
 	}
 
 	protected UserPlane getUser() {
