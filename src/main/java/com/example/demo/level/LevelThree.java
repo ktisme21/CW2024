@@ -24,7 +24,7 @@ public class LevelThree extends LevelParent {
 
     @Override
     protected void initializeFriendlyUnits() {
-        getRoot().getChildren().add(getUser()); // Add user plane to the game
+        getUser().addToParent(getRoot());
     }
 
     @Override

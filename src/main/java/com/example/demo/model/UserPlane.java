@@ -9,7 +9,7 @@ public class UserPlane extends FighterPlane {
 
 	private static final String IMAGE_NAME = "userplane.png";
 	private static final double X_LEFT_BOUND = -30; // Allow userplane move horizontally
-	private static final double X_RIGHT_BOUND = 1120;
+	private static final double X_RIGHT_BOUND = 1110;
 	private static final double Y_UPPER_BOUND = -40;
 	private static final double Y_LOWER_BOUND = 600.0;
 	private static final double INITIAL_X_POSITION = 5.0;
@@ -51,18 +51,12 @@ public class UserPlane extends FighterPlane {
 				this.setTranslateX(initialTranslateX);
 			}
 		}
-
-		updateRedContainer();
 	}
 
 	@Override
 	public void updateActor() {
 		updatePosition();
 		updateRedContainer();
-		if (getParent() instanceof Group) {
-			Group root = (Group) getParent();
-			addRedContainerToRoot(root); // Ensure the red container is added to the scene graph
-		}
 	}
 	
 	@Override

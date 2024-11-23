@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,44 +12,49 @@ public abstract class ActiveActor extends ImageView {
 
 	private final Rectangle redContainer;
 	private static final String IMAGE_LOCATION = "/com/example/demo/images/";
-
-	// Shrink factor for reducing the collision sensitivity
 	private static final double SHRINK_FACTOR = 0.5; // 80% of the original size
 
 	public ActiveActor(String imageName, int imageHeight, double initialXPos, double initialYPos) {
-		// Load image
-		this.setImage(new Image(getClass().getResource(IMAGE_LOCATION + imageName).toExternalForm()));
-		this.setLayoutX(initialXPos);
-		this.setLayoutY(initialYPos);
-		this.setFitHeight(imageHeight);
-		this.setPreserveRatio(true);
+        initializeImage(imageName, imageHeight, initialXPos, initialYPos);
+        redContainer = createRedContainer();
+        updateRedContainerPosition(); // Set the initial position and size
+    }
 
-		// Initialize red container (collision box)
-		this.redContainer = new Rectangle();
-		this.redContainer.setStroke(Color.RED);
-		this.redContainer.setFill(Color.TRANSPARENT);
-		this.redContainer.setStrokeWidth(2);
-		updateRedContainerPosition();
-	}
+	private void initializeImage(String imageName, int imageHeight, double initialXPos, double initialYPos) {
+        this.setImage(new Image(getClass().getResource(IMAGE_LOCATION + imageName).toExternalForm()));
+        this.setLayoutX(initialXPos);
+        this.setLayoutY(initialYPos);
+        this.setFitHeight(imageHeight);
+        this.setPreserveRatio(true);
+    }
+
+	private Rectangle createRedContainer() {
+        Rectangle container = new Rectangle();
+        container.setStroke(Color.RED); // Red border
+        container.setFill(Color.TRANSPARENT); // Transparent fill
+        container.setStrokeWidth(2);
+        return container;
+    }
+
+	public void addToParent(Group parent) {
+        parent.getChildren().addAll(this, redContainer); // Add the actor and its red container to the parent
+    }
 
 	private void updateRedContainerPosition() {
-		// Calculate reduced width and height based on SHRINK_FACTOR
-		double reducedWidth = getBoundsInParent().getWidth() * SHRINK_FACTOR;
-		double reducedHeight = getBoundsInParent().getHeight() * SHRINK_FACTOR;
+        Bounds originalBounds = getBoundsInParent();
 
-		// Center the smaller red container within the original bounds
-		double offsetX = (getBoundsInParent().getWidth() - reducedWidth) / 2;
-		double offsetY = (getBoundsInParent().getHeight() - reducedHeight) / 2;
+        // Calculate shrunk dimensions
+        double shrinkWidth = originalBounds.getWidth() * SHRINK_FACTOR;
+        double shrinkHeight = originalBounds.getHeight() * SHRINK_FACTOR;
 
-		redContainer.setWidth(reducedWidth);
-		redContainer.setHeight(reducedHeight);
-		redContainer.setX(getLayoutX() + getTranslateX() + offsetX);
-		redContainer.setY(getLayoutY() + getTranslateY() + offsetY);
-	}
+        // Update red container size and position
+        redContainer.setWidth(shrinkWidth);
+        redContainer.setHeight(shrinkHeight);
+        redContainer.setX(originalBounds.getMinX() + (originalBounds.getWidth() - shrinkWidth) / 2);
+        redContainer.setY(originalBounds.getMinY() + (originalBounds.getHeight() - shrinkHeight) / 2);
+    }
 
 	public abstract void updatePosition();
-
-	public abstract void updateActor();
 
 	protected void moveHorizontally(double horizontalMove) {
 		this.setTranslateX(getTranslateX() + horizontalMove);
@@ -61,11 +68,6 @@ public abstract class ActiveActor extends ImageView {
 		updateRedContainerPosition();
 	}
 
-	// Getter for the red container
-	public Rectangle getRedContainer() {
-		return redContainer;
-	}
-
 	// Add the red container to the scene graph
 	public void addRedContainerToRoot(Group root) {
 		if (!root.getChildren().contains(redContainer)) {
@@ -73,26 +75,23 @@ public abstract class ActiveActor extends ImageView {
 		}
 	}
 
-	// Remove the red container from the scene graph
-	public void removeRedContainerFromRoot(Group root) {
-		if (root.getChildren().contains(redContainer)) {
-			root.getChildren().remove(redContainer);
-		}
-	}
+	public void removeRedContainer() {
+        Group parentGroup = (Group) this.getParent();
+        if (parentGroup != null) {
+            parentGroup.getChildren().remove(redContainer);
+        }
+    }
 
-	// Return reduced bounds for less sensitive collision detection
-    public Rectangle getCollisionBounds() {
-        double reducedWidth = redContainer.getWidth() * SHRINK_FACTOR;
-        double reducedHeight = redContainer.getHeight() * SHRINK_FACTOR;
+	public Bounds getCollisionBounds() {
+        Bounds originalBounds = getBoundsInParent();
+        double shrinkWidth = originalBounds.getWidth() * SHRINK_FACTOR;
+        double shrinkHeight = originalBounds.getHeight() * SHRINK_FACTOR;
 
-        double xOffset = (redContainer.getWidth() - reducedWidth) / 2;
-        double yOffset = (redContainer.getHeight() - reducedHeight) / 2;
-
-        return new Rectangle(
-            redContainer.getX() + xOffset,
-            redContainer.getY() + yOffset,
-            reducedWidth,
-            reducedHeight
+        return new BoundingBox(
+            originalBounds.getMinX() + (originalBounds.getWidth() - shrinkWidth) / 2,
+            originalBounds.getMinY() + (originalBounds.getHeight() - shrinkHeight) / 2,
+            shrinkWidth,
+            shrinkHeight
         );
     }
 }

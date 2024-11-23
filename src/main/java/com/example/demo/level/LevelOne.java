@@ -28,7 +28,7 @@ public class LevelOne extends LevelParent {
 
 	@Override
 	protected void initializeFriendlyUnits() {
-		getRoot().getChildren().add(getUser());
+		getUser().addToParent(getRoot());
 	}
 
 	@Override
@@ -38,6 +38,7 @@ public class LevelOne extends LevelParent {
 			if (Math.random() < ENEMY_SPAWN_PROBABILITY) {
 				double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();
 				ActiveActorDestructible newEnemy = new EnemyPlane(getScreenWidth(), newEnemyInitialYPosition);
+				newEnemy.addToParent(getRoot());
 				addEnemyUnit(newEnemy);
 			}
 		}

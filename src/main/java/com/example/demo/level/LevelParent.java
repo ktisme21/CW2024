@@ -3,11 +3,11 @@ package com.example.demo.level;
 import com.example.demo.controller.Main;
 import com.example.demo.view.ScorePage;
 
-import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.demo.LevelChangeListener;
 import com.example.demo.model.ActiveActorDestructible;
+import com.example.demo.model.EnemyPlane;
 import com.example.demo.model.FighterPlane;
 import com.example.demo.model.UserPlane;
 import com.example.demo.view.LevelView;
@@ -100,7 +100,6 @@ public abstract class LevelParent {
 	public void startGame() {
 		background.requestFocus();
 		timeline.play();
-
 	}
 
 	public boolean isTransitioned(){
@@ -212,26 +211,42 @@ public abstract class LevelParent {
 		handleCollisions(enemyProjectiles, friendlyUnits);
 	}
 
-	private void handleCollisions(List<ActiveActorDestructible> actors1,
-			List<ActiveActorDestructible> actors2) {
-		for (ActiveActorDestructible actor : actors2) {
-			for (ActiveActorDestructible otherActor : actors1) {
-				if (actor.getBoundsInParent().intersects(otherActor.getBoundsInParent())) {
-					actor.takeDamage();
-					otherActor.takeDamage();
+	private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
+		for (ActiveActorDestructible actor1 : actors1) {
+			for (ActiveActorDestructible actor2 : actors2) {
+				// Use custom collision bounds for both actors
+				if (actor1.getCollisionBounds().intersects(actor2.getCollisionBounds())) {
+					actor1.takeDamage();
+					actor2.takeDamage();
 				}
 			}
 		}
 	}
 
+
 	private void handleEnemyPenetration() {
-		for (ActiveActorDestructible enemy : enemyUnits) {
-			if (enemyHasPenetratedDefenses(enemy)) {
+		for (ActiveActorDestructible enemy : new ArrayList<>(enemyUnits)) {
+			if (enemy instanceof EnemyPlane && hasEnemyExitedScreen(enemy)) {
+				// Deduct one heart
+				user.takeDamage();
+
+				// Destroy the enemy plane
+				enemy.destroy();
+			} else if (enemyHasPenetratedDefenses(enemy)) {
+				// Handle enemy penetration logic
 				user.takeDamage();
 				enemy.destroy();
 			}
 		}
 	}
+
+	private boolean hasEnemyExitedScreen(ActiveActorDestructible enemy) {
+		// Check if the enemy has exited the screen bounds
+		double enemyX = enemy.getLayoutX() + enemy.getTranslateX();
+		double screenWidth = getScreenWidth();
+		return enemyX + enemy.getBoundsInParent().getWidth() < 0 || enemyX > screenWidth;
+	}
+
 
 	protected void updateLevelView() {
 		levelView.removeHearts(user.getHealth());

@@ -28,7 +28,7 @@ public class LevelTwo extends LevelParent {
 
 	@Override
 	protected void initializeFriendlyUnits() {
-		getRoot().getChildren().add(getUser());
+		getUser().addToParent(getRoot());
 	}
 
 	@Override
@@ -44,14 +44,17 @@ public class LevelTwo extends LevelParent {
 	//Handle error?
 	@Override
 	protected void spawnEnemyUnits() {
-		int currentNumberOfEnemies = getCurrentNumberOfEnemies();
-		if (currentNumberOfEnemies < 1) { // Ensure one boss is added only
+		// Ensure only one boss is added
+		if (getCurrentNumberOfEnemies() < 1) {
 			addEnemyUnit(boss);
-			if (!getRoot().getChildren().contains(shieldImage)) { // Prevent duplicate shield image
+
+			// Add shield image only once
+			if (!getRoot().getChildren().contains(shieldImage)) {
 				addShieldImage();
 			}
 		}
 	}
+
 
 	private void addShieldImage() {
 		shieldImage.setVisible(false); // Initially hidden
@@ -86,8 +89,8 @@ public class LevelTwo extends LevelParent {
 
 	private void updateShieldPosition() {
         // Position the shield slightly in front and above the boss
-        double shieldOffsetX = -10; // Horizontal offset
-        double shieldOffsetY = -10; // Vertical offset
+        double shieldOffsetX = 0; // Horizontal offset
+        double shieldOffsetY = 0; // Vertical offset
 
         shieldImage.setLayoutX(boss.getLayoutX() + boss.getTranslateX() + shieldOffsetX);
         shieldImage.setLayoutY(boss.getLayoutY() + boss.getTranslateY() + shieldOffsetY);
