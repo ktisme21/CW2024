@@ -41,19 +41,26 @@ public class LevelTwo extends LevelParent {
 		}
 	}
 
+	//Handle error?
 	@Override
 	protected void spawnEnemyUnits() {
-		if (getCurrentNumberOfEnemies() == 0) {
+		int currentNumberOfEnemies = getCurrentNumberOfEnemies();
+		if (currentNumberOfEnemies < 1) { // Ensure one boss is added only
 			addEnemyUnit(boss);
-			addShieldImage();
+			if (!getRoot().getChildren().contains(shieldImage)) { // Prevent duplicate shield image
+				addShieldImage();
+			}
 		}
 	}
 
 	private void addShieldImage() {
-		shieldImage.setVisible(false);  // Initially hidden
-		shieldImage.setOpacity(1.0);
-		getRoot().getChildren().add(shieldImage); // Directly add ShieldImage
+		shieldImage.setVisible(false); // Initially hidden
+		shieldImage.setOpacity(1.0); // Fully visible when not blinking
+		if (!getRoot().getChildren().contains(shieldImage)) { // Check before adding
+			getRoot().getChildren().add(shieldImage);
+		}
 	}
+
 
 	@Override
 	protected LevelView instantiateLevelView() {

@@ -79,4 +79,20 @@ public abstract class ActiveActor extends ImageView {
 			root.getChildren().remove(redContainer);
 		}
 	}
+
+	// Return reduced bounds for less sensitive collision detection
+    public Rectangle getCollisionBounds() {
+        double reducedWidth = redContainer.getWidth() * SHRINK_FACTOR;
+        double reducedHeight = redContainer.getHeight() * SHRINK_FACTOR;
+
+        double xOffset = (redContainer.getWidth() - reducedWidth) / 2;
+        double yOffset = (redContainer.getHeight() - reducedHeight) / 2;
+
+        return new Rectangle(
+            redContainer.getX() + xOffset,
+            redContainer.getY() + yOffset,
+            reducedWidth,
+            reducedHeight
+        );
+    }
 }
