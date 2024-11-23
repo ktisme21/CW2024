@@ -286,17 +286,12 @@ public abstract class LevelParent {
 		// Get the current stage
 		Stage stage = (Stage) scene.getWindow();
 	
-		// Create ScorePage and provide the back-to-main-menu action
+		// Create the ScorePage as a pop-up and provide the back-to-main-menu action
 		ScorePage scorePage = new ScorePage(stage, event -> returnToMainMenu(stage));
 	
-		// Create the scene with dynamic stage dimensions
-		Scene scoreScene = new Scene(scorePage, stage.getWidth(), stage.getHeight());
-		
-		// Set the new scene to the stage
-		stage.setScene(scoreScene);
-		stage.show();
+		// Show the ScorePage as a pop-up
+		scorePage.show();
 	}
-	
 	
 
 	private void returnToMainMenu(Stage stage) {

@@ -113,9 +113,10 @@ public class SettingsPage extends StackPane {
     }
 
     private Button createBackButton(EventHandler<MouseEvent> onBackToMain) {
-        Button backButton = new Button("Back to Main Menu");
+        Button backButton = new Button("Close");
         backButton.setStyle(BUTTON_STYLE);
-        backButton.setOnMouseClicked(onBackToMain);
+        backButton.setOnMouseClicked(onBackToMain); // Use the provided event to close the pop-up
         return backButton;
     }
+    
 }

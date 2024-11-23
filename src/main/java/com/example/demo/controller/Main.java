@@ -62,19 +62,27 @@ public class Main extends Application {
         stage.show();
 	}
 
-	private void showSettings(Stage stage) {
-		// Create the SettingsPage content
-		SettingsPage settingsPage = new SettingsPage(stage, event -> showMainMenu(stage)); // Pass back action
+	private void showSettings(Stage ownerStage) {
+        // Create a new Stage for the pop-up
+        Stage settingsStage = new Stage();
+        settingsStage.setTitle("Settings");
+        
+        // Set the modality to block interaction with other windows
+        settingsStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+        settingsStage.initOwner(ownerStage); // Set the owner to the main stage
+    
+        // Create the SettingsPage content
+        SettingsPage settingsPage = new SettingsPage(settingsStage, event -> settingsStage.close());
+    
+        // Set the scene for the pop-up stage
+        Scene settingsScene = new Scene(settingsPage, 500, 400); // Adjust the size as needed
+        settingsStage.setScene(settingsScene);
+    
+        // Show the pop-up window
+        settingsStage.showAndWait();
+    }
+    
 	
-		// Set the scene for the current stage
-		Scene settingsScene = new Scene(settingsPage, stage.getWidth(), stage.getHeight()); // Use the stage's dimensions
-		stage.setScene(settingsScene);
-	
-		// Show the new scene
-		stage.show();
-	}
-	
-
 
 	private void showHowToPlay() {
         // Display a placeholder alert for settings (replace with actual settings page logic)
@@ -86,14 +94,12 @@ public class Main extends Application {
     }
 
 	public void showScorePage(Stage stage) {
-        // Create ScorePage and provide the back-to-main-menu action
+        // Create a new ScorePage instance as a popup
         ScorePage scorePage = new ScorePage(stage, event -> showMainMenu(stage));
-
-        // Set the scene to the ScorePage
-        Scene scoreScene = new Scene(scorePage, stage.getWidth(), stage.getHeight());
-        stage.setScene(scoreScene);
+        // Open the ScorePage popup
+        scorePage.show();
     }
-
+    
 	public static void main(String[] args) {
 		launch();
 	}
