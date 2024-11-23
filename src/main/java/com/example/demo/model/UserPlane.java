@@ -3,8 +3,6 @@ package com.example.demo.model;
 import com.example.demo.projectiles.UserProjectile;
 import com.example.demo.services.MusicPlayer;
 
-import javafx.scene.Group;
-
 public class UserPlane extends FighterPlane {
 
 	private static final String IMAGE_NAME = "userplane.png";

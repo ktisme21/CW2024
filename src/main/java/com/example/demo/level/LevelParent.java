@@ -11,6 +11,7 @@ import com.example.demo.model.EnemyPlane;
 import com.example.demo.model.FighterPlane;
 import com.example.demo.model.UserPlane;
 import com.example.demo.view.LevelView;
+import com.example.demo.view.PauseScreen;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,6 +24,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.control.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,7 @@ public abstract class LevelParent {
 	private LevelView levelView;
 	private boolean hasAlerted = false;
 	private boolean isTransitioned = false;
+	private final String PAUSE_BUTTON = "-fx-font-size: 14px; -fx-padding: 5px 10px;";
 
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
 		this.root = new Group();
@@ -75,6 +78,41 @@ public abstract class LevelParent {
 		friendlyUnits.add(user);
 	}
 
+	private void initializeTopRightButton() {
+		Button topRightButton = new Button("Pause");
+		topRightButton.setStyle(PAUSE_BUTTON);
+
+		// Set the button's layout
+		topRightButton.setLayoutX(screenWidth - 120); // Position it near the right edge
+		topRightButton.setLayoutY(20); // Position it near the top
+
+		// Add an action for the button
+		topRightButton.setOnAction(event -> showPauseScreen());
+
+		// Add the button to the root
+		root.getChildren().add(topRightButton);
+	}
+
+	private void showPauseScreen() {
+		// Pause the game timeline
+		timeline.pause();
+	
+		// Create and show the PauseScreen
+		PauseScreen pauseScreen = new PauseScreen(
+			(Stage) scene.getWindow(),
+			() -> {
+				// Resume action: Close pause screen and resume gameplay
+				timeline.play();
+				background.requestFocus(); // Return focus to the game background
+			},
+			() -> returnToMainMenu((Stage) scene.getWindow()) // Quit action
+		);
+		pauseScreen.show();
+	}
+	
+
+
+
 	public void setLevelChangeListener(LevelChangeListener listener) {
         this.listener = listener;
     }
@@ -94,6 +132,7 @@ public abstract class LevelParent {
 		initializeBackground();
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
+		initializeTopRightButton();
 		return scene;
 	}
 
