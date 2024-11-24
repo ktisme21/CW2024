@@ -25,6 +25,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +51,13 @@ public abstract class LevelParent {
 	private final List<ActiveActorDestructible> userProjectiles;
 	private final List<ActiveActorDestructible> enemyProjectiles;
 	
+	private Label topRightLabel;
 	private int currentNumberOfEnemies;
 	private LevelView levelView;
 	private boolean hasAlerted = false;
 	private boolean isTransitioned = false;
+	private Duration totalTimeElapsed = Duration.ZERO;
+	private Timeline timer;
 	private final String PAUSE_BUTTON = "-fx-font-size: 14px; -fx-padding: 5px 10px;";
 
 	public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
@@ -78,19 +82,59 @@ public abstract class LevelParent {
 		friendlyUnits.add(user);
 	}
 
-	private void initializeTopRightButton() {
+	private void initializeTopRightUI() {
+		// Create the Pause button
 		Button topRightButton = new Button("Pause");
 		topRightButton.setStyle(PAUSE_BUTTON);
 
-		// Set the button's layout
-		topRightButton.setLayoutX(screenWidth - 120); // Position it near the right edge
-		topRightButton.setLayoutY(20); // Position it near the top
+		// Position the Pause button
+		topRightButton.setLayoutX(screenWidth - 120); // Position near the right edge
+		topRightButton.setLayoutY(20); // Position near the top
 
-		// Add an action for the button
+		// Add action to the Pause button
 		topRightButton.setOnAction(event -> showPauseScreen());
 
-		// Add the button to the root
-		root.getChildren().add(topRightButton);
+		// Create the Label
+		topRightLabel = new Label("Start!");
+		topRightLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
+		topRightLabel.setLayoutX(screenWidth - 300); // Position left of the Pause button
+		topRightLabel.setLayoutY(25); // Align with the Pause button
+
+		// Add the button and label to the root
+		root.getChildren().addAll(topRightButton, topRightLabel);
+	}
+
+	// Method to update the text of the label dynamically
+	protected void updateTopRightText(String text) {
+		if (topRightLabel != null) {
+			topRightLabel.setText(text);
+		}
+	}
+
+	private void initializeAndStartTimer() {
+		// Create a Timeline to update the total time elapsed
+		timer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+			totalTimeElapsed = totalTimeElapsed.add(Duration.seconds(1));
+			updateTopRightText("Time Elapsed: " + formatElapsedTime(totalTimeElapsed)); // Update label text
+		}));
+		timer.setCycleCount(Timeline.INDEFINITE); // Run indefinitely
+		timer.play(); // Start the timer
+	}
+
+	private String formatElapsedTime(Duration elapsedTime) {
+		int minutes = (int) elapsedTime.toMinutes();
+		int seconds = (int) elapsedTime.toSeconds() % 60;
+		return String.format("%02d:%02d", minutes, seconds);
+	}
+
+	public void startGame() {
+		background.requestFocus();
+		timeline.play();
+		if (timer == null) { // Initialize and start the timer if not already running
+			initializeAndStartTimer();
+		} else {
+			timer.play(); // Resume the timer if paused
+		}
 	}
 
 	private void showPauseScreen() {
@@ -109,9 +153,6 @@ public abstract class LevelParent {
 		);
 		pauseScreen.show();
 	}
-	
-
-
 
 	public void setLevelChangeListener(LevelChangeListener listener) {
         this.listener = listener;
@@ -132,13 +173,8 @@ public abstract class LevelParent {
 		initializeBackground();
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
-		initializeTopRightButton();
+		initializeTopRightUI();
 		return scene;
-	}
-
-	public void startGame() {
-		background.requestFocus();
-		timeline.play();
 	}
 
 	public boolean isTransitioned(){
@@ -150,6 +186,7 @@ public abstract class LevelParent {
             listener.onLevelChange(levelName);
             hasAlerted = true;
             isTransitioned = true;
+			timer.play();
         }
 	}
 
@@ -303,12 +340,16 @@ public abstract class LevelParent {
 
 	protected void winGame() {
 		timeline.stop();
+		if (timer != null) timer.stop(); // Stop the timer
+		updateTopRightText("Time Elapsed: " + formatElapsedTime(totalTimeElapsed)); // Display final time
 		levelView.showWinImage();
 		addQuitEventHandler();
 	}
 
 	protected void loseGame() {
 		timeline.stop();
+		if (timer != null) timer.stop(); // Stop the timer
+		updateTopRightText("Time Elapsed: " + formatElapsedTime(totalTimeElapsed)); // Display final time
 		levelView.showGameOverImage();
 		addQuitEventHandler();
 	}
@@ -351,10 +392,13 @@ public abstract class LevelParent {
 	}
 
 	protected void addEnemyUnit(ActiveActorDestructible enemy) {
-		enemyUnits.add(enemy);
-		root.getChildren().add(enemy);
-		enemy.addRedContainerToRoot(root);
-	}
+    // Check if the enemy is already in the root
+    if (!getRoot().getChildren().contains(enemy)) {
+        enemyUnits.add(enemy);
+        root.getChildren().add(enemy);
+        enemy.addRedContainerToRoot(root); // Assuming this adds additional visuals to the enemy
+    }
+}
 
 	protected double getEnemyMaximumYPosition() {
 		return enemyMaximumYPosition;

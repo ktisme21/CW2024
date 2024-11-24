@@ -40,11 +40,13 @@ public class LevelOne extends LevelParent {
             if (Math.random() < ENEMY_SPAWN_PROBABILITY) {
                 double newEnemyInitialYPosition = Math.random() * getEnemyMaximumYPosition();
                 ActiveActorDestructible newEnemy = new EnemyPlane(getScreenWidth(), newEnemyInitialYPosition);
-                newEnemy.addToParent(getRoot());
+
+                // Add the enemy to the root and the tracking list
                 addEnemyUnit(newEnemy);
             }
         }
     }
+
 
     @Override
     protected LevelView instantiateLevelView() {
