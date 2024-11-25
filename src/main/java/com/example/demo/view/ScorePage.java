@@ -22,7 +22,7 @@ public class ScorePage {
     private static final double POPUP_WIDTH = 400; // Popup width
     private static final double POPUP_HEIGHT = 300; // Popup height
 
-    public ScorePage(Stage ownerStage, EventHandler<MouseEvent> onBackToMain) {
+    public ScorePage(Stage ownerStage, EventHandler<MouseEvent> onBackToMain, EventHandler<MouseEvent> onRestart) {
         // Initialize the popup stage
         popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL); // Make it a modal dialog
@@ -52,8 +52,16 @@ public class ScorePage {
             onBackToMain.handle(event); // Handle the back-to-main-menu action
         });
 
+        // Restart button
+        Button restartButton = new Button("Restart");
+        restartButton.setStyle(BUTTON_STYLE);
+        restartButton.setOnMouseClicked(event -> {
+            popupStage.close(); // Close the popup
+            onRestart.handle(event); // Handle the restart action
+        });
+
         // Add components to the VBox
-        contentBox.getChildren().addAll(title, scoreText, backButton);
+        contentBox.getChildren().addAll(title, scoreText, restartButton, backButton);
 
         // Create the popup scene
         Scene popupScene = new Scene(contentBox, POPUP_WIDTH, POPUP_HEIGHT); // Set a smaller size for the popup
