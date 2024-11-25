@@ -284,9 +284,14 @@ public abstract class LevelParent {
 	}
 
 	private void handleEnemyProjectileCollisions() {
-		handleCollisions(enemyProjectiles, friendlyUnits);
+		for (ActiveActorDestructible projectile : new ArrayList<>(enemyProjectiles)) {
+			if (getUser().isVisible() && projectile.getCollisionBounds().intersects(getUser().getCollisionBounds())) {
+				getUser().takeDamage(); // Deduct health only if the UserPlane is visible
+				projectile.destroy();   // Destroy the projectile on collision
+			}
+		}
 	}
-
+	
 	private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
 		for (ActiveActorDestructible actor1 : actors1) {
 			for (ActiveActorDestructible actor2 : actors2) {
@@ -366,13 +371,28 @@ public abstract class LevelParent {
 		// Get the current stage
 		Stage stage = (Stage) scene.getWindow();
 	
-		// Create the ScorePage as a pop-up and provide the back-to-main-menu action
-		ScorePage scorePage = new ScorePage(stage, event -> returnToMainMenu(stage));
-	
+		// Create ScorePage with restart functionality
+		ScorePage scorePage = new ScorePage(
+			stage,
+			event -> returnToMainMenu(stage), // Back to main menu
+			event -> restartGame() // Restart the game
+		);
+
 		// Show the ScorePage as a pop-up
 		scorePage.show();
 	}
+
+	private void restartGame() {
+		// Stop the current timeline to prevent further updates
+		timeline.stop();
+		Stage stage = (Stage) scene.getWindow();
+		LevelOne levelOne = new LevelOne(screenHeight, screenWidth);
+		Scene newScene = levelOne.initializeScene();
+		stage.setScene(newScene);
+		levelOne.startGame();
+	}
 	
+
 
 	private void returnToMainMenu(Stage stage) {
 		Main main = new Main();

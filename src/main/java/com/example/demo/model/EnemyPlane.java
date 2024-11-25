@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.example.demo.projectiles.EnemyProjectile;
 
 import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
 
 public class EnemyPlane extends FighterPlane {
 
@@ -48,7 +49,7 @@ public class EnemyPlane extends FighterPlane {
 	}
 
 	@Override
-	public javafx.geometry.Bounds getCollisionBounds() {
+	public Bounds getCollisionBounds() {
 		// Shrink collision bounds by 60% for EnemyPlane
 		double width = getBoundsInParent().getWidth() * (1 - SHRINK_FACTOR);
 		double height = getBoundsInParent().getHeight() * (1 - SHRINK_FACTOR);

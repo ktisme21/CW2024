@@ -75,5 +75,12 @@ public class LevelThree extends LevelParent {
     private void toggleUserPlaneVisibility() {
         isPlaneVisible = !isPlaneVisible; // Toggle visibility state
         getUser().setVisible(isPlaneVisible); // Update plane visibility
+    
+        if (!isPlaneVisible) {
+            System.out.println("UserPlane is now invisible. Boss projectiles will pass through.");
+        } else {
+            System.out.println("UserPlane is now visible. Boss projectiles can collide.");
+        }
     }
+    
 }
