@@ -1,6 +1,6 @@
 package com.example.demo.view;
 
-import com.example.demo.services.MusicPlayer;
+import com.example.demo.manager.MusicPlayer;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

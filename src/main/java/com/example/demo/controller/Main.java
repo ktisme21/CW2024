@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.manager.MusicPlayer;
 import com.example.demo.view.GameStartScreen;
 import com.example.demo.view.SettingsPage;
-import com.example.demo.services.MusicPlayer;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;

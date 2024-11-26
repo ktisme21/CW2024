@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
+import com.example.demo.manager.MusicPlayer;
 import com.example.demo.projectiles.UserProjectile;
-import com.example.demo.services.MusicPlayer;
 
 public class UserPlane extends FighterPlane {
 

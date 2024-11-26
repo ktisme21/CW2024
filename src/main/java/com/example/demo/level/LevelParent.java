@@ -328,47 +328,53 @@ public abstract class LevelParent {
 
     protected void winGame() {
         timeline.stop();
+		gameTimer.stop();
+		String timeUsed = formatElapsedTime();
         levelView.showWinImage();
-        addQuitEventHandler();
+        addQuitEventHandler(timeUsed);
     }
 
     protected void loseGame() {
         timeline.stop();
+		gameTimer.stop();
+		String timeUsed = formatElapsedTime();
         levelView.showGameOverImage();
-        addQuitEventHandler();
+        addQuitEventHandler(timeUsed);
     }
 
-    private void addQuitEventHandler() {
+    private void addQuitEventHandler(String timeUsed) {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.Q) {
-                gotToLeaderBoard();
+                showLeaderBoard(timeUsed);
             }
         });
     }
 
-    private void gotToLeaderBoard() {
+    private void showLeaderBoard(String timeUsed) {
         // Get the current stage
         Stage stage = (Stage) scene.getWindow();
 
         // Create ScorePage with restart functionality
-        LeaderBoard leaderboard = new LeaderBoard(
+        new LeaderBoard(
                 stage,
+				timeUsed,
                 event -> returnToMainMenu(stage), // Back to main menu
-                event -> restartGame() // Restart the game
+                event -> restartGame(stage) // Restart the game
         );
-
-        // Show the ScorePage as a pop-up
-        leaderboard.show();
     }
 
-    private void restartGame() {
+	private String formatElapsedTime() {
+		Duration elapsedTime = gameTimer.getElapsedTime();
+		int minutes = (int) elapsedTime.toMinutes();
+		int seconds = (int) elapsedTime.toSeconds() % 60;
+		return String.format("%02d:%02d", minutes, seconds);
+	}
+
+    private void restartGame(Stage stage) {
         // Stop the current timeline to prevent further updates
         timeline.stop();
 		gameTimer.reset();
-
-        // Get the current stage
-        Stage stage = (Stage) scene.getWindow();
-
+		
         // Restart the game from LevelOne
         try {
             LevelOne levelOne = new LevelOne(screenHeight, screenWidth);
