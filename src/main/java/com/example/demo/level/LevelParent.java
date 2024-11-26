@@ -385,13 +385,21 @@ public abstract class LevelParent {
 	private void restartGame() {
 		// Stop the current timeline to prevent further updates
 		timeline.stop();
-		Stage stage = (Stage) scene.getWindow();
-		LevelOne levelOne = new LevelOne(screenHeight, screenWidth);
-		Scene newScene = levelOne.initializeScene();
-		stage.setScene(newScene);
-		levelOne.startGame();
-	}
 	
+		// Get the current stage
+		Stage stage = (Stage) scene.getWindow();
+	
+		// Restart the game from LevelOne
+		try {
+			LevelOne levelOne = new LevelOne(screenHeight, screenWidth);
+			levelOne.setLevelChangeListener(listener); // Reattach the level change listener
+			Scene newScene = levelOne.initializeScene();
+			stage.setScene(newScene);
+			levelOne.startGame(); // Start LevelOne
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
 
 
 	private void returnToMainMenu(Stage stage) {
