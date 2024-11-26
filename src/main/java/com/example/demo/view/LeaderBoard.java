@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ScorePage {
+public class LeaderBoard {
 
     private Stage popupStage;
 
@@ -22,7 +22,7 @@ public class ScorePage {
     private static final double POPUP_WIDTH = 400; // Popup width
     private static final double POPUP_HEIGHT = 300; // Popup height
 
-    public ScorePage(Stage ownerStage, EventHandler<MouseEvent> onBackToMain, EventHandler<MouseEvent> onRestart) {
+    public LeaderBoard(Stage ownerStage, EventHandler<MouseEvent> onBackToMain, EventHandler<MouseEvent> onRestart) {
         // Initialize the popup stage
         popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL); // Make it a modal dialog
