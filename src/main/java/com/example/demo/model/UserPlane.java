@@ -59,6 +59,10 @@ public class UserPlane extends FighterPlane {
 	
 	@Override
 	public ActiveActorDestructible fireProjectile() {
+		// if (!isVisible()) {
+		// 	System.out.println("UserPlane is invisible. Projectiles cannot be fired.");
+		// 	return null; // Prevent firing
+		// }
 		MusicPlayer.playShootingSound();
 		double projectileXPosition = getLayoutX() + getTranslateX() + PROJECTILE_X_POSITION;
 		double projectileYPosition = getProjectileYPosition(PROJECTILE_Y_POSITION_OFFSET);

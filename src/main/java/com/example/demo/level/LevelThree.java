@@ -1,7 +1,10 @@
 package com.example.demo.level;
 
+import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.Boss;
 import com.example.demo.view.LevelView;
+
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
 public class LevelThree extends LevelParent {
@@ -58,19 +61,41 @@ public class LevelThree extends LevelParent {
     }
 
     @Override
-    public javafx.scene.Scene initializeScene() {
-        javafx.scene.Scene scene = super.initializeScene();
+    public Scene initializeScene() {
+        Scene scene = super.initializeScene();
         setupKeyListeners(scene);
         return scene;
     }
 
-    private void setupKeyListeners(javafx.scene.Scene scene) {
+    private void setupKeyListeners(Scene scene) {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.D) {
                 toggleUserPlaneVisibility();
+            // } else if (event.getCode() == KeyCode.SPACE) {
+            //     handleSpacebarAction(); // Check before firing projectiles
             }
         });
     }
+
+    // private void handleSpacebarAction() {
+    //     if (getUser().isVisible()) {
+    //         // Fire a projectile from the UserPlane
+    //         ActiveActorDestructible projectile = getUser().fireProjectile();
+    //         if (projectile != null) {
+    //             // Set the projectile's position relative to the UserPlane
+    //             double projectileX = getUser().getLayoutX() + getUser().getTranslateX() + 110; // Adjust X offset
+    //             double projectileY = getUser().getLayoutY() + getUser().getTranslateY() + 20; // Adjust Y offset
+    //             projectile.setLayoutX(projectileX);
+    //             projectile.setLayoutY(projectileY);
+    
+    //             // Add the projectile to the scene
+    //             getRoot().getChildren().add(projectile);
+    //         }
+    //     } else {
+    //         System.out.println("Cannot fire projectiles while the UserPlane is invisible.");
+    //     }
+    // }
+    
 
     private void toggleUserPlaneVisibility() {
         isPlaneVisible = !isPlaneVisible; // Toggle visibility state

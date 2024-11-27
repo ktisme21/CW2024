@@ -1,8 +1,13 @@
 package com.example.demo.level;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.example.demo.LevelChangeListener;
 import com.example.demo.controller.Main;
 import com.example.demo.display.GlobalGameTimer;
-import com.example.demo.LevelChangeListener;
+import com.example.demo.manager.LeaderboardManager;
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.EnemyPlane;
 import com.example.demo.model.FighterPlane;
@@ -16,18 +21,14 @@ import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class LevelParent {
 
@@ -330,9 +331,24 @@ public abstract class LevelParent {
         timeline.stop();
 		gameTimer.stop();
 		String timeUsed = formatElapsedTime();
+        saveToLeaderboard(timeUsed);
         levelView.showWinImage();
         addQuitEventHandler(timeUsed);
     }
+
+    private void saveToLeaderboard(String timeUsed) {
+        LeaderboardManager leaderboardManager = new LeaderboardManager(); // Load existing leaderboard
+        leaderboardManager.addEntry("Player", parseTimeToSeconds(timeUsed)); // Add the current score
+    }
+    
+
+    private int parseTimeToSeconds(String timeUsed) {
+        String[] parts = timeUsed.split(":");
+        int minutes = Integer.parseInt(parts[0]);
+        int seconds = Integer.parseInt(parts[1]);
+        return (minutes * 60) + seconds;
+    }
+
 
     protected void loseGame() {
         timeline.stop();
@@ -351,17 +367,19 @@ public abstract class LevelParent {
     }
 
     private void showLeaderBoard(String timeUsed) {
-        // Get the current stage
         Stage stage = (Stage) scene.getWindow();
-
-        // Create ScorePage with restart functionality
+        LeaderboardManager manager = new LeaderboardManager(); // Load leaderboard
+    
         new LeaderBoard(
-                stage,
-				timeUsed,
-                event -> returnToMainMenu(stage), // Back to main menu
-                event -> restartGame(stage) // Restart the game
+            stage,
+            manager, // Pass the manager instance
+            "Player", // Player's name
+            parseTimeToSeconds(timeUsed), // Player's score
+            event -> returnToMainMenu(stage), // Back to main menu action
+            event -> restartGame(stage) // Restart game action
         );
     }
+    
 
 	private String formatElapsedTime() {
 		Duration elapsedTime = gameTimer.getElapsedTime();
@@ -388,6 +406,8 @@ public abstract class LevelParent {
     }
 
     private void returnToMainMenu(Stage stage) {
+        timeline.stop();
+		gameTimer.reset();
         Main main = new Main();
         main.showMainMenu(stage);
     }

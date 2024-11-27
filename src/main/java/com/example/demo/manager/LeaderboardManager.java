@@ -28,6 +28,21 @@ public class LeaderboardManager {
         return new ArrayList<>(leaderboard);
     }
 
+    // Print all leaderboard entries
+    public void printAllEntries() {
+        System.out.println("Leaderboard Scores:");
+        for (LeaderboardEntry entry : leaderboard) {
+            System.out.println("Player: " + entry.getPlayerName() + ", Time: " + formatTime(entry.getScore()));
+        }
+    }
+
+    // Helper method to format time (seconds to MM:SS)
+    private String formatTime(int score) {
+        int minutes = score / 60;
+        int seconds = score % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
     // Load leaderboard from file
     private void loadLeaderboard() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {

@@ -86,7 +86,6 @@ public class LevelTwo extends LevelParent {
         }
     }
 
-
 	private void updateShieldPosition() {
         // Position the shield slightly in front and above the boss
         double shieldOffsetX = -40; // Horizontal offset
