@@ -2,7 +2,10 @@ package com.example.demo.view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.scene.text.Text;
@@ -16,7 +19,7 @@ import java.util.List;
 public class LeaderBoard {
     // Define styles as constants
     private static final String TITLE_STYLE = "-fx-font-size: 24px; -fx-font-weight: bold;";
-    private static final String SCORE_STYLE = "-fx-font-size: 18px;";
+    private static final String SCORE_STYLE = "-fx-font-size: 18px; -fx-text-fill: white;";
     private static final String BUTTON_STYLE = "-fx-font-size: 18px;";
     private static final int SPACING = 20; // Spacing between VBox elements
 
@@ -42,16 +45,8 @@ public class LeaderBoard {
         // Add the player's current score to the leaderboard
         manager.addEntry(playerName, playerScore);
 
-        // Display top leaderboard entries
-        List<LeaderboardManager.LeaderboardEntry> topEntries = manager.getTopEntries();
-        VBox leaderboardBox = new VBox(10);
-        leaderboardBox.setAlignment(Pos.CENTER);
-
-        for (LeaderboardManager.LeaderboardEntry entry : topEntries) {
-            Text entryText = new Text(entry.getPlayerName() + " - " + formatTime(entry.getScore()));
-            entryText.setStyle(SCORE_STYLE);
-            leaderboardBox.getChildren().add(entryText);
-        }
+        // Display top leaderboard entries inside a StackPane for a custom background
+        StackPane leaderboardBox = createLeaderboardBox(manager);
 
         // Back to Main Menu button
         Button backButton = new Button("Back to Main Menu");
@@ -76,10 +71,38 @@ public class LeaderBoard {
         primaryStage.setScene(leaderboardScene);
     }
 
-    // Helper method to format time (seconds to MM:SS)
+    // Helper method to format time (milliseconds to MM:SS:SSS)
     private String formatTime(int score) {
-        int minutes = score / 60;
-        int seconds = score % 60;
-        return String.format("%02d:%02d", minutes, seconds);
+        int minutes = score / 60000;
+        int seconds = (score / 1000) % 60;
+        int millis = score % 1000;
+        return String.format("%02d:%02d:%03d", minutes, seconds, millis);
+    }
+
+    // Helper method to create the leaderboard box with a background
+    private StackPane createLeaderboardBox(LeaderboardManager manager) {
+        // Create the VBox for leaderboard entries
+        VBox leaderboardEntries = new VBox(10);
+        leaderboardEntries.setAlignment(Pos.CENTER);
+
+        List<LeaderboardManager.LeaderboardEntry> topEntries = manager.getTopEntries();
+        for (LeaderboardManager.LeaderboardEntry entry : topEntries) {
+            Text entryText = new Text(entry.getPlayerName() + " - " + formatTime(entry.getScore()));
+            entryText.setStyle(SCORE_STYLE);
+            leaderboardEntries.getChildren().add(entryText);
+        }
+
+        // Create the background image
+        ImageView background = new ImageView(new Image(getClass().getResource("com/example/demo/images/background1.jpg").toExternalForm()));
+        background.setFitWidth(400); // Set appropriate width
+        background.setFitHeight(300); // Set appropriate height
+        background.setPreserveRatio(true);
+
+        // Add the background and leaderboard entries to the StackPane
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(background, leaderboardEntries);
+        stackPane.setAlignment(Pos.CENTER);
+
+        return stackPane;
     }
 }

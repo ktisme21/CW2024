@@ -1,4 +1,4 @@
-package com.example.demo.display;
+package com.example.demo.manager;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,8 +11,8 @@ public class GlobalGameTimer {
 
     private GlobalGameTimer() {
         // Initialize the timer
-        timer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            totalTimeElapsed = totalTimeElapsed.add(Duration.seconds(1));
+        timer = new Timeline(new KeyFrame(Duration.millis(10), e -> {
+            totalTimeElapsed = totalTimeElapsed.add(Duration.millis(10));
         }));
         timer.setCycleCount(Timeline.INDEFINITE); // Run indefinitely
     }
@@ -42,6 +42,4 @@ public class GlobalGameTimer {
     public Duration getElapsedTime() {
         return totalTimeElapsed;
     }
-
-    
 }

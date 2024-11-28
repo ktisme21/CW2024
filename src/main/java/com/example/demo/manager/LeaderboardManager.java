@@ -36,11 +36,11 @@ public class LeaderboardManager {
         }
     }
 
-    // Helper method to format time (seconds to MM:SS)
     private String formatTime(int score) {
-        int minutes = score / 60;
-        int seconds = score % 60;
-        return String.format("%02d:%02d", minutes, seconds);
+        int minutes = score / 60000;
+        int seconds = (score / 1000) % 60;
+        int millis = score % 1000;
+        return String.format("%02d:%02d:%03d", minutes, seconds, millis);
     }
 
     // Load leaderboard from file

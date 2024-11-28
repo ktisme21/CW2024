@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.example.demo.LevelChangeListener;
 import com.example.demo.controller.Main;
-import com.example.demo.display.GlobalGameTimer;
+import com.example.demo.manager.GlobalGameTimer;
 import com.example.demo.manager.LeaderboardManager;
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.EnemyPlane;
@@ -95,7 +95,7 @@ public abstract class LevelParent {
         topRightButton.setOnAction(event -> showPauseScreen());
 
         // Create the Label for the timer
-        topRightLabel = new Label("Time: 00:00");
+        topRightLabel = new Label("Time: 00:00:00");
         topRightLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
         topRightLabel.setLayoutX(screenWidth - 300); // Position left of the Pause button
         topRightLabel.setLayoutY(25); // Align with the Pause button
@@ -115,8 +115,10 @@ public abstract class LevelParent {
         Duration elapsedTime = gameTimer.getElapsedTime();
         int minutes = (int) elapsedTime.toMinutes();
         int seconds = (int) elapsedTime.toSeconds() % 60;
-        topRightLabel.setText(String.format("Time: %02d:%02d", minutes, seconds));
+        int millis = (int) (elapsedTime.toMillis() % 1000);
+        topRightLabel.setText(String.format("Time: %02d:%02d:%03d", minutes, seconds, millis));
     }
+
 
     public void startGame() {
         background.requestFocus();
@@ -189,7 +191,7 @@ public abstract class LevelParent {
         updateKillCount();
         updateLevelView();
         checkIfGameOver();
-        updateTopRightLabel(); // Update the timer label
+        updateTopRightLabel(); // Update the timer
     }
 
     private void initializeTimeline() {
@@ -338,17 +340,21 @@ public abstract class LevelParent {
 
     private void saveToLeaderboard(String timeUsed) {
         LeaderboardManager leaderboardManager = new LeaderboardManager(); // Load existing leaderboard
-        leaderboardManager.addEntry("Player", parseTimeToSeconds(timeUsed)); // Add the current score
-    }
-    
-
-    private int parseTimeToSeconds(String timeUsed) {
-        String[] parts = timeUsed.split(":");
-        int minutes = Integer.parseInt(parts[0]);
-        int seconds = Integer.parseInt(parts[1]);
-        return (minutes * 60) + seconds;
+        leaderboardManager.addEntry("Player", parseTimeToMillis(timeUsed)); // Add the current score
     }
 
+    private int parseTimeToMillis(String timeUsed) {
+        try {
+            String[] parts = timeUsed.split("[:.]");
+            int minutes = Integer.parseInt(parts[0]);
+            int seconds = Integer.parseInt(parts[1]);
+            int millis = Integer.parseInt(parts[2]);
+            return (minutes * 60 * 1000) + (seconds * 1000) + millis;
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            System.err.println("Invalid time format: " + timeUsed);
+            return 0; // Default to 0 on error
+        }
+    }
 
     protected void loseGame() {
         timeline.stop();
@@ -374,19 +380,19 @@ public abstract class LevelParent {
             stage,
             manager, // Pass the manager instance
             "Player", // Player's name
-            parseTimeToSeconds(timeUsed), // Player's score
+            parseTimeToMillis(timeUsed), // Player's score
             event -> returnToMainMenu(stage), // Back to main menu action
             event -> restartGame(stage) // Restart game action
         );
     }
-    
 
 	private String formatElapsedTime() {
-		Duration elapsedTime = gameTimer.getElapsedTime();
-		int minutes = (int) elapsedTime.toMinutes();
-		int seconds = (int) elapsedTime.toSeconds() % 60;
-		return String.format("%02d:%02d", minutes, seconds);
-	}
+        Duration elapsedTime = gameTimer.getElapsedTime();
+        int minutes = (int) elapsedTime.toMinutes();
+        int seconds = (int) elapsedTime.toSeconds() % 60;
+        int millis = (int) (elapsedTime.toMillis() % 1000);
+        return String.format("%02d:%02d.%03d", minutes, seconds, millis);
+    }
 
     private void restartGame(Stage stage) {
         // Stop the current timeline to prevent further updates

@@ -77,26 +77,6 @@ public class LevelThree extends LevelParent {
         });
     }
 
-    // private void handleSpacebarAction() {
-    //     if (getUser().isVisible()) {
-    //         // Fire a projectile from the UserPlane
-    //         ActiveActorDestructible projectile = getUser().fireProjectile();
-    //         if (projectile != null) {
-    //             // Set the projectile's position relative to the UserPlane
-    //             double projectileX = getUser().getLayoutX() + getUser().getTranslateX() + 110; // Adjust X offset
-    //             double projectileY = getUser().getLayoutY() + getUser().getTranslateY() + 20; // Adjust Y offset
-    //             projectile.setLayoutX(projectileX);
-    //             projectile.setLayoutY(projectileY);
-    
-    //             // Add the projectile to the scene
-    //             getRoot().getChildren().add(projectile);
-    //         }
-    //     } else {
-    //         System.out.println("Cannot fire projectiles while the UserPlane is invisible.");
-    //     }
-    // }
-    
-
     private void toggleUserPlaneVisibility() {
         isPlaneVisible = !isPlaneVisible; // Toggle visibility state
         getUser().setVisible(isPlaneVisible); // Update plane visibility
