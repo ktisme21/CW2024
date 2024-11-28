@@ -1,11 +1,12 @@
 package com.example.demo.level;
 
-import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.Boss;
 import com.example.demo.view.LevelView;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class LevelThree extends LevelParent {
 
@@ -16,18 +17,57 @@ public class LevelThree extends LevelParent {
     private int spawnedBossCount = 0; // Track how many bosses are spawned
     private boolean isPlaneVisible = true; // Default visibility of the user plane
 
+    private Rectangle redContainer; // Red container for the user plane
+
     public LevelThree(double screenHeight, double screenWidth) {
         super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, PLAYER_INITIAL_HEALTH);
         initializeUserPlane();
     }
 
     private void initializeUserPlane() {
-        getUser().setVisible(true); // Initially make the user plane visible
+        getUser().setVisible(true);
+        initializeRedContainer(); // Create and initialize the red container
     }
 
     @Override
     protected void initializeFriendlyUnits() {
         getUser().addToParent(getRoot());
+        addRedContainerToRoot(); // Add the red container to the root
+    }
+
+    private void initializeRedContainer() {
+        redContainer = new Rectangle();
+        redContainer.setStroke(Color.RED); // Red border
+        redContainer.setFill(Color.TRANSPARENT); // Transparent fill
+        redContainer.setStrokeWidth(2);
+        updateRedContainerPosition(); // Position it initially
+    }
+
+    private void addRedContainerToRoot() {
+        if (!getRoot().getChildren().contains(redContainer)) {
+            getRoot().getChildren().add(redContainer);
+        }
+    }
+
+    private void updateRedContainerPosition() {
+        if (getUser() == null) return;
+
+        // Get the user plane's bounds
+        double userX = getUser().getLayoutX() + getUser().getTranslateX();
+        double userY = getUser().getLayoutY() + getUser().getTranslateY();
+        double userWidth = getUser().getBoundsInParent().getWidth();
+        double userHeight = getUser().getBoundsInParent().getHeight();
+
+        // Shrink the red container size
+        double shrinkFactor = 0.5;
+        double shrinkWidth = userWidth * shrinkFactor;
+        double shrinkHeight = userHeight * shrinkFactor;
+
+        // Update red container size and position
+        redContainer.setWidth(shrinkWidth);
+        redContainer.setHeight(shrinkHeight);
+        redContainer.setX(userX + (userWidth - shrinkWidth) / 2);
+        redContainer.setY(userY + (userHeight - shrinkHeight) / 2);
     }
 
     @Override
@@ -71,8 +111,6 @@ public class LevelThree extends LevelParent {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.D) {
                 toggleUserPlaneVisibility();
-            // } else if (event.getCode() == KeyCode.SPACE) {
-            //     handleSpacebarAction(); // Check before firing projectiles
             }
         });
     }
@@ -80,12 +118,17 @@ public class LevelThree extends LevelParent {
     private void toggleUserPlaneVisibility() {
         isPlaneVisible = !isPlaneVisible; // Toggle visibility state
         getUser().setVisible(isPlaneVisible); // Update plane visibility
-    
+
         if (!isPlaneVisible) {
             System.out.println("UserPlane is now invisible. Boss projectiles will pass through.");
         } else {
             System.out.println("UserPlane is now visible. Boss projectiles can collide.");
         }
     }
-    
+
+    @Override
+    protected void updateScene() {
+        super.updateScene();
+        updateRedContainerPosition(); // Update the red container's position
+    }
 }

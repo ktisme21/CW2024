@@ -54,7 +54,6 @@ public class UserPlane extends FighterPlane {
 	@Override
 	public void updateActor() {
 		updatePosition();
-		updateRedContainer();
 	}
 	
 	@Override

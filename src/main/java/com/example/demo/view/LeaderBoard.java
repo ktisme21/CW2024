@@ -17,8 +17,7 @@ import com.example.demo.manager.LeaderboardManager;
 import java.util.List;
 
 public class LeaderBoard {
-    // Define styles as constants
-    private static final String TITLE_STYLE = "-fx-font-size: 24px; -fx-font-weight: bold;";
+    private static final String TITLE_STYLE = "-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;";
     private static final String SCORE_STYLE = "-fx-font-size: 18px; -fx-text-fill: white;";
     private static final String BUTTON_STYLE = "-fx-font-size: 18px;";
     private static final int SPACING = 20; // Spacing between VBox elements
@@ -31,10 +30,6 @@ public class LeaderBoard {
         // Set the background image on the VBox
         BackgroundUtil.setBackgroundImage(contentBox);
 
-        // Title text
-        Text title = new Text("Leaderboard");
-        title.setStyle(TITLE_STYLE);
-
         // Current Score Section
         Text currentScoreTitle = new Text("Your Score:");
         currentScoreTitle.setStyle(TITLE_STYLE);
@@ -45,7 +40,7 @@ public class LeaderBoard {
         // Add the player's current score to the leaderboard
         manager.addEntry(playerName, playerScore);
 
-        // Display top leaderboard entries inside a StackPane for a custom background
+        // Display the top leaderboard entries inside a StackPane with a custom background
         StackPane leaderboardBox = createLeaderboardBox(manager);
 
         // Back to Main Menu button
@@ -64,7 +59,7 @@ public class LeaderBoard {
         buttonBox.getChildren().addAll(restartButton, backButton);
 
         // Add components to the VBox
-        contentBox.getChildren().addAll(title, currentScoreTitle, currentScoreText, leaderboardBox, buttonBox);
+        contentBox.getChildren().addAll(currentScoreTitle, currentScoreText, leaderboardBox, buttonBox);
 
         // Create the leaderboard scene
         Scene leaderboardScene = new Scene(contentBox, primaryStage.getWidth(), primaryStage.getHeight());
@@ -85,6 +80,10 @@ public class LeaderBoard {
         VBox leaderboardEntries = new VBox(10);
         leaderboardEntries.setAlignment(Pos.CENTER);
 
+        // Title text for the leaderboard
+        Text leaderboardTitle = new Text("Leaderboard");
+        leaderboardTitle.setStyle(TITLE_STYLE);
+
         List<LeaderboardManager.LeaderboardEntry> topEntries = manager.getTopEntries();
         for (LeaderboardManager.LeaderboardEntry entry : topEntries) {
             Text entryText = new Text(entry.getPlayerName() + " - " + formatTime(entry.getScore()));
@@ -92,15 +91,20 @@ public class LeaderBoard {
             leaderboardEntries.getChildren().add(entryText);
         }
 
+        // Create a VBox to include the title and entries
+        VBox leaderboardContent = new VBox(10);
+        leaderboardContent.setAlignment(Pos.CENTER);
+        leaderboardContent.getChildren().addAll(leaderboardTitle, leaderboardEntries);
+
         // Create the background image
-        ImageView background = new ImageView(new Image(getClass().getResource("com/example/demo/images/background1.jpg").toExternalForm()));
+        ImageView background = new ImageView(new Image(getClass().getResource("/com/example/demo/images/stackpane.png").toExternalForm()));
         background.setFitWidth(400); // Set appropriate width
         background.setFitHeight(300); // Set appropriate height
         background.setPreserveRatio(true);
 
-        // Add the background and leaderboard entries to the StackPane
+        // Add the background and leaderboard content to the StackPane
         StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(background, leaderboardEntries);
+        stackPane.getChildren().addAll(background, leaderboardContent);
         stackPane.setAlignment(Pos.CENTER);
 
         return stackPane;

@@ -95,7 +95,7 @@ public abstract class LevelParent {
         topRightButton.setOnAction(event -> showPauseScreen());
 
         // Create the Label for the timer
-        topRightLabel = new Label("Time: 00:00:00");
+        topRightLabel = new Label("Timer: 00:00:00");
         topRightLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
         topRightLabel.setLayoutX(screenWidth - 300); // Position left of the Pause button
         topRightLabel.setLayoutY(25); // Align with the Pause button
@@ -123,14 +123,12 @@ public abstract class LevelParent {
     public void startGame() {
         background.requestFocus();
         timeline.play();
-        gameTimer.start(); // Ensure the timer starts
+        gameTimer.start();
     }
 
     private void showPauseScreen() {
-        // Pause the game timeline
         timeline.pause();
 
-        // Create and show the PauseScreen
         PauseScreen pauseScreen = new PauseScreen(
                 (Stage) scene.getWindow(),
                 () -> {
@@ -148,8 +146,7 @@ public abstract class LevelParent {
     }
 
     protected void initializeFriendlyUnits() {
-        root.getChildren().add(getUser()); // Add user plane to the root
-        getUser().addRedContainerToRoot(root); // Add red container to the root
+        root.getChildren().add(getUser());
     }
 
     protected abstract void checkIfGameOver();
@@ -178,7 +175,7 @@ public abstract class LevelParent {
         }
     }
 
-    private void updateScene() {
+    protected void updateScene() {
         spawnEnemyUnits();
         updateActors();
         generateEnemyFire();
@@ -193,6 +190,7 @@ public abstract class LevelParent {
         checkIfGameOver();
         updateTopRightLabel(); // Update the timer
     }
+    
 
     private void initializeTimeline() {
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -435,7 +433,6 @@ public abstract class LevelParent {
         if (!getRoot().getChildren().contains(enemy)) {
             enemyUnits.add(enemy);
             root.getChildren().add(enemy);
-            enemy.addRedContainerToRoot(root); // Assuming this adds additional visuals to the enemy
         }
     }
 

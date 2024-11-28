@@ -39,7 +39,6 @@ public class EnemyPlane extends FighterPlane {
 	@Override
 	public void updateActor() {
 		updatePosition();
-		updateRedContainer();
 	}
 
 	public boolean hasExitedScreen(double screenWidth){

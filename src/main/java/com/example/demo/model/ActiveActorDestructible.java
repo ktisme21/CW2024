@@ -22,7 +22,6 @@ public abstract class ActiveActorDestructible extends ActiveActor implements Des
 	@Override
 	public void destroy() {
 		setDestroyed(true);
-		removeRedContainer();
 	}
 
 	protected void setDestroyed(boolean isDestroyed) {

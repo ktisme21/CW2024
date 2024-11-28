@@ -51,7 +51,6 @@ public class Boss extends FighterPlane {
 	public void updateActor() {
 		updatePosition();
 		updateShield();
-		updateRedContainer();
 	}
 
 	@Override
