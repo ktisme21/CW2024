@@ -32,10 +32,6 @@ public class Main extends Application {
         stage.setFullScreenExitKeyCombination(null);
         stage.setWidth(SCREEN_WIDTH);
         stage.setHeight(SCREEN_HEIGHT);
-        stage.setMinWidth(SCREEN_WIDTH);
-        stage.setMaxWidth(SCREEN_WIDTH);
-        stage.setMinHeight(SCREEN_HEIGHT);
-        stage.setMaxHeight(SCREEN_HEIGHT);
     }
 
     public void showMainMenu(Stage stage) {

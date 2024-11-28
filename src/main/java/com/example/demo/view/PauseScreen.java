@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class PauseScreen {
 
@@ -36,7 +37,7 @@ public class PauseScreen {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with the parent window
         stage.initOwner(parentStage);
-        stage.setTitle("Game Paused");
+        stage.initStyle(StageStyle.UNDECORATED); // Remove the default panel
 
         // Create content and set the scene
         VBox contentBox = createContentBox();
