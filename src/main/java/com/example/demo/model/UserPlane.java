@@ -2,54 +2,48 @@ package com.example.demo.model;
 
 import com.example.demo.manager.MusicPlayer;
 import com.example.demo.projectiles.UserProjectile;
+import com.example.demo.utilities.Constant;
 
 public class UserPlane extends FighterPlane {
 
-	private static final String IMAGE_NAME = "userplane.png";
-	private static final double X_LEFT_BOUND = -30; // Allow userplane move horizontally
-	private static final double X_RIGHT_BOUND = 1110;
-	private static final double Y_UPPER_BOUND = -40;
-	private static final double Y_LOWER_BOUND = 600.0;
-	private static final double INITIAL_X_POSITION = 5.0;
-	private static final double INITIAL_Y_POSITION = 300.0;
-	private static final int IMAGE_HEIGHT = 150;
-	private static final int VERTICAL_VELOCITY = 8;
-	private static final int HORIZONTAL_VELOCITY = 8;
-	private static final int PROJECTILE_X_POSITION = 110;
-	private static final int PROJECTILE_Y_POSITION_OFFSET = 20;
-	
 	private int velocityMultiplierX;
 	private int velocityMultiplierY;
 	private int numberOfKills;
 
 	public UserPlane(int initialHealth) {
-		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth);
-		velocityMultiplierX = 0;
-		velocityMultiplierY = 0;
-	}
+        super(
+            Constant.USER_PLANE_IMAGE_NAME,
+            Constant.USER_PLANE_IMAGE_HEIGHT,
+            Constant.USER_PLANE_INITIAL_X,
+            Constant.USER_PLANE_INITIAL_Y,
+            initialHealth
+        );
+        velocityMultiplierX = 0;
+        velocityMultiplierY = 0;
+    }
 	
 	@Override
-	public void updatePosition() {
-		// Update vertical movement
-		if (isMovingVertically()) {
-			double initialTranslateY = getTranslateY();
-			this.moveVertically(VERTICAL_VELOCITY * velocityMultiplierY);
-			double newYPosition = getLayoutY() + getTranslateY();
-			if (newYPosition < Y_UPPER_BOUND || newYPosition > Y_LOWER_BOUND) {
-				this.setTranslateY(initialTranslateY);
-			}
-		}
+    public void updatePosition() {
+        // Update vertical movement
+        if (isMovingVertically()) {
+            double initialTranslateY = getTranslateY();
+            this.moveVertically(Constant.USER_PLANE_VERTICAL_VELOCITY * velocityMultiplierY);
+            double newYPosition = getLayoutY() + getTranslateY();
+            if (newYPosition < Constant.USER_PLANE_Y_UPPER_BOUND || newYPosition > Constant.USER_PLANE_Y_LOWER_BOUND) {
+                this.setTranslateY(initialTranslateY);
+            }
+        }
 
-		// Update horizontal movement
-		if (isMovingHorizontally()) {
-			double initialTranslateX = getTranslateX();
-			this.moveHorizontally(HORIZONTAL_VELOCITY * velocityMultiplierX);
-			double newXPosition = getLayoutX() + getTranslateX();
-			if (newXPosition < X_LEFT_BOUND || newXPosition > X_RIGHT_BOUND) {
-				this.setTranslateX(initialTranslateX);
-			}
-		}
-	}
+        // Update horizontal movement
+        if (isMovingHorizontally()) {
+            double initialTranslateX = getTranslateX();
+            this.moveHorizontally(Constant.USER_PLANE_HORIZONTAL_VELOCITY * velocityMultiplierX);
+            double newXPosition = getLayoutX() + getTranslateX();
+            if (newXPosition < Constant.USER_PLANE_X_LEFT_BOUND || newXPosition > Constant.USER_PLANE_X_RIGHT_BOUND) {
+                this.setTranslateX(initialTranslateX);
+            }
+        }
+    }
 
 	@Override
 	public void updateActor() {
@@ -57,16 +51,12 @@ public class UserPlane extends FighterPlane {
 	}
 	
 	@Override
-	public ActiveActorDestructible fireProjectile() {
-		// if (!isVisible()) {
-		// 	System.out.println("UserPlane is invisible. Projectiles cannot be fired.");
-		// 	return null; // Prevent firing
-		// }
-		MusicPlayer.playShootingSound();
-		double projectileXPosition = getLayoutX() + getTranslateX() + PROJECTILE_X_POSITION;
-		double projectileYPosition = getProjectileYPosition(PROJECTILE_Y_POSITION_OFFSET);
-		return new UserProjectile(projectileXPosition, projectileYPosition);
-	}
+    public ActiveActorDestructible fireProjectile() {
+        MusicPlayer.playShootingSound();
+        double projectileXPosition = getLayoutX() + getTranslateX() + Constant.USER_PROJECTILE_X_POSITION;
+        double projectileYPosition = getProjectileYPosition(Constant.USER_PROJECTILE_Y_POSITION_OFFSET);
+        return new UserProjectile(projectileXPosition, projectileYPosition);
+    }
 
 	// Vertical and horizontal movement
 	public void moveUp() {

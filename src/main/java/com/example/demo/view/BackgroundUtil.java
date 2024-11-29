@@ -1,14 +1,14 @@
 package com.example.demo.view;
 
+import com.example.demo.utilities.Constant;
+
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
 public class BackgroundUtil {
 
-    private static final String BACKGROUND_IMAGE_PATH = "/com/example/demo/images/background4.jpg";
-
     public static void setBackgroundImage(Pane pane) {
-        Image backgroundImage = new Image(BackgroundUtil.class.getResource(BACKGROUND_IMAGE_PATH).toExternalForm());
+        Image backgroundImage = new Image(BackgroundUtil.class.getResource(Constant.BACKGROUND_IMAGE_PATH).toExternalForm());
         BackgroundSize backgroundSize = new BackgroundSize(
             BackgroundSize.AUTO, BackgroundSize.AUTO, 
             false, false, true, true

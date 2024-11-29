@@ -1,18 +1,19 @@
 package com.example.demo.projectiles;
 
-public class EnemyProjectile extends Projectile {
-	
-	private static final String IMAGE_NAME = "enemyFire.png";
-	private static final int IMAGE_HEIGHT = 50;
-	private static final int HORIZONTAL_VELOCITY = -10;
+import com.example.demo.utilities.Constant;
 
-	public EnemyProjectile(double initialXPos, double initialYPos) {
-		super(IMAGE_NAME, IMAGE_HEIGHT, initialXPos, initialYPos);
-	}
+public class EnemyProjectile extends Projectile {
+
+    public EnemyProjectile(double initialXPos, double initialYPos) {
+        super(Constant.ENEMY_PROJECTILE_IMAGE, 
+              Constant.ENEMY_PROJECTILE_IMAGE_HEIGHT, 
+              initialXPos, 
+              initialYPos);
+    }
 
 	@Override
 	public void updatePosition() {
-		moveHorizontally(HORIZONTAL_VELOCITY);
+		moveHorizontally(Constant.ENEMY_PROJECTILE_HORIZONTAL_VELOCITY);
 	}
 
 	@Override

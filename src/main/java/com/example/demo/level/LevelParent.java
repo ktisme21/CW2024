@@ -12,13 +12,13 @@ import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.EnemyPlane;
 import com.example.demo.model.FighterPlane;
 import com.example.demo.model.UserPlane;
+import com.example.demo.utilities.Constant;
 import com.example.demo.view.LeaderBoard;
 import com.example.demo.view.LevelView;
 import com.example.demo.view.PauseScreen;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,8 +34,6 @@ public abstract class LevelParent {
 
     private LevelChangeListener listener;
 
-    private static final double SCREEN_HEIGHT_ADJUSTMENT = 150;
-    private static final int MILLISECOND_DELAY = 50;
     private final double screenHeight;
     private final double screenWidth;
     private final double enemyMaximumYPosition;
@@ -58,7 +56,6 @@ public abstract class LevelParent {
     private boolean isTransitioned = false;
 
     private final GlobalGameTimer gameTimer = GlobalGameTimer.getInstance(); // Use global timer instance
-    private final String PAUSE_BUTTON = "-fx-font-size: 14px; -fx-padding: 5px 10px;";
 
     public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
         this.root = new Group();
@@ -73,7 +70,7 @@ public abstract class LevelParent {
         this.background = new ImageView(new Image(getClass().getResource(backgroundImageName).toExternalForm()));
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;
-        this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
+        this.enemyMaximumYPosition = screenHeight - Constant.SCREEN_HEIGHT_ADJUSTMENT;
         this.levelView = instantiateLevelView();
         this.currentNumberOfEnemies = 0;
         this.hasAlerted = false;
@@ -85,20 +82,20 @@ public abstract class LevelParent {
     private void initializeTopRightUI() {
         // Create the Pause button
         Button topRightButton = new Button("Pause");
-        topRightButton.setStyle(PAUSE_BUTTON);
+        topRightButton.setStyle(Constant.PAUSE_BUTTON_STYLE);
 
         // Position the Pause button
-        topRightButton.setLayoutX(screenWidth - 120); // Position near the right edge
-        topRightButton.setLayoutY(20); // Position near the top
+        topRightButton.setLayoutX(screenWidth - Constant.PAUSE_BUTTON_X_POSITION);
+        topRightButton.setLayoutY(Constant.PAUSE_BUTTON_Y_POSITION);
 
         // Add action to the Pause button
         topRightButton.setOnAction(event -> showPauseScreen());
 
         // Create the Label for the timer
         topRightLabel = new Label("Timer: 00:00:00");
-        topRightLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
-        topRightLabel.setLayoutX(screenWidth - 300); // Position left of the Pause button
-        topRightLabel.setLayoutY(25); // Align with the Pause button
+        topRightLabel.setStyle(Constant.TIMER_LABEL_STYLE);
+        topRightLabel.setLayoutX(screenWidth - Constant.TIMER_LABEL_X_POSITION);
+        topRightLabel.setLayoutY(Constant.TIMER_LABEL_Y_POSITION);
 
         // Add the button and label to the root
         root.getChildren().addAll(topRightButton, topRightLabel);
@@ -116,7 +113,7 @@ public abstract class LevelParent {
         int minutes = (int) elapsedTime.toMinutes();
         int seconds = (int) elapsedTime.toSeconds() % 60;
         int millis = (int) (elapsedTime.toMillis() % 1000);
-        topRightLabel.setText(String.format("Time: %02d:%02d:%03d", minutes, seconds, millis));
+        topRightLabel.setText(String.format(Constant.TIMER_FORMAT, minutes, seconds, millis));
     }
 
 
@@ -194,7 +191,7 @@ public abstract class LevelParent {
 
     private void initializeTimeline() {
         timeline.setCycleCount(Timeline.INDEFINITE);
-        KeyFrame gameLoop = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> updateScene());
+        KeyFrame gameLoop = new KeyFrame(Duration.millis(Constant.MILLISECOND_DELAY), e -> updateScene());
         timeline.getKeyFrames().add(gameLoop);
     }
 
@@ -202,25 +199,24 @@ public abstract class LevelParent {
         background.setFocusTraversable(true);
         background.setFitHeight(screenHeight);
         background.setFitWidth(screenWidth);
-        background.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent e) {
-                KeyCode kc = e.getCode();
-                if (kc == KeyCode.UP) user.moveUp();
-                if (kc == KeyCode.DOWN) user.moveDown();
-                if (kc == KeyCode.LEFT) user.moveLeft();
-                if (kc == KeyCode.RIGHT) user.moveRight();
-                if (kc == KeyCode.SPACE) fireProjectile();
-            }
-        });
-
-        background.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent e) {
-                KeyCode kc = e.getCode();
-                if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stopVertical();
-                if (kc == KeyCode.LEFT || kc == KeyCode.RIGHT) user.stopHorizontal();
-            }
-        });
+        background.setOnKeyPressed(this::handleKeyPressed);
+        background.setOnKeyReleased(this::handleKeyReleased);
         root.getChildren().add(background);
+    }
+    
+    private void handleKeyPressed(KeyEvent e) {
+        KeyCode kc = e.getCode();
+        if (kc == Constant.KEY_UP) user.moveUp();
+        if (kc == Constant.KEY_DOWN) user.moveDown();
+        if (kc == Constant.KEY_LEFT) user.moveLeft();
+        if (kc == Constant.KEY_RIGHT) user.moveRight();
+        if (kc == Constant.KEY_FIRE) fireProjectile();
+    }
+    
+    private void handleKeyReleased(KeyEvent e) {
+        KeyCode kc = e.getCode();
+        if (kc == Constant.KEY_UP || kc == Constant.KEY_DOWN) user.stopVertical();
+        if (kc == Constant.KEY_LEFT || kc == Constant.KEY_RIGHT) user.stopHorizontal();
     }
 
     private void fireProjectile() {

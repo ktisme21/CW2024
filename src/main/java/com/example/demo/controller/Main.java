@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.manager.MusicPlayer;
+import com.example.demo.utilities.Constant;
 import com.example.demo.view.GameStartScreen;
 import com.example.demo.view.SettingsPage;
 
@@ -13,9 +14,6 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private static final int SCREEN_WIDTH = 1300;
-    private static final int SCREEN_HEIGHT = 750;
-    private static final String TITLE = "Sky Battle";
     private Controller myController;
 
     @Override
@@ -26,12 +24,12 @@ public class Main extends Application {
     }
 
     private void setupStage(Stage stage) {
-        stage.setTitle(TITLE);
+        stage.setTitle(Constant.TITLE);
         stage.setResizable(false);
         stage.setFullScreenExitHint("");
         stage.setFullScreenExitKeyCombination(null);
-        stage.setWidth(SCREEN_WIDTH);
-        stage.setHeight(SCREEN_HEIGHT);
+        stage.setWidth(Constant.SCREEN_WIDTH);
+        stage.setHeight(Constant.SCREEN_HEIGHT);
     }
 
     public void showMainMenu(Stage stage) {
@@ -42,7 +40,7 @@ public class Main extends Application {
             event -> showHowToPlay()
         );
 
-        Scene scene = new Scene(startScreen, SCREEN_WIDTH, SCREEN_HEIGHT);
+        Scene scene = new Scene(startScreen, Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
         stage.setScene(scene);
         stage.show();
     }

@@ -1,6 +1,7 @@
 package com.example.demo.view;
 
 import com.example.demo.manager.MusicPlayer;
+import com.example.demo.utilities.Constant;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,10 +17,6 @@ import javafx.stage.Stage;
 
 public class SettingsPage extends StackPane {
 
-    private static final String TITLE_STYLE = "-fx-font-size: 24px; -fx-font-weight: bold;";
-    private static final String BUTTON_STYLE = "-fx-font-size: 18px;";
-    private static final double SPACING = 20;
-    private static final double DEFAULT_VOLUME = 50.0;
     private boolean isMuted = false;
 
     public SettingsPage(Stage stage, EventHandler<MouseEvent> onBackToMain) {
@@ -30,7 +27,7 @@ public class SettingsPage extends StackPane {
         this.setPrefSize(stage.getWidth(), stage.getHeight());
 
         // Create content container
-        VBox contentBox = new VBox(SPACING);
+        VBox contentBox = new VBox(Constant.SETTINGS_SPACING);
         contentBox.setAlignment(Pos.CENTER);
         contentBox.setPadding(new Insets(20));
 
@@ -49,20 +46,20 @@ public class SettingsPage extends StackPane {
 
     private Label createTitle() {
         Label title = new Label("Settings");
-        title.setStyle(TITLE_STYLE);
+        title.setStyle(Constant.TITLE_STYLE);
         return title;
     }
 
     private VBox createVolumeSlider() {
         // Volume label
         Label volumeLabel = new Label("Volume");
-        volumeLabel.setStyle(BUTTON_STYLE);
+        volumeLabel.setStyle(Constant.SETTINGS_BUTTON_STYLE);
 
         // Volume slider
-        Slider volumeSlider = new Slider(0, 100, DEFAULT_VOLUME);
+        Slider volumeSlider = new Slider(0, 100, Constant.SETTINGS_DEFAULT_VOLUME);
         volumeSlider.setShowTickLabels(true);
         volumeSlider.setShowTickMarks(true);
-        volumeSlider.setPrefWidth(300);
+        volumeSlider.setPrefWidth(Constant.SETTINGS_SLIDER_WIDTH);
         volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (!isMuted) {
                 MusicPlayer.setVolume(newVal.doubleValue() / 100.0);
@@ -71,24 +68,24 @@ public class SettingsPage extends StackPane {
 
         // Decrement button
         Button decrementButton = new Button("-");
-        decrementButton.setStyle(BUTTON_STYLE);
+        decrementButton.setStyle(Constant.SETTINGS_BUTTON_STYLE);
         decrementButton.setOnMouseClicked(event -> {
             volumeSlider.setValue(Math.max(0, volumeSlider.getValue() - 5));
         });
 
         // Increment button
         Button incrementButton = new Button("+");
-        incrementButton.setStyle(BUTTON_STYLE);
+        incrementButton.setStyle(Constant.SETTINGS_BUTTON_STYLE);
         incrementButton.setOnMouseClicked(event -> {
             volumeSlider.setValue(Math.min(100, volumeSlider.getValue() + 5));
         });
 
         // Horizontal box for slider controls
-        HBox sliderBox = new HBox(SPACING, decrementButton, volumeSlider, incrementButton);
+        HBox sliderBox = new HBox(Constant.SETTINGS_SPACING, decrementButton, volumeSlider, incrementButton);
         sliderBox.setAlignment(Pos.CENTER);
 
         // Vertical box for label and slider
-        VBox volumeBox = new VBox(SPACING, volumeLabel, sliderBox);
+        VBox volumeBox = new VBox(Constant.SETTINGS_SPACING, volumeLabel, sliderBox);
         volumeBox.setAlignment(Pos.CENTER);
 
         return volumeBox;
@@ -96,7 +93,7 @@ public class SettingsPage extends StackPane {
 
     private Button createMuteButton() {
         Button muteButton = new Button("Mute");
-        muteButton.setStyle(BUTTON_STYLE);
+        muteButton.setStyle(Constant.SETTINGS_BUTTON_STYLE);
         muteButton.setOnMouseClicked(event -> toggleMute(muteButton));
         return muteButton;
     }
@@ -107,16 +104,15 @@ public class SettingsPage extends StackPane {
             MusicPlayer.setVolume(0.0);
             muteButton.setText("Unmute");
         } else {
-            MusicPlayer.setVolume(DEFAULT_VOLUME / 100.0);
+            MusicPlayer.setVolume(Constant.SETTINGS_DEFAULT_VOLUME / 100.0);
             muteButton.setText("Mute");
         }
     }
 
     private Button createBackButton(EventHandler<MouseEvent> onBackToMain) {
         Button backButton = new Button("Close");
-        backButton.setStyle(BUTTON_STYLE);
+        backButton.setStyle(Constant.SETTINGS_BUTTON_STYLE);
         backButton.setOnMouseClicked(onBackToMain); // Use the provided event to close the pop-up
         return backButton;
     }
-    
 }

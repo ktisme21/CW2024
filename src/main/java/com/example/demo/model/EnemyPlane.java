@@ -1,36 +1,27 @@
 package com.example.demo.model;
 
 import com.example.demo.projectiles.EnemyProjectile;
+import com.example.demo.utilities.Constant;
 
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 
 public class EnemyPlane extends FighterPlane {
 
-	private static final String IMAGE_NAME = "enemyplane.png";
-	private static final int IMAGE_HEIGHT = 150;
-	private static final int HORIZONTAL_VELOCITY = -6;
-	private static final double PROJECTILE_X_POSITION_OFFSET = -100.0;
-	private static final double PROJECTILE_Y_POSITION_OFFSET = 50.0;
-	private static final int INITIAL_HEALTH = 1;
-	private static final double FIRE_RATE = .01;
-	private static final double SHRINK_FACTOR = 0.5;
-
-
 	public EnemyPlane(double initialXPos, double initialYPos) {
-		super(IMAGE_NAME, IMAGE_HEIGHT, initialXPos, initialYPos, INITIAL_HEALTH);
+		super(Constant.ENEMY_PLANE_IMAGE, Constant.ENEMY_PLANE_IMAGE_HEIGHT, initialXPos, initialYPos, Constant.ENEMY_INITIAL_HEALTH);
 	}
 
 	@Override
 	public void updatePosition() {
-		moveHorizontally(HORIZONTAL_VELOCITY);
+		moveHorizontally(Constant.ENEMY_HORIZONTAL_VELOCITY);
 	}
 
 	@Override
 	public ActiveActorDestructible fireProjectile() {
-		if (Math.random() < FIRE_RATE) {
-			double projectileXPosition = getProjectileXPosition(PROJECTILE_X_POSITION_OFFSET);
-			double projectileYPostion = getProjectileYPosition(PROJECTILE_Y_POSITION_OFFSET);
+		if (Math.random() < Constant.ENEMY_FIRE_RATE) {
+			double projectileXPosition = getProjectileXPosition(Constant.PROJECTILE_X_POSITION_OFFSET);
+			double projectileYPostion = getProjectileYPosition(Constant.PROJECTILE_Y_POSITION_OFFSET);
 			return new EnemyProjectile(projectileXPosition, projectileYPostion);
 		}
 		return null;
@@ -50,8 +41,8 @@ public class EnemyPlane extends FighterPlane {
 	@Override
 	public Bounds getCollisionBounds() {
 		// Shrink collision bounds by 60% for EnemyPlane
-		double width = getBoundsInParent().getWidth() * (1 - SHRINK_FACTOR);
-		double height = getBoundsInParent().getHeight() * (1 - SHRINK_FACTOR);
+		double width = getBoundsInParent().getWidth() * (1 - Constant.ENEMY_COLLISION_SHRINK_FACTOR);
+		double height = getBoundsInParent().getHeight() * (1 - Constant.ENEMY_COLLISION_SHRINK_FACTOR);
 		double x = getBoundsInParent().getMinX() + (getBoundsInParent().getWidth() - width) / 2;
 		double y = getBoundsInParent().getMinY() + (getBoundsInParent().getHeight() - height) / 2;
 

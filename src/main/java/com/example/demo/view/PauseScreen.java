@@ -1,6 +1,7 @@
 package com.example.demo.view;
 
 import com.example.demo.manager.MusicPlayer;
+import com.example.demo.utilities.Constant;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,13 +16,6 @@ import javafx.stage.StageStyle;
 
 public class PauseScreen {
 
-    private static final String TITLE_STYLE = "-fx-font-size: 24px; -fx-font-weight: bold;";
-    private static final String BUTTON_STYLE = "-fx-font-size: 16px;";
-    private static final double SPACING = 20;
-    private static final double SCENE_WIDTH = 500;
-    private static final double SCENE_HEIGHT = 400;
-    private static final double DEFAULT_VOLUME = 50.0;
-
     private final Stage pauseStage;
     private final Runnable onResumeAction;
     private final Runnable onQuitAction;
@@ -35,13 +29,12 @@ public class PauseScreen {
 
     private Stage createPauseStage(Stage parentStage) {
         Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with the parent window
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(parentStage);
-        stage.initStyle(StageStyle.UNDECORATED); // Remove the default panel
+        stage.initStyle(StageStyle.UNDECORATED);
 
-        // Create content and set the scene
         VBox contentBox = createContentBox();
-        Scene pauseScene = new Scene(contentBox, SCENE_WIDTH, SCENE_HEIGHT);
+        Scene pauseScene = new Scene(contentBox, Constant.PAUSE_SCENE_WIDTH, Constant.PAUSE_SCENE_HEIGHT);
         stage.setScene(pauseScene);
         stage.setResizable(false);
 
@@ -49,16 +42,14 @@ public class PauseScreen {
     }
 
     private VBox createContentBox() {
-        VBox contentBox = new VBox(SPACING);
+        VBox contentBox = new VBox(Constant.PAUSE_SPACING);
         contentBox.setAlignment(Pos.CENTER);
 
-        // Set background image
         BackgroundUtil.setBackgroundImage(contentBox);
 
-        // Add components
         contentBox.getChildren().addAll(
             createPauseLabel(),
-            createVolumeControl(), // Volume control with slider and mute button
+            createVolumeControl(),
             createButtonRow()
         );
 
@@ -67,17 +58,15 @@ public class PauseScreen {
 
     private Label createPauseLabel() {
         Label pauseLabel = new Label("Game Paused");
-        pauseLabel.setStyle(TITLE_STYLE);
+        pauseLabel.setStyle(Constant.TITLE_STYLE);
         return pauseLabel;
     }
 
     private VBox createVolumeControl() {
-        // Volume label
         Label volumeLabel = new Label("Volume");
-        volumeLabel.setStyle(BUTTON_STYLE);
+        volumeLabel.setStyle(Constant.PAUSE_BUTTON_STYLE);
 
-        // Volume slider
-        Slider volumeSlider = new Slider(0, 100, DEFAULT_VOLUME);
+        Slider volumeSlider = new Slider(0, 100, Constant.PAUSE_DEFAULT_VOLUME);
         volumeSlider.setShowTickLabels(true);
         volumeSlider.setShowTickMarks(true);
         volumeSlider.setPrefWidth(300);
@@ -87,37 +76,33 @@ public class PauseScreen {
             }
         });
 
-        // Decrement button
-        Button decrementButton = new Button("-");
-        decrementButton.setStyle(BUTTON_STYLE);
-        decrementButton.setOnAction(event -> {
-            volumeSlider.setValue(Math.max(0, volumeSlider.getValue() - 5));
-        });
+        Button decrementButton = createVolumeButton("-", volumeSlider, -5);
+        Button incrementButton = createVolumeButton("+", volumeSlider, 5);
 
-        // Increment button
-        Button incrementButton = new Button("+");
-        incrementButton.setStyle(BUTTON_STYLE);
-        incrementButton.setOnAction(event -> {
-            volumeSlider.setValue(Math.min(100, volumeSlider.getValue() + 5));
-        });
-
-        // Horizontal box for slider controls
-        HBox sliderBox = new HBox(SPACING, decrementButton, volumeSlider, incrementButton);
+        HBox sliderBox = new HBox(Constant.PAUSE_SPACING, decrementButton, volumeSlider, incrementButton);
         sliderBox.setAlignment(Pos.CENTER);
 
-        // Mute/Unmute button
         Button muteButton = createMuteButton(volumeSlider);
 
-        // Vertical box for label, slider, and mute button
-        VBox volumeBox = new VBox(SPACING, volumeLabel, sliderBox, muteButton);
+        VBox volumeBox = new VBox(Constant.PAUSE_SPACING, volumeLabel, sliderBox, muteButton);
         volumeBox.setAlignment(Pos.CENTER);
 
         return volumeBox;
     }
 
+    private Button createVolumeButton(String text, Slider volumeSlider, int adjustment) {
+        Button button = new Button(text);
+        button.setStyle(Constant.PAUSE_BUTTON_STYLE);
+        button.setOnAction(event -> {
+            double newValue = volumeSlider.getValue() + adjustment;
+            volumeSlider.setValue(Math.min(100, Math.max(0, newValue)));
+        });
+        return button;
+    }
+
     private Button createMuteButton(Slider volumeSlider) {
         Button muteButton = new Button("Mute");
-        muteButton.setStyle(BUTTON_STYLE);
+        muteButton.setStyle(Constant.PAUSE_BUTTON_STYLE);
         muteButton.setOnAction(event -> toggleMute(volumeSlider, muteButton));
         return muteButton;
     }
@@ -136,10 +121,9 @@ public class PauseScreen {
     }
 
     private HBox createButtonRow() {
-        HBox buttonRow = new HBox(SPACING);
+        HBox buttonRow = new HBox(Constant.PAUSE_SPACING);
         buttonRow.setAlignment(Pos.CENTER);
 
-        // Add Resume and Quit buttons to the row
         buttonRow.getChildren().addAll(
             createResumeButton(),
             createQuitButton()
@@ -150,7 +134,7 @@ public class PauseScreen {
 
     private Button createResumeButton() {
         Button resumeButton = new Button("Resume");
-        resumeButton.setStyle(BUTTON_STYLE);
+        resumeButton.setStyle(Constant.PAUSE_BUTTON_STYLE);
         resumeButton.setOnAction(e -> {
             onResumeAction.run();
             pauseStage.close();
@@ -160,7 +144,7 @@ public class PauseScreen {
 
     private Button createQuitButton() {
         Button quitButton = new Button("Main Menu");
-        quitButton.setStyle(BUTTON_STYLE);
+        quitButton.setStyle(Constant.PAUSE_BUTTON_STYLE);
         quitButton.setOnAction(e -> {
             onQuitAction.run();
             pauseStage.close();

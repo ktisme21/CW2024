@@ -5,11 +5,13 @@ import java.util.*;
 
 public class LeaderboardManager {
 
-    private static final String FILE_PATH = "leaderboard.txt";
+    // Updated file path to save in the specified directory
+    private static final String FILE_PATH = "C:\\Users\\Kei\\CW2024\\src\\main\\java\\com\\example\\demo\\data\\leaderboard.txt";
     private static final int MAX_ENTRIES = 5;
     private final List<LeaderboardEntry> leaderboard = new ArrayList<>();
 
     public LeaderboardManager() {
+        ensureDirectoryExists(); // Ensure the directory exists before loading
         loadLeaderboard();
     }
 
@@ -41,6 +43,15 @@ public class LeaderboardManager {
         int seconds = (score / 1000) % 60;
         int millis = score % 1000;
         return String.format("%02d:%02d:%03d", minutes, seconds, millis);
+    }
+
+    // Ensure the directory exists
+    private void ensureDirectoryExists() {
+        File file = new File(FILE_PATH);
+        File directory = file.getParentFile();
+        if (!directory.exists()) {
+            directory.mkdirs(); // Create the directory if it doesn't exist
+        }
     }
 
     // Load leaderboard from file
