@@ -27,6 +27,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -80,9 +82,15 @@ public abstract class LevelParent {
     }
 
     private void initializeTopRightUI() {
-        // Create the Pause button
-        Button topRightButton = new Button("Pause");
-        topRightButton.setStyle(Constant.PAUSE_BUTTON_STYLE);
+        // Create the Pause button with an image
+        Image settingsImage = new Image(getClass().getResource("/com/example/demo/buttons/settings.png").toExternalForm());
+        ImageView settingsImageView = new ImageView(settingsImage);
+        settingsImageView.setFitWidth(Constant.PAUSE_BUTTON_WIDTH); // Set desired button width
+        settingsImageView.setFitHeight(Constant.PAUSE_BUTTON_HEIGHT); // Set desired button height
+
+        Button topRightButton = new Button();
+        topRightButton.setGraphic(settingsImageView);
+        topRightButton.setStyle("-fx-background-color: transparent;"); // Remove default button styling
 
         // Position the Pause button
         topRightButton.setLayoutX(screenWidth - Constant.PAUSE_BUTTON_X_POSITION);
@@ -97,12 +105,24 @@ public abstract class LevelParent {
         topRightLabel.setLayoutX(screenWidth - Constant.TIMER_LABEL_X_POSITION);
         topRightLabel.setLayoutY(Constant.TIMER_LABEL_Y_POSITION);
 
-        // Add the button and label to the root
-        root.getChildren().addAll(topRightButton, topRightLabel);
+        // Create a semi-transparent rectangle background for the timer
+        Rectangle timerBackground = new Rectangle();
+        timerBackground.setWidth(Constant.TIMER_BACKGROUND_WIDTH);
+        timerBackground.setHeight(Constant.TIMER_BACKGROUND_HEIGHT);
+        timerBackground.setFill(Color.web(Constant.TIMER_BACKGROUND_COLOR)); // Semi-transparent color
+        timerBackground.setArcWidth(Constant.TIMER_BACKGROUND_CORNER_RADIUS); // Rounded corners
+        timerBackground.setArcHeight(Constant.TIMER_BACKGROUND_CORNER_RADIUS);
+        timerBackground.setLayoutX(screenWidth - Constant.TIMER_LABEL_X_POSITION - 10); // Adjust for padding
+        timerBackground.setLayoutY(Constant.TIMER_LABEL_Y_POSITION - 5); // Adjust for padding
+
+        // Add the button, rectangle, and label to the root
+        root.getChildren().addAll(topRightButton, timerBackground, topRightLabel);
 
         // Start the timer
         startTimer();
     }
+
+    
 
     private void startTimer() {
         gameTimer.start(); // Start the global timer
@@ -124,19 +144,22 @@ public abstract class LevelParent {
     }
 
     private void showPauseScreen() {
-        timeline.pause();
-
+        if (timeline.getStatus() == Timeline.Status.RUNNING) {
+            timeline.pause();
+            gameTimer.stop(); // Pause the game timer as well
+        }
+    
         PauseScreen pauseScreen = new PauseScreen(
-                (Stage) scene.getWindow(),
-                () -> {
-                    // Resume action: Close pause screen and resume gameplay
-                    timeline.play();
-                    background.requestFocus(); // Return focus to the game background
-                },
-                () -> returnToMainMenu((Stage) scene.getWindow()) // Quit action
+            (Stage) scene.getWindow(),
+            () -> {
+                timeline.play();
+                gameTimer.start(); // Resume the game timer
+            },
+            () -> returnToMainMenu((Stage) scene.getWindow())
         );
         pauseScreen.show();
     }
+    
 
     public void setLevelChangeListener(LevelChangeListener listener) {
         this.listener = listener;
@@ -255,6 +278,7 @@ public abstract class LevelParent {
                 .collect(Collectors.toList());
         root.getChildren().removeAll(destroyedActors);
         actors.removeAll(destroyedActors);
+        
     }
 
     private void handlePlaneCollisions() {

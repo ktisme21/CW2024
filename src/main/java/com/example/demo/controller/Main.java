@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
@@ -55,12 +56,21 @@ public class Main extends Application {
     }
 
     private void showSettings(Stage ownerStage) {
-        Stage settingsStage = createPopupStage("Settings", ownerStage);
+        // Create a new stage for the settings popup
+        Stage settingsStage = new Stage();
+        settingsStage.initModality(Modality.APPLICATION_MODAL); // Make it a modal popup
+        settingsStage.initOwner(ownerStage); // Set the owner of the popup
+        settingsStage.initStyle(StageStyle.UNDECORATED); // Remove the top panel (title bar)
+
+        // Create the SettingsPage and set it as the root of the scene
         SettingsPage settingsPage = new SettingsPage(settingsStage, event -> settingsStage.close());
-        Scene settingsScene = new Scene(settingsPage, 500, 400);
+        Scene settingsScene = new Scene(settingsPage, ownerStage.getWidth() * 0.5, ownerStage.getHeight() * 0.5);
+
+        // Set the scene and show the stage
         settingsStage.setScene(settingsScene);
-        settingsStage.showAndWait();
+        settingsStage.show();
     }
+
 
     private void showHowToPlay() {
         Alert alert = new Alert(AlertType.INFORMATION);

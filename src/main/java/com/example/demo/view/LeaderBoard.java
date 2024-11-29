@@ -3,7 +3,6 @@ package com.example.demo.view;
 import com.example.demo.manager.LeaderboardManager;
 import com.example.demo.utilities.Constant;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -33,13 +32,9 @@ public class LeaderBoard {
 
         StackPane leaderboardBox = createLeaderboardBox(manager);
 
-        Button backButton = new Button("Back to Main Menu");
-        backButton.setStyle(Constant.LEADERBOARD_BUTTON_STYLE);
-        backButton.setOnMouseClicked(onBackToMain);
-
-        Button restartButton = new Button("Restart");
-        restartButton.setStyle(Constant.LEADERBOARD_BUTTON_STYLE);
-        restartButton.setOnMouseClicked(onRestart);
+        // Create buttons using the same design
+        StackPane backButton = createImageButton("Back to Main Menu", onBackToMain);
+        StackPane restartButton = createImageButton("Restart", onRestart);
 
         HBox buttonBox = new HBox(Constant.LEADERBOARD_SPACING);
         buttonBox.setAlignment(Pos.CENTER);
@@ -86,5 +81,30 @@ public class LeaderBoard {
         stackPane.setAlignment(Pos.CENTER);
 
         return stackPane;
+    }
+
+    private StackPane createImageButton(String text, EventHandler<MouseEvent> eventHandler) {
+        // Create a StackPane to hold the image and text
+        StackPane buttonPane = new StackPane();
+        buttonPane.setAlignment(Pos.CENTER);
+
+        // Set background image for the button
+        Image buttonImage = new Image(getClass().getResource(Constant.TEXTBAR2_IMAGE_PATH).toExternalForm());
+        ImageView imageView = new ImageView(buttonImage);
+        imageView.setFitWidth(Constant.RETURN_BUTTON_WIDTH); // Use updated button dimensions
+        imageView.setFitHeight(Constant.RETURN_BUTTON_HEIGHT);
+
+        // Create the text to be displayed
+        Text buttonText = new Text(text);
+        buttonText.setStyle(Constant.GAME_START_BUTTON_STYLE); // Reuse the same button text style
+        buttonText.setTranslateY(-5); // Adjust text position if needed
+
+        // Add the image and text to the StackPane
+        buttonPane.getChildren().addAll(imageView, buttonText);
+
+        // Add event handler for button click
+        buttonPane.setOnMouseClicked(eventHandler);
+
+        return buttonPane;
     }
 }

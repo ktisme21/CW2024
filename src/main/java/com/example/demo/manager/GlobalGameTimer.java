@@ -5,7 +5,7 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 public class GlobalGameTimer {
-    private static GlobalGameTimer instance = null; // Singleton instance
+    private static GlobalGameTimer INSTANCE = new GlobalGameTimer(); // Singleton instance
     private Duration totalTimeElapsed = Duration.ZERO;
     private final Timeline timer;
 
@@ -17,12 +17,8 @@ public class GlobalGameTimer {
         timer.setCycleCount(Timeline.INDEFINITE); // Run indefinitely
     }
 
-    // Singleton instance getter
     public static GlobalGameTimer getInstance() {
-        if (instance == null) {
-            instance = new GlobalGameTimer();
-        }
-        return instance;
+        return INSTANCE;
     }
 
     public void start() {

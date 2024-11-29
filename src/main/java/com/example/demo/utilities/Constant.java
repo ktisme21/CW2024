@@ -10,6 +10,19 @@ public class Constant {
 
     public static final int PLAYER_INITIAL_HEALTH = 5;
 
+    // Button image and styling
+    public static final String TEXTBOX_IMAGE_PATH = "/com/example/demo/icon/textbar.png"; // Path to text box image
+    public static final String TEXTBAR2_IMAGE_PATH = "/com/example/demo/icon/textbar2.png";
+    public static final double BUTTON_IMAGE_WIDTH = 300.0; // Width of button image
+    public static final double BUTTON_IMAGE_HEIGHT = 60.0; // Height of button image
+
+    public static final double SMALL_BUTTON_WIDTH = 100.0; // Width of button image
+    public static final double SMALL_BUTTON_HEIGHT = 50.0; // Height of button image
+    public static final double RETURN_BUTTON_WIDTH = 200.0; // Width of button image
+    public static final double RETURN_BUTTON_HEIGHT = 60.0; // Height of button image
+    public static final String BUTTON_TEXT_STYLE = "-fx-font-size: 18px; -fx-fill: white;"; // Text style
+    public static final double BUTTON_TEXT_TRANSLATE_Y = -5.0; // Offset for text position in the text box
+
     // Background images for levels
     public static final String LEVEL_ONE_BACKGROUND = "/com/example/demo/images/background1.jpg";
     public static final String LEVEL_TWO_BACKGROUND = "/com/example/demo/images/background2.jpg";
@@ -68,18 +81,19 @@ public class Constant {
     // Timing constants
     public static final int MILLISECOND_DELAY = 50;
 
-    // Pause button styling
-    public static final String PAUSE_BUTTON_STYLE = "-fx-font-size: 14px; -fx-padding: 5px 10px;";
-    public static final double PAUSE_BUTTON_X_POSITION = 120;
-    public static final double PAUSE_BUTTON_Y_POSITION = 20;
+    // Button Configuration
+    public static final double PAUSE_BUTTON_WIDTH = 40; // Set width of the button
+    public static final double PAUSE_BUTTON_HEIGHT = 40; // Set height of the button
+    public static final double PAUSE_BUTTON_X_POSITION = 100; // Distance from the right edge
+    public static final double PAUSE_BUTTON_Y_POSITION = 20;  // Distance from the top
 
-    // Timer label styling
+    // Timer Label Styling and Position
+    public static final double TIMER_LABEL_X_POSITION = 225; // Distance from the right edge
+    public static final double TIMER_LABEL_Y_POSITION = 35;  // Distance from the top
     public static final String TIMER_LABEL_STYLE = "-fx-font-size: 14px; -fx-text-fill: white;";
-    public static final double TIMER_LABEL_X_POSITION = 300;
-    public static final double TIMER_LABEL_Y_POSITION = 25;
 
     // Timer formatting
-    public static final String TIMER_FORMAT = "Time: %02d:%02d:%03d";
+    public static final String TIMER_FORMAT = "Timer: %02d:%02d:%03d";
 
     // Elapsed time formatting
     public static final String ELAPSED_TIME_FORMAT = "%02d:%02d.%03d";
@@ -195,4 +209,12 @@ public class Constant {
     public static final double SETTINGS_SPACING = 20.0;
     public static final double SETTINGS_DEFAULT_VOLUME = 50.0;
     public static final double SETTINGS_SLIDER_WIDTH = 300.0;
+    public static final String PAUSE_BUTTON_STYLE = null;
+
+    // Timer Background Constants
+    public static final double TIMER_BACKGROUND_WIDTH = 123; // Width of the background
+    public static final double TIMER_BACKGROUND_HEIGHT = 30; // Height of the background
+    public static final String TIMER_BACKGROUND_COLOR = "#00000080"; // Black with 50% opacity
+    public static final double TIMER_BACKGROUND_CORNER_RADIUS = 10; // Rounded corner radius
+
 }

@@ -4,10 +4,14 @@ import com.example.demo.model.Boss;
 import com.example.demo.utilities.Constant;
 import com.example.demo.view.LevelView;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public class LevelThree extends LevelParent {
 
@@ -95,8 +99,28 @@ public class LevelThree extends LevelParent {
     public Scene initializeScene() {
         Scene scene = super.initializeScene();
         setupKeyListeners(scene);
+        displayInstruction(); // Add this line to show the instruction
         return scene;
     }
+
+    private void displayInstruction() {
+        Label instructionLabel = new Label("Press 'D' to Invisible!");
+        instructionLabel.setStyle("-fx-font-size: 40px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 5px;");
+        instructionLabel.setLayoutX(450); // Position near the top-left corner
+        instructionLabel.setLayoutY(280);
+    
+        // Add the instruction to the root
+        getRoot().getChildren().add(instructionLabel);
+    
+        // Remove the instruction after a few seconds
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.seconds(5), event -> getRoot().getChildren().remove(instructionLabel))
+        );
+        timeline.setCycleCount(1);
+        timeline.play();
+    }
+    
+
 
     private void setupKeyListeners(Scene scene) {
         scene.setOnKeyPressed(event -> {

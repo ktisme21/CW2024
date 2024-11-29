@@ -9,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -91,28 +93,58 @@ public class SettingsPage extends StackPane {
         return volumeBox;
     }
 
-    private Button createMuteButton() {
-        Button muteButton = new Button("Mute");
-        muteButton.setStyle(Constant.SETTINGS_BUTTON_STYLE);
-        muteButton.setOnMouseClicked(event -> toggleMute(muteButton));
-        return muteButton;
+    private StackPane createMuteButton() {
+        // Create a StackPane for the button
+        StackPane muteButtonPane = new StackPane();
+        muteButtonPane.setAlignment(Pos.CENTER);
+
+        // Set the background image for the mute button
+        Image buttonImage = new Image(getClass().getResource(Constant.TEXTBAR2_IMAGE_PATH).toExternalForm());
+        ImageView imageView = new ImageView(buttonImage);
+        imageView.setFitWidth(Constant.RETURN_BUTTON_WIDTH);
+        imageView.setFitHeight(Constant.RETURN_BUTTON_HEIGHT);
+
+        // Create the text
+        Label muteText = new Label("Mute");
+        muteText.setStyle(Constant.SETTINGS_BUTTON_STYLE);
+        muteText.setTranslateY(-5);
+
+        muteButtonPane.getChildren().addAll(imageView, muteText);
+        muteButtonPane.setOnMouseClicked(event -> toggleMute(muteText));
+
+        return muteButtonPane;
     }
 
-    private void toggleMute(Button muteButton) {
+    private void toggleMute(Label muteText) {
         isMuted = !isMuted;
         if (isMuted) {
             MusicPlayer.setVolume(0.0);
-            muteButton.setText("Unmute");
+            muteText.setText("Unmute");
         } else {
             MusicPlayer.setVolume(Constant.SETTINGS_DEFAULT_VOLUME / 100.0);
-            muteButton.setText("Mute");
+            muteText.setText("Mute");
         }
     }
 
-    private Button createBackButton(EventHandler<MouseEvent> onBackToMain) {
-        Button backButton = new Button("Close");
-        backButton.setStyle(Constant.SETTINGS_BUTTON_STYLE);
-        backButton.setOnMouseClicked(onBackToMain); // Use the provided event to close the pop-up
-        return backButton;
+    private StackPane createBackButton(EventHandler<MouseEvent> onBackToMain) {
+        // Create a StackPane for the back button
+        StackPane backButtonPane = new StackPane();
+        backButtonPane.setAlignment(Pos.CENTER);
+
+        // Set the background image for the back button
+        Image buttonImage = new Image(getClass().getResource(Constant.TEXTBAR2_IMAGE_PATH).toExternalForm());
+        ImageView imageView = new ImageView(buttonImage);
+        imageView.setFitWidth(Constant.RETURN_BUTTON_WIDTH);
+        imageView.setFitHeight(Constant.RETURN_BUTTON_HEIGHT);
+
+        // Create the text
+        Label backText = new Label("Close");
+        backText.setStyle(Constant.SETTINGS_BUTTON_STYLE);
+        backText.setTranslateY(-5);
+
+        backButtonPane.getChildren().addAll(imageView, backText);
+        backButtonPane.setOnMouseClicked(onBackToMain);
+
+        return backButtonPane;
     }
 }

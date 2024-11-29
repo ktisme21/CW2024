@@ -4,7 +4,6 @@ import com.example.demo.display.ShieldImage;
 import com.example.demo.model.Boss;
 import com.example.demo.utilities.Constant;
 import com.example.demo.view.LevelView;
-import com.example.demo.view.LevelViewLevelTwo;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,64 +11,58 @@ import javafx.util.Duration;
 
 public class LevelTwo extends LevelParent {
 
-	private final Boss boss;
-	private final ShieldImage shieldImage;
-	private LevelViewLevelTwo levelView;
-	private boolean isBlinking;
+    private final Boss boss;
+    private final ShieldImage shieldImage;
+    private boolean isBlinking;
 
-	public LevelTwo(double screenHeight, double screenWidth) {
-		super(Constant.LEVEL_TWO_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH);
-		boss = new Boss();
-		this.shieldImage = new ShieldImage(0, 0);
-		this.isBlinking = false;
-	}
+    public LevelTwo(double screenHeight, double screenWidth) {
+        super(Constant.LEVEL_TWO_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH);
+        boss = new Boss();
+        this.shieldImage = new ShieldImage(0, 0);
+        this.isBlinking = false;
+    }
 
-	@Override
-	protected void initializeFriendlyUnits() {
-		getUser().addToParent(getRoot());
-	}
+    @Override
+    protected void initializeFriendlyUnits() {
+        getUser().addToParent(getRoot());
+    }
 
-	@Override
-	protected void checkIfGameOver() {
-		if (userIsDestroyed()) {
-			loseGame();
-		}
-		else if (boss.isDestroyed()) {
-			goToNextLevel(Constant.LEVEL_TWO_NEXT);
-		}
-	}
+    @Override
+    protected void checkIfGameOver() {
+        if (userIsDestroyed()) {
+            loseGame();
+        } else if (boss.isDestroyed()) {
+            goToNextLevel(Constant.LEVEL_TWO_NEXT);
+        }
+    }
 
-	//Handle error?
-	@Override
-	protected void spawnEnemyUnits() {
-		// Ensure only one boss is added
-		if (getCurrentNumberOfEnemies() < 1) {
-			addEnemyUnit(boss);
+    @Override
+    protected void spawnEnemyUnits() {
+        // Ensure only one boss is added
+        if (getCurrentNumberOfEnemies() < 1) {
+            addEnemyUnit(boss);
 
-			// Add shield image only once
-			if (!getRoot().getChildren().contains(shieldImage)) {
-				addShieldImage();
-			}
-		}
-	}
+            // Add shield image only once
+            if (!getRoot().getChildren().contains(shieldImage)) {
+                addShieldImage();
+            }
+        }
+    }
 
+    private void addShieldImage() {
+        shieldImage.setVisible(false); // Initially hidden
+        shieldImage.setOpacity(1.0); // Fully visible when not blinking
+        if (!getRoot().getChildren().contains(shieldImage)) { // Check before adding
+            getRoot().getChildren().add(shieldImage);
+        }
+    }
 
-	private void addShieldImage() {
-		shieldImage.setVisible(false); // Initially hidden
-		shieldImage.setOpacity(1.0); // Fully visible when not blinking
-		if (!getRoot().getChildren().contains(shieldImage)) { // Check before adding
-			getRoot().getChildren().add(shieldImage);
-		}
-	}
+    @Override
+    protected LevelView instantiateLevelView() {
+        return new LevelView(getRoot(), Constant.PLAYER_INITIAL_HEALTH); // Use LevelView directly
+    }
 
-
-	@Override
-	protected LevelView instantiateLevelView() {
-		levelView = new LevelViewLevelTwo(getRoot(), Constant.PLAYER_INITIAL_HEALTH);
-		return levelView;
-	}
-
-	@Override
+    @Override
     protected void updateLevelView() {
         super.updateLevelView();
 
@@ -84,7 +77,7 @@ public class LevelTwo extends LevelParent {
         }
     }
 
-	private void updateShieldPosition() {
+    private void updateShieldPosition() {
         // Position the shield slightly in front and above the boss
         double shieldOffsetX = -40; // Horizontal offset
         double shieldOffsetY = 0; // Vertical offset
@@ -93,7 +86,7 @@ public class LevelTwo extends LevelParent {
         shieldImage.setLayoutY(boss.getLayoutY() + boss.getTranslateY() + shieldOffsetY);
     }
 
-	private void startShieldBlinkAnimation() {
+    private void startShieldBlinkAnimation() {
         isBlinking = true;
 
         // Create a timeline for blinking animation
@@ -111,9 +104,8 @@ public class LevelTwo extends LevelParent {
         blinkTimeline.setOnFinished(e -> {
             shieldImage.setVisible(true); // Ensure the shield is visible after blinking
             shieldImage.setOpacity(1.0); // Fully opaque after blinking
-			isBlinking = false; // Reset blinking state
+            isBlinking = false; // Reset blinking state
         });
         blinkTimeline.play();
     }
-
 }

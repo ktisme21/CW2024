@@ -8,7 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -82,7 +85,7 @@ public class PauseScreen {
         HBox sliderBox = new HBox(Constant.PAUSE_SPACING, decrementButton, volumeSlider, incrementButton);
         sliderBox.setAlignment(Pos.CENTER);
 
-        Button muteButton = createMuteButton(volumeSlider);
+        StackPane muteButton = createMuteButton(volumeSlider);
 
         VBox volumeBox = new VBox(Constant.PAUSE_SPACING, volumeLabel, sliderBox, muteButton);
         volumeBox.setAlignment(Pos.CENTER);
@@ -100,23 +103,35 @@ public class PauseScreen {
         return button;
     }
 
-    private Button createMuteButton(Slider volumeSlider) {
-        Button muteButton = new Button("Mute");
-        muteButton.setStyle(Constant.PAUSE_BUTTON_STYLE);
-        muteButton.setOnAction(event -> toggleMute(volumeSlider, muteButton));
-        return muteButton;
+    private StackPane createMuteButton(Slider volumeSlider) {
+        StackPane muteButtonPane = new StackPane();
+        muteButtonPane.setAlignment(Pos.CENTER);
+
+        Image buttonImage = new Image(getClass().getResource(Constant.TEXTBAR2_IMAGE_PATH).toExternalForm());
+        ImageView imageView = new ImageView(buttonImage);
+        imageView.setFitWidth(Constant.SMALL_BUTTON_WIDTH);
+        imageView.setFitHeight(Constant.SMALL_BUTTON_HEIGHT);
+
+        Label muteText = new Label("Mute");
+        muteText.setStyle(Constant.PAUSE_BUTTON_STYLE);
+        muteText.setTranslateY(-5);
+
+        muteButtonPane.getChildren().addAll(imageView, muteText);
+        muteButtonPane.setOnMouseClicked(event -> toggleMute(volumeSlider, muteText));
+
+        return muteButtonPane;
     }
 
-    private void toggleMute(Slider volumeSlider, Button muteButton) {
+    private void toggleMute(Slider volumeSlider, Label muteText) {
         isMuted = !isMuted;
         if (isMuted) {
             MusicPlayer.setVolume(0.0);
             volumeSlider.setDisable(true);
-            muteButton.setText("Unmute");
+            muteText.setText("Unmute");
         } else {
             volumeSlider.setDisable(false);
             MusicPlayer.setVolume(volumeSlider.getValue() / 100.0);
-            muteButton.setText("Mute");
+            muteText.setText("Mute");
         }
     }
 
@@ -132,24 +147,34 @@ public class PauseScreen {
         return buttonRow;
     }
 
-    private Button createResumeButton() {
-        Button resumeButton = new Button("Resume");
-        resumeButton.setStyle(Constant.PAUSE_BUTTON_STYLE);
-        resumeButton.setOnAction(e -> {
-            onResumeAction.run();
-            pauseStage.close();
-        });
-        return resumeButton;
+    private StackPane createResumeButton() {
+        return createTextBarButton("Resume", onResumeAction);
     }
 
-    private Button createQuitButton() {
-        Button quitButton = new Button("Main Menu");
-        quitButton.setStyle(Constant.PAUSE_BUTTON_STYLE);
-        quitButton.setOnAction(e -> {
-            onQuitAction.run();
+    private StackPane createQuitButton() {
+        return createTextBarButton("Main Menu", onQuitAction);
+    }
+
+    private StackPane createTextBarButton(String text, Runnable action) {
+        StackPane buttonPane = new StackPane();
+        buttonPane.setAlignment(Pos.CENTER);
+
+        Image buttonImage = new Image(getClass().getResource(Constant.TEXTBAR2_IMAGE_PATH).toExternalForm());
+        ImageView imageView = new ImageView(buttonImage);
+        imageView.setFitWidth(Constant.SMALL_BUTTON_WIDTH);
+        imageView.setFitHeight(Constant.SMALL_BUTTON_HEIGHT);
+
+        Label buttonText = new Label(text);
+        buttonText.setStyle(Constant.PAUSE_BUTTON_STYLE);
+        buttonText.setTranslateY(-5);
+
+        buttonPane.getChildren().addAll(imageView, buttonText);
+        buttonPane.setOnMouseClicked(event -> {
+            action.run();
             pauseStage.close();
         });
-        return quitButton;
+
+        return buttonPane;
     }
 
     public void show() {
