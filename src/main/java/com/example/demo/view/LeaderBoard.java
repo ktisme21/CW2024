@@ -28,8 +28,6 @@ public class LeaderBoard {
         Text currentScoreText = new Text(playerName + " - " + formatTime(playerScore));
         currentScoreText.setStyle(Constant.LEADERBOARD_SCORE_STYLE);
 
-        manager.addEntry(playerName, playerScore);
-
         StackPane leaderboardBox = createLeaderboardBox(manager);
 
         // Create buttons using the same design

@@ -12,6 +12,7 @@ import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.EnemyPlane;
 import com.example.demo.model.FighterPlane;
 import com.example.demo.model.UserPlane;
+import com.example.demo.projectiles.UserProjectile;
 import com.example.demo.utilities.Constant;
 import com.example.demo.view.LeaderBoard;
 import com.example.demo.view.LevelView;
@@ -137,13 +138,13 @@ public abstract class LevelParent {
     public void startGame() {
         background.requestFocus();
         timeline.play();
-        gameTimer.start();
+        GlobalGameTimer.getInstance().start();
     }
 
     private void showPauseScreen() {
         if (timeline.getStatus() == Timeline.Status.RUNNING) {
             timeline.pause();
-            gameTimer.stop(); // Pause the game timer
+            GlobalGameTimer.getInstance().stop();
         }
     
         PauseScreen pauseScreen = new PauseScreen(
@@ -151,8 +152,8 @@ public abstract class LevelParent {
             () -> {
                 // Resume the game
                 timeline.play();
-                gameTimer.start(); // Resume the game timer
-                background.requestFocus(); // Ensure the game background regains focus
+                GlobalGameTimer.getInstance().start();
+                background.requestFocus();
             },
             () -> returnToMainMenu((Stage) scene.getWindow())
         );
@@ -227,6 +228,7 @@ public abstract class LevelParent {
     }
 
     private void initializeBackground() {
+        background.setId("background"); // Add an ID for lookup
         background.setFocusTraversable(true);
         background.setFitHeight(screenHeight);
         background.setFitWidth(screenWidth);
@@ -235,9 +237,8 @@ public abstract class LevelParent {
         root.getChildren().add(background);
     
         background.setOnMouseClicked(event -> background.requestFocus());
-    }
-    
-    
+    }    
+
     private void handleKeyPressed(KeyEvent e) {
         KeyCode kc = e.getCode();
         if (kc == Constant.KEY_UP) user.moveUp();
@@ -246,7 +247,7 @@ public abstract class LevelParent {
         if (kc == Constant.KEY_RIGHT) user.moveRight();
         if (kc == Constant.KEY_FIRE) fireProjectile();
     }
-    
+
     private void handleKeyReleased(KeyEvent e) {
         KeyCode kc = e.getCode();
         if (kc == Constant.KEY_UP || kc == Constant.KEY_DOWN) user.stopVertical();
@@ -259,7 +260,7 @@ public abstract class LevelParent {
             root.getChildren().add(projectile);
             userProjectiles.add(projectile);
         } else {
-            System.out.println("Projectile is null, not adding to root.");
+            System.out.println("Cannot shoot while the plane is invisible!");
         }
     }
 
@@ -368,10 +369,18 @@ public abstract class LevelParent {
 
     protected void winGame() {
         timeline.stop();
-		gameTimer.stop();
+		GlobalGameTimer.getInstance().stop();
 		String timeUsed = formatElapsedTime();
         saveToLeaderboard(timeUsed);
         levelView.showWinImage();
+        addQuitEventHandler(timeUsed);
+    }
+
+    protected void loseGame() {
+        timeline.stop();
+		GlobalGameTimer.getInstance().stop();
+		String timeUsed = formatElapsedTime();
+        levelView.showGameOverImage();
         addQuitEventHandler(timeUsed);
     }
 
@@ -391,14 +400,6 @@ public abstract class LevelParent {
             System.err.println("Invalid time format: " + timeUsed);
             return 0; // Default to 0 on error
         }
-    }
-
-    protected void loseGame() {
-        timeline.stop();
-		gameTimer.stop();
-		String timeUsed = formatElapsedTime();
-        levelView.showGameOverImage();
-        addQuitEventHandler(timeUsed);
     }
 
     private void addQuitEventHandler(String timeUsed) {
@@ -434,7 +435,7 @@ public abstract class LevelParent {
     private void restartGame(Stage stage) {
         // Stop the current timeline to prevent further updates
         timeline.stop();
-		gameTimer.reset();
+		GlobalGameTimer.getInstance().reset();
 		
         // Restart the game from LevelOne
         try {

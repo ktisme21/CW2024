@@ -1,7 +1,5 @@
 package com.example.demo.level;
 
-import java.util.List;
-
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.Boss;
 import com.example.demo.projectiles.UserProjectile;
@@ -130,16 +128,10 @@ public class LevelThree extends LevelParent {
             if (event.getCode() == KeyCode.D) {
                 toggleUserPlaneVisibility();
             } else if (event.getCode() == KeyCode.SPACE) {
-                if (isPlaneVisible) { // Only allow shooting if the plane is visible
-                    double userX = getUser().getLayoutX() + getUser().getTranslateX();
-                    double userY = getUser().getLayoutY() + getUser().getTranslateY();
-                    double userWidth = getUser().getBoundsInParent().getWidth();
-    
-                    // Fire projectile from the front of the plane
-                    UserProjectile projectile = new UserProjectile(userX + userWidth, userY + Constant.PROJECTILE_OFFSET_Y);
-                    addProjectileToScene(projectile);
-                } else {
-                    System.out.println("Cannot shoot while the plane is invisible.");
+                // Delegate projectile firing to the UserPlane's fireProjectile method
+                ActiveActorDestructible projectile = getUser().fireProjectile();
+                if (projectile != null) { // Ensure a projectile was created
+                    addProjectileToScene((UserProjectile) projectile);
                 }
             }
         });
@@ -158,7 +150,7 @@ public class LevelThree extends LevelParent {
         if (!isPlaneVisible) {
             // Clear or stop projectiles when the user plane becomes invisible
             getUserProjectiles().forEach(projectile -> projectile.setVisible(false));
-            System.out.println("UserPlane is now invisible. Hiding projectiles.");
+            System.out.println("UserPlane is now invisible. ");
         } else {
             System.out.println("UserPlane is now visible.");
         }

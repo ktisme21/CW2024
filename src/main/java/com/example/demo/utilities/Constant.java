@@ -232,13 +232,10 @@ public class Constant {
     public static final String MESSAGE_LABEL_STYLE = "-fx-font-size: 30px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 10px;";
 
     // Positions for message display
-    public static final double CANNOT_SHOOT_MESSAGE_OFFSET_X = -50;
-    public static final double CANNOT_SHOOT_MESSAGE_OFFSET_Y = -30;
     public static final double INSTRUCTION_LABEL_X = 490;
     public static final double INSTRUCTION_LABEL_Y = 300;
 
     // Message display durations
-    public static final double CANNOT_SHOOT_MESSAGE_DURATION = 2; // In seconds
     public static final double INSTRUCTION_MESSAGE_DURATION = 5; // In seconds
 
 

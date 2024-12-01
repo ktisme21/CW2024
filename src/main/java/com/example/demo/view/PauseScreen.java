@@ -159,13 +159,16 @@ public class PauseScreen {
 
     private StackPane createResumeButton() {
         return createTextBarButton("Resume", () -> {
-            onResumeAction.run(); // Run the provided resume action
-            pauseStage.close(); // Close the pause stage
+            onResumeAction.run(); // Resume the game logic (timeline, etc.)
+            pauseStage.close(); // Close the pause screen
+            
+            // Explicitly set focus back to the game background
             Stage parentStage = (Stage) pauseStage.getOwner();
-            parentStage.getScene().getRoot().requestFocus(); // Regain focus for the game scene
+            if (parentStage.getScene() != null) {
+                parentStage.getScene().lookup("#background").requestFocus();
+            }
         });
-    }
-    
+    }    
 
     private StackPane createQuitButton() {
         return createTextBarButton("Main Menu", onQuitAction);
