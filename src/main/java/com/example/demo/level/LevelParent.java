@@ -122,8 +122,6 @@ public abstract class LevelParent {
         startTimer();
     }
 
-    
-
     private void startTimer() {
         gameTimer.start(); // Start the global timer
     }
@@ -136,7 +134,6 @@ public abstract class LevelParent {
         topRightLabel.setText(String.format(Constant.TIMER_FORMAT, minutes, seconds, millis));
     }
 
-
     public void startGame() {
         background.requestFocus();
         timeline.play();
@@ -146,20 +143,21 @@ public abstract class LevelParent {
     private void showPauseScreen() {
         if (timeline.getStatus() == Timeline.Status.RUNNING) {
             timeline.pause();
-            gameTimer.stop(); // Pause the game timer as well
+            gameTimer.stop(); // Pause the game timer
         }
     
         PauseScreen pauseScreen = new PauseScreen(
             (Stage) scene.getWindow(),
             () -> {
+                // Resume the game
                 timeline.play();
                 gameTimer.start(); // Resume the game timer
+                background.requestFocus(); // Ensure the game background regains focus
             },
             () -> returnToMainMenu((Stage) scene.getWindow())
         );
         pauseScreen.show();
     }
-    
 
     public void setLevelChangeListener(LevelChangeListener listener) {
         this.listener = listener;
@@ -204,11 +202,21 @@ public abstract class LevelParent {
         handleUserProjectileCollisions();
         handleEnemyProjectileCollisions();
         handlePlaneCollisions();
+        removeInvisibleProjectiles();
         removeAllDestroyedActors();
         updateKillCount();
         updateLevelView();
         checkIfGameOver();
         updateTopRightLabel(); // Update the timer
+    }
+
+    private void removeInvisibleProjectiles() {
+        userProjectiles.stream()
+            .filter(projectile -> !projectile.isVisible())
+            .forEach(projectile -> {
+                root.getChildren().remove(projectile);
+            });
+        userProjectiles.removeIf(projectile -> !projectile.isVisible()); // Remove from the list
     }
     
 
@@ -225,7 +233,10 @@ public abstract class LevelParent {
         background.setOnKeyPressed(this::handleKeyPressed);
         background.setOnKeyReleased(this::handleKeyReleased);
         root.getChildren().add(background);
+    
+        background.setOnMouseClicked(event -> background.requestFocus());
     }
+    
     
     private void handleKeyPressed(KeyEvent e) {
         KeyCode kc = e.getCode();
@@ -244,8 +255,12 @@ public abstract class LevelParent {
 
     private void fireProjectile() {
         ActiveActorDestructible projectile = user.fireProjectile();
-        root.getChildren().add(projectile);
-        userProjectiles.add(projectile);
+        if (projectile != null) { // Ensure projectile is not null
+            root.getChildren().add(projectile);
+            userProjectiles.add(projectile);
+        } else {
+            System.out.println("Projectile is null, not adding to root.");
+        }
     }
 
     private void generateEnemyFire() {
@@ -324,6 +339,10 @@ public abstract class LevelParent {
                 enemy.destroy();
             }
         }
+    }
+
+    public List<ActiveActorDestructible> getUserProjectiles() {
+        return userProjectiles;
     }
 
     private boolean hasEnemyExitedScreen(ActiveActorDestructible enemy) {

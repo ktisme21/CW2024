@@ -13,22 +13,27 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class GameStartScreen extends StackPane {
-    public GameStartScreen(Stage stage, EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onHowToPlay) {
-        // Set preferred size to match the stage dimensions
-        this.setPrefSize(stage.getWidth(), stage.getHeight());
-
+public class MainMenu extends StackPane {
+    public MainMenu(Stage stage, EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onQuit) {
+        // Bind the preferred size to the stage's current dimensions
+        this.prefWidthProperty().bind(stage.widthProperty());
+        this.prefHeightProperty().bind(stage.heightProperty());
+    
         // Apply background image
         BackgroundUtil.setBackgroundImage(this);
-
+    
         // Create layout for content
-        VBox contentBox = createContentBox(onStartGame, onSettings, onHowToPlay);
-
+        VBox contentBox = createContentBox(onStartGame, onSettings, onQuit);
+    
         // Add VBox to center of StackPane
         this.getChildren().add(contentBox);
+    
+        // Listen for stage resize events to ensure proper background adjustments
+        stage.widthProperty().addListener((observable, oldValue, newValue) -> BackgroundUtil.setBackgroundImage(this));
+        stage.heightProperty().addListener((observable, oldValue, newValue) -> BackgroundUtil.setBackgroundImage(this));
     }
 
-    private VBox createContentBox(EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onHowToPlay) {
+    private VBox createContentBox(EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onQuit) {
         VBox contentBox = new VBox(Constant.GAME_START_BUTTON_SPACING);
         contentBox.setAlignment(Pos.CENTER);
 
@@ -37,7 +42,7 @@ public class GameStartScreen extends StackPane {
             createTitle(),
             createButton("Start Game", onStartGame),
             createButton("Settings", onSettings),
-            createButton("How To Play", onHowToPlay)
+            createButton("Quit", onQuit)
         );
 
         return contentBox;

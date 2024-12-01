@@ -1,6 +1,10 @@
 package com.example.demo.level;
 
+import java.util.List;
+
+import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.Boss;
+import com.example.demo.projectiles.UserProjectile;
 import com.example.demo.utilities.Constant;
 import com.example.demo.view.LevelView;
 
@@ -99,41 +103,65 @@ public class LevelThree extends LevelParent {
     public Scene initializeScene() {
         Scene scene = super.initializeScene();
         setupKeyListeners(scene);
-        displayInstruction(); // Add this line to show the instruction
+        displayInstruction();
         return scene;
     }
 
     private void displayInstruction() {
-        Label instructionLabel = new Label("Press 'D' to Invisible!");
-        instructionLabel.setStyle("-fx-font-size: 40px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 5px;");
-        instructionLabel.setLayoutX(450); // Position near the top-left corner
-        instructionLabel.setLayoutY(280);
+        Label instructionLabel = new Label("Press 'D' to toggle visibility!");
+        instructionLabel.setStyle(Constant.MESSAGE_LABEL_STYLE);
     
-        // Add the instruction to the root
+        // Set predefined position
+        instructionLabel.setLayoutX(Constant.INSTRUCTION_LABEL_X);
+        instructionLabel.setLayoutY(Constant.INSTRUCTION_LABEL_Y);
+    
         getRoot().getChildren().add(instructionLabel);
     
-        // Remove the instruction after a few seconds
+        // Remove the message after the specified duration
         Timeline timeline = new Timeline(
-            new KeyFrame(Duration.seconds(5), event -> getRoot().getChildren().remove(instructionLabel))
+            new KeyFrame(Duration.seconds(Constant.INSTRUCTION_MESSAGE_DURATION),
+                event -> getRoot().getChildren().remove(instructionLabel))
         );
-        timeline.setCycleCount(1);
         timeline.play();
     }
-    
-
 
     private void setupKeyListeners(Scene scene) {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.D) {
                 toggleUserPlaneVisibility();
+            } else if (event.getCode() == KeyCode.SPACE) {
+                if (isPlaneVisible) { // Only allow shooting if the plane is visible
+                    double userX = getUser().getLayoutX() + getUser().getTranslateX();
+                    double userY = getUser().getLayoutY() + getUser().getTranslateY();
+                    double userWidth = getUser().getBoundsInParent().getWidth();
+    
+                    // Fire projectile from the front of the plane
+                    UserProjectile projectile = new UserProjectile(userX + userWidth, userY + Constant.PROJECTILE_OFFSET_Y);
+                    addProjectileToScene(projectile);
+                } else {
+                    System.out.println("Cannot shoot while the plane is invisible.");
+                }
             }
         });
+    }
+    
+    // Helper method to add projectile to the scene
+    private void addProjectileToScene(UserProjectile projectile) {
+        getRoot().getChildren().add(projectile);
+        getUserProjectiles().add(projectile);
     }
 
     private void toggleUserPlaneVisibility() {
         isPlaneVisible = !isPlaneVisible;
         getUser().setVisible(isPlaneVisible);
-        System.out.println(isPlaneVisible ? "UserPlane is now visible." : "UserPlane is now invisible.");
+    
+        if (!isPlaneVisible) {
+            // Clear or stop projectiles when the user plane becomes invisible
+            getUserProjectiles().forEach(projectile -> projectile.setVisible(false));
+            System.out.println("UserPlane is now invisible. Hiding projectiles.");
+        } else {
+            System.out.println("UserPlane is now visible.");
+        }
     }
 
     @Override

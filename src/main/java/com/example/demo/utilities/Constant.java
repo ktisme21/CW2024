@@ -18,15 +18,22 @@ public class Constant {
 
     public static final double SMALL_BUTTON_WIDTH = 100.0; // Width of button image
     public static final double SMALL_BUTTON_HEIGHT = 50.0; // Height of button image
-    public static final double RETURN_BUTTON_WIDTH = 200.0; // Width of button image
+    public static final double RETURN_BUTTON_WIDTH = 150.0; // Width of button image
     public static final double RETURN_BUTTON_HEIGHT = 60.0; // Height of button image
     public static final String BUTTON_TEXT_STYLE = "-fx-font-size: 18px; -fx-fill: white;"; // Text style
     public static final double BUTTON_TEXT_TRANSLATE_Y = -5.0; // Offset for text position in the text box
+
+    public static final String PAUSE_BUTTON_STYLE = "-fx-font-size: 16px;";
 
     // Background images for levels
     public static final String LEVEL_ONE_BACKGROUND = "/com/example/demo/images/background1.jpg";
     public static final String LEVEL_TWO_BACKGROUND = "/com/example/demo/images/background2.jpg";
     public static final String LEVEL_THREE_BACKGROUND = "/com/example/demo/images/background3.jpg";
+    public static final String BACKGROUND_IMAGE_6_PATH = "/com/example/demo/images/background6.jpg";
+
+    // Panel dimensions
+    public static final double SETTINGS_PANEL_WIDTH = 400;
+    public static final double SETTINGS_PANEL_HEIGHT = 300;
 
     // Enemy spawn properties
     public static final int LEVEL_ONE_TOTAL_ENEMIES = 5;
@@ -145,7 +152,7 @@ public class Constant {
     public static final double USER_PLANE_X_LEFT_BOUND = -30.0;
     public static final double USER_PLANE_X_RIGHT_BOUND = 1110.0;
     public static final double USER_PLANE_Y_UPPER_BOUND = -40.0;
-    public static final double USER_PLANE_Y_LOWER_BOUND = 600.0;
+    public static final double USER_PLANE_Y_LOWER_BOUND = 640.0;
     public static final double USER_PLANE_INITIAL_X = 5.0;
     public static final double USER_PLANE_INITIAL_Y = 300.0;
     public static final int USER_PLANE_IMAGE_HEIGHT = 150;
@@ -172,7 +179,7 @@ public class Constant {
     public static final String BACKGROUND_IMAGE_PATH = "/com/example/demo/images/background4.jpg";
     public static final String LEADERBOARD_STACKPANE_IMAGE_PATH = "/com/example/demo/images/stackpane.png";
 
-    // GameStartScreen Constants
+    // MainMenu Constants
     public static final double GAME_START_BUTTON_SPACING = 20.0;
     public static final String TITLE_STYLE = "-fx-font-size: 24px; -fx-font-weight: bold;";
     public static final String GAME_START_BUTTON_STYLE = "-fx-font-size: 18px;";
@@ -198,7 +205,7 @@ public class Constant {
 
     // PauseScreen constants
     public static final double PAUSE_SPACING = 20.0;
-    public static final double PAUSE_SCENE_WIDTH = 500.0;
+    public static final double PAUSE_SCENE_WIDTH = 600.0;
     public static final double PAUSE_SCENE_HEIGHT = 400.0;
     public static final double PAUSE_DEFAULT_VOLUME = 50.0;
     public static final String PAUSE_TITLE_STYLE = null;
@@ -209,12 +216,30 @@ public class Constant {
     public static final double SETTINGS_SPACING = 20.0;
     public static final double SETTINGS_DEFAULT_VOLUME = 50.0;
     public static final double SETTINGS_SLIDER_WIDTH = 300.0;
-    public static final String PAUSE_BUTTON_STYLE = null;
 
     // Timer Background Constants
     public static final double TIMER_BACKGROUND_WIDTH = 123; // Width of the background
     public static final double TIMER_BACKGROUND_HEIGHT = 30; // Height of the background
     public static final String TIMER_BACKGROUND_COLOR = "#00000080"; // Black with 50% opacity
     public static final double TIMER_BACKGROUND_CORNER_RADIUS = 10; // Rounded corner radius
+    public static final double SETTINGS_SCENE_WIDTH = 0;
+    public static final double SETTINGS_SCENE_HEIGHT = 0;
+
+    // In Constant.java
+    public static final double PROJECTILE_OFFSET_Y = -20; // Adjust as needed to align with plane height
+
+    // Font size and color for message labels
+    public static final String MESSAGE_LABEL_STYLE = "-fx-font-size: 30px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 10px;";
+
+    // Positions for message display
+    public static final double CANNOT_SHOOT_MESSAGE_OFFSET_X = -50;
+    public static final double CANNOT_SHOOT_MESSAGE_OFFSET_Y = -30;
+    public static final double INSTRUCTION_LABEL_X = 490;
+    public static final double INSTRUCTION_LABEL_Y = 300;
+
+    // Message display durations
+    public static final double CANNOT_SHOOT_MESSAGE_DURATION = 2; // In seconds
+    public static final double INSTRUCTION_MESSAGE_DURATION = 5; // In seconds
+
 
 }

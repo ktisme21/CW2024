@@ -36,19 +36,29 @@ public class PauseScreen {
         stage.initOwner(parentStage);
         stage.initStyle(StageStyle.UNDECORATED);
 
+        StackPane root = new StackPane();
         VBox contentBox = createContentBox();
-        Scene pauseScene = new Scene(contentBox, Constant.PAUSE_SCENE_WIDTH, Constant.PAUSE_SCENE_HEIGHT);
+        root.getChildren().addAll(createBackgroundImage(), contentBox);
+
+        Scene pauseScene = new Scene(root, Constant.PAUSE_SCENE_WIDTH, Constant.PAUSE_SCENE_HEIGHT);
         stage.setScene(pauseScene);
         stage.setResizable(false);
 
         return stage;
     }
 
+    private ImageView createBackgroundImage() {
+        Image backgroundImage = new Image(getClass().getResource(Constant.BACKGROUND_IMAGE_6_PATH).toExternalForm());
+        ImageView backgroundView = new ImageView(backgroundImage);
+        backgroundView.setFitWidth(Constant.PAUSE_SCENE_WIDTH);
+        backgroundView.setFitHeight(Constant.PAUSE_SCENE_HEIGHT);
+        backgroundView.setPreserveRatio(false); // Ensures full background coverage
+        return backgroundView;
+    }
+
     private VBox createContentBox() {
         VBox contentBox = new VBox(Constant.PAUSE_SPACING);
         contentBox.setAlignment(Pos.CENTER);
-
-        BackgroundUtil.setBackgroundImage(contentBox);
 
         contentBox.getChildren().addAll(
             createPauseLabel(),
@@ -148,8 +158,14 @@ public class PauseScreen {
     }
 
     private StackPane createResumeButton() {
-        return createTextBarButton("Resume", onResumeAction);
+        return createTextBarButton("Resume", () -> {
+            onResumeAction.run(); // Run the provided resume action
+            pauseStage.close(); // Close the pause stage
+            Stage parentStage = (Stage) pauseStage.getOwner();
+            parentStage.getScene().getRoot().requestFocus(); // Regain focus for the game scene
+        });
     }
+    
 
     private StackPane createQuitButton() {
         return createTextBarButton("Main Menu", onQuitAction);

@@ -2,13 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.manager.MusicPlayer;
 import com.example.demo.utilities.Constant;
-import com.example.demo.view.GameStartScreen;
+import com.example.demo.view.MainMenu;
 import com.example.demo.view.SettingsPage;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -25,6 +23,7 @@ public class Main extends Application {
     }
 
     private void setupStage(Stage stage) {
+        stage.initStyle(StageStyle.UNDECORATED); // Remove the top panel
         stage.setTitle(Constant.TITLE);
         stage.setResizable(false);
         stage.setFullScreenExitHint("");
@@ -33,12 +32,14 @@ public class Main extends Application {
         stage.setHeight(Constant.SCREEN_HEIGHT);
     }
 
+
+
     public void showMainMenu(Stage stage) {
-        GameStartScreen startScreen = new GameStartScreen(
+        MainMenu startScreen = new MainMenu(
             stage,
             event -> launchGame(stage),
             event -> showSettings(stage),
-            event -> showHowToPlay()
+            event -> stage.close()
         );
 
         Scene scene = new Scene(startScreen, Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
@@ -69,23 +70,6 @@ public class Main extends Application {
         // Set the scene and show the stage
         settingsStage.setScene(settingsScene);
         settingsStage.show();
-    }
-
-
-    private void showHowToPlay() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("How To Play");
-        alert.setHeaderText(null);
-        alert.setContentText("How To Play page is under construction.");
-        alert.showAndWait();
-    }
-
-    private Stage createPopupStage(String title, Stage ownerStage) {
-        Stage popupStage = new Stage();
-        popupStage.setTitle(title);
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.initOwner(ownerStage);
-        return popupStage;
     }
 
     public static void main(String[] args) {

@@ -33,7 +33,7 @@ public class LeaderBoard {
         StackPane leaderboardBox = createLeaderboardBox(manager);
 
         // Create buttons using the same design
-        StackPane backButton = createImageButton("Back to Main Menu", onBackToMain);
+        StackPane backButton = createImageButton("Main Menu", onBackToMain);
         StackPane restartButton = createImageButton("Restart", onRestart);
 
         HBox buttonBox = new HBox(Constant.LEADERBOARD_SPACING);

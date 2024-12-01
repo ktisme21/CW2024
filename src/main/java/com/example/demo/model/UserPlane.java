@@ -4,6 +4,10 @@ import com.example.demo.manager.MusicPlayer;
 import com.example.demo.projectiles.UserProjectile;
 import com.example.demo.utilities.Constant;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.control.Label;
+
 public class UserPlane extends FighterPlane {
 
 	private int velocityMultiplierX;
@@ -49,15 +53,35 @@ public class UserPlane extends FighterPlane {
 	public void updateActor() {
 		updatePosition();
 	}
-	
-	@Override
-    public ActiveActorDestructible fireProjectile() {
-        MusicPlayer.playShootingSound();
-        double projectileXPosition = getLayoutX() + getTranslateX() + Constant.USER_PROJECTILE_X_POSITION;
-        double projectileYPosition = getProjectileYPosition(Constant.USER_PROJECTILE_Y_POSITION_OFFSET);
-        return new UserProjectile(projectileXPosition, projectileYPosition);
-    }
 
+	@Override
+	public ActiveActorDestructible fireProjectile() {
+		if (!this.isVisible()) {
+			displayCannotShootMessage();
+			return null; // Return null to prevent firing when invisible
+		}
+		MusicPlayer.playShootingSound();
+		double projectileXPosition = getLayoutX() + getTranslateX() + Constant.USER_PROJECTILE_X_POSITION;
+		double projectileYPosition = getLayoutY() + getTranslateY() + Constant.USER_PROJECTILE_Y_POSITION_OFFSET;
+		return new UserProjectile(projectileXPosition, projectileYPosition);
+	}
+
+	private void displayCannotShootMessage() {
+		Label messageLabel = new Label("Cannot fire while the plane is invisible!");
+		messageLabel.setStyle("-fx-font-size: 30px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 10px;");
+		messageLabel.setLayoutX(getLayoutX() + getTranslateX() - 50); // Adjust position relative to the plane
+		messageLabel.setLayoutY(getLayoutY() + getTranslateY() - 30);
+
+		getParent().getChildrenUnmodifiable().add(messageLabel); // Add the label to the plane's parent node
+
+		// Remove the message after 2 seconds
+		Timeline timeline = new Timeline(
+			new KeyFrame(javafx.util.Duration.seconds(2), event -> getParent().getChildrenUnmodifiable().remove(messageLabel))
+		);
+		timeline.play();
+	}
+
+	
 	// Vertical and horizontal movement
 	public void moveUp() {
 		velocityMultiplierY = -1;
