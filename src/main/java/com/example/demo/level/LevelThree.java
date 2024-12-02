@@ -92,6 +92,13 @@ public class LevelThree extends LevelParent {
         spawnedBossCount++;
     }
 
+    private Boss createBossWithReducedHealth() {
+        Boss boss = new Boss();
+        boss.setHealth(20); // Set health to 20
+        boss.setShieldProbability(0.0); // No shield functionality
+        return boss;
+    }
+    
     @Override
     protected LevelView instantiateLevelView() {
         return new LevelView(getRoot(), Constant.PLAYER_INITIAL_HEALTH);
@@ -136,8 +143,7 @@ public class LevelThree extends LevelParent {
             }
         });
     }
-    
-    // Helper method to add projectile to the scene
+
     private void addProjectileToScene(UserProjectile projectile) {
         getRoot().getChildren().add(projectile);
         getUserProjectiles().add(projectile);

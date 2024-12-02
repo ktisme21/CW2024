@@ -27,17 +27,18 @@ public class PauseScreen {
     public PauseScreen(Stage parentStage, Runnable onResumeAction, Runnable onQuitAction) {
         this.onResumeAction = onResumeAction;
         this.onQuitAction = onQuitAction;
-        this.pauseStage = createPauseStage(parentStage);
+        this.pauseStage = initializePauseStage(parentStage);
     }
 
-    private Stage createPauseStage(Stage parentStage) {
+    private Stage initializePauseStage(Stage parentStage) {
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(parentStage);
         stage.initStyle(StageStyle.UNDECORATED);
 
         StackPane root = new StackPane();
-        VBox contentBox = createContentBox();
+        VBox contentBox = initializeContentBox();
+
         root.getChildren().addAll(createBackgroundImage(), contentBox);
 
         Scene pauseScene = new Scene(root, Constant.PAUSE_SCENE_WIDTH, Constant.PAUSE_SCENE_HEIGHT);
@@ -52,18 +53,18 @@ public class PauseScreen {
         ImageView backgroundView = new ImageView(backgroundImage);
         backgroundView.setFitWidth(Constant.PAUSE_SCENE_WIDTH);
         backgroundView.setFitHeight(Constant.PAUSE_SCENE_HEIGHT);
-        backgroundView.setPreserveRatio(false); // Ensures full background coverage
+        backgroundView.setPreserveRatio(false);
         return backgroundView;
     }
 
-    private VBox createContentBox() {
+    private VBox initializeContentBox() {
         VBox contentBox = new VBox(Constant.PAUSE_SPACING);
         contentBox.setAlignment(Pos.CENTER);
 
         contentBox.getChildren().addAll(
             createPauseLabel(),
-            createVolumeControl(),
-            createButtonRow()
+            initializeVolumeControl(),
+            initializeButtonRow()
         );
 
         return contentBox;
@@ -75,19 +76,11 @@ public class PauseScreen {
         return pauseLabel;
     }
 
-    private VBox createVolumeControl() {
+    private VBox initializeVolumeControl() {
         Label volumeLabel = new Label("Volume");
         volumeLabel.setStyle(Constant.PAUSE_BUTTON_STYLE);
 
-        Slider volumeSlider = new Slider(0, 100, Constant.PAUSE_DEFAULT_VOLUME);
-        volumeSlider.setShowTickLabels(true);
-        volumeSlider.setShowTickMarks(true);
-        volumeSlider.setPrefWidth(300);
-        volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (!isMuted) {
-                MusicPlayer.setVolume(newVal.doubleValue() / 100.0);
-            }
-        });
+        Slider volumeSlider = createVolumeSlider();
 
         Button decrementButton = createVolumeButton("-", volumeSlider, -5);
         Button incrementButton = createVolumeButton("+", volumeSlider, 5);
@@ -101,6 +94,19 @@ public class PauseScreen {
         volumeBox.setAlignment(Pos.CENTER);
 
         return volumeBox;
+    }
+
+    private Slider createVolumeSlider() {
+        Slider volumeSlider = new Slider(0, 100, Constant.PAUSE_DEFAULT_VOLUME);
+        volumeSlider.setShowTickLabels(true);
+        volumeSlider.setShowTickMarks(true);
+        volumeSlider.setPrefWidth(300);
+        volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!isMuted) {
+                MusicPlayer.setVolume(newVal.doubleValue() / 100.0);
+            }
+        });
+        return volumeSlider;
     }
 
     private Button createVolumeButton(String text, Slider volumeSlider, int adjustment) {
@@ -145,7 +151,7 @@ public class PauseScreen {
         }
     }
 
-    private HBox createButtonRow() {
+    private HBox initializeButtonRow() {
         HBox buttonRow = new HBox(Constant.PAUSE_SPACING);
         buttonRow.setAlignment(Pos.CENTER);
 
@@ -159,16 +165,15 @@ public class PauseScreen {
 
     private StackPane createResumeButton() {
         return createTextBarButton("Resume", () -> {
-            onResumeAction.run(); // Resume the game logic (timeline, etc.)
-            pauseStage.close(); // Close the pause screen
-            
-            // Explicitly set focus back to the game background
+            onResumeAction.run();
+            pauseStage.close();
+
             Stage parentStage = (Stage) pauseStage.getOwner();
             if (parentStage.getScene() != null) {
                 parentStage.getScene().lookup("#background").requestFocus();
             }
         });
-    }    
+    }
 
     private StackPane createQuitButton() {
         return createTextBarButton("Main Menu", onQuitAction);

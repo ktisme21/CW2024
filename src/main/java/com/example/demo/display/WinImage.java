@@ -22,12 +22,14 @@ public class WinImage extends Pane {
 
         // Initialize the instruction label
         instructionLabel = new Label("Press 'Q' to return to the leaderboard");
-        instructionLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 5px;");
+        instructionLabel.setStyle(Constant.WIN_IMAGE_LABEL_STYLE);
         instructionLabel.setVisible(false);
 
         // Position the label below the win image
-        instructionLabel.setLayoutX(xPosition + (Constant.WIN_IMAGE_WIDTH - instructionLabel.prefWidth(-1)) / 2);
-        instructionLabel.setLayoutY(yPosition + Constant.WIN_IMAGE_HEIGHT + 10);
+        double labelOffsetX = -350;
+        double labelOffsetY = -100;
+        instructionLabel.setLayoutX(xPosition + (Constant.WIN_IMAGE_WIDTH - instructionLabel.prefWidth(-1)) / 2 + labelOffsetX);
+        instructionLabel.setLayoutY(yPosition + Constant.WIN_IMAGE_HEIGHT + 10 + labelOffsetY);
 
         // Add both elements to the pane
         this.getChildren().addAll(winImage, instructionLabel);

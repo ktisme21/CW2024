@@ -48,9 +48,6 @@ public class Constant {
     public static final double SHIELD_OFFSET_X = -40.0;
     public static final double SHIELD_OFFSET_Y = 0.0;
 
-    // Level Three constants
-    public static final int LEVEL_THREE_TOTAL_BOSSES = 3;
-
     // Red container properties
     public static final String RED_CONTAINER_STROKE_COLOR = "RED";
     public static final String RED_CONTAINER_FILL_COLOR = "TRANSPARENT";
@@ -61,12 +58,6 @@ public class Constant {
     public static final String GAME_OVER_IMAGE = "/com/example/demo/images/gameover.png";
     public static final double GAME_OVER_IMAGE_WIDTH = 750;
     public static final double GAME_OVER_IMAGE_HEIGHT = 600;
-
-    // Health bar constants
-    public static final double HEALTH_BAR_WIDTH = 200;
-    public static final double HEALTH_BAR_HEIGHT = 20;
-    public static final String BACKGROUND_COLOR = "DARKRED"; // Health bar background
-    public static final String FOREGROUND_COLOR = "LIMEGREEN"; // Health bar foreground
 
     // Heart display constants
     public static final String HEART_IMAGE = "/com/example/demo/images/heart.png";
@@ -81,6 +72,8 @@ public class Constant {
     public static final String WIN_IMAGE = "/com/example/demo/images/youwin.png";
     public static final int WIN_IMAGE_WIDTH = 600;
     public static final int WIN_IMAGE_HEIGHT = 500;
+    public static final String WIN_IMAGE_LABEL_STYLE = "-fx-font-size: 18px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 6px;";
+    public static final double WIN_IMAGE_LABEL_PADDING = 10.0;
 
     // Screen adjustments
     public static final double SCREEN_HEIGHT_ADJUSTMENT = 150;
@@ -139,13 +132,17 @@ public class Constant {
     public static final double BOSS_SHIELD_PROBABILITY = 0.002;
     public static final int BOSS_IMAGE_HEIGHT = 300;
     public static final int BOSS_VERTICAL_VELOCITY = 8;
-    public static final int BOSS_HEALTH = 1;
+    public static final int BOSS_HEALTH = 50;
     public static final int BOSS_MOVE_FREQUENCY = 5;
     public static final int BOSS_MAX_FRAMES_WITH_SAME_MOVE = 10;
     public static final int BOSS_Y_POSITION_UPPER_BOUND = -100;
     public static final int BOSS_Y_POSITION_LOWER_BOUND = 475;
     public static final int BOSS_MAX_FRAMES_WITH_SHIELD = 500;
     public static final int ZERO = 0;
+
+    // Boss constants for LevelThree
+    public static final int LEVEL_THREE_BOSS_HEALTH = 20;
+    public static final int LEVEL_THREE_TOTAL_BOSSES = 3; // Example value
 
     // General UserPlane Constants
     public static final String USER_PLANE_IMAGE_NAME = "userplane.png";
@@ -194,10 +191,13 @@ public class Constant {
     // LevelView constants
     public static final double HEART_DISPLAY_X_POSITION = 15;
     public static final double HEART_DISPLAY_Y_POSITION = 20;
+    public static final double HEALTH_DISPLAY_X_POSITION = 15;
+    public static final double HEALTH_DISPLAY_Y_POSITION = 30;
     public static final int WIN_IMAGE_X_POSITION = 355;
     public static final int WIN_IMAGE_Y_POSITION = 175;
     public static final int LOSS_SCREEN_X_POSITION = 300;
     public static final int LOSS_SCREEN_Y_POSITION = 50;
+    public static final String HEALTH_BAR_STYLE = "-fx-font-size: 16px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 5px;";
 
     // Shield display constants
     public static final int SHIELD_X_POSITION = 1150;
@@ -237,6 +237,11 @@ public class Constant {
 
     // Message display durations
     public static final double INSTRUCTION_MESSAGE_DURATION = 5; // In seconds
+
+    // Initial Health
+    public static final int HEALTH_DISPLAY_INITIAL_VALUE = 10;
+    public static final int HEALTH_DISPLAY_INITIAL_VALUE_TWO = 50;
+    public static final int HEALTH_DISPLAY_INITIAL_VALUE_THREE = 60;
 
 
 }

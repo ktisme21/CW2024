@@ -12,6 +12,8 @@ public class Boss extends FighterPlane {
 	private int consecutiveMovesInSameDirection;
 	private int indexOfCurrentMove;
 	private int framesWithShieldActivated;
+	private int health;
+    private double shieldProbability;
 
 	public Boss() {
 		super(Constant.BOSS_PLANE_IMAGE, Constant.BOSS_IMAGE_HEIGHT, Constant.BOSS_INITIAL_X_POSITION,
@@ -21,8 +23,26 @@ public class Boss extends FighterPlane {
 		indexOfCurrentMove = 0;
 		framesWithShieldActivated = 0;
 		isShielded = false;
+		this.health = Constant.BOSS_HEALTH; // Default health
+        this.shieldProbability = Constant.BOSS_SHIELD_PROBABILITY;
 		initializeMovePattern();
 	}
+	
+	public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setShieldProbability(double shieldProbability) {
+        this.shieldProbability = shieldProbability;
+    }
+
+    public double getShieldProbability() {
+        return shieldProbability;
+    }
 
 	@Override
 	public void updatePosition() {
