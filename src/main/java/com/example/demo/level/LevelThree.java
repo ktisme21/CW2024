@@ -31,12 +31,6 @@ public class LevelThree extends LevelParent {
         initializeRedContainer();
     }
 
-    @Override
-    protected void initializeFriendlyUnits() {
-        getUser().addToParent(getRoot());
-        addRedContainerToRoot();
-    }
-
     private void initializeRedContainer() {
         redContainer = new Rectangle();
         redContainer.setStroke(Color.valueOf(Constant.RED_CONTAINER_STROKE_COLOR));
@@ -69,14 +63,9 @@ public class LevelThree extends LevelParent {
     }
 
     @Override
-    protected void checkIfGameOver() {
-        if (userIsDestroyed()) {
-            loseGame();
-        }
-
-        if (spawnedBossCount >= Constant.LEVEL_THREE_TOTAL_BOSSES && getCurrentNumberOfEnemies() == 0) {
-            winGame();
-        }
+    protected void initializeFriendlyUnits() {
+        getUser().addToParent(getRoot());
+        addRedContainerToRoot();
     }
 
     @Override
@@ -87,21 +76,25 @@ public class LevelThree extends LevelParent {
     }
 
     private void spawnBoss() {
-        Boss boss = new Boss();
+        Boss boss = createBossWithReducedHealth();
         addEnemyUnit(boss);
         spawnedBossCount++;
     }
 
     private Boss createBossWithReducedHealth() {
         Boss boss = new Boss();
-        boss.setHealth(20); // Set health to 20
-        boss.setShieldProbability(0.0); // No shield functionality
+        boss.setHealth(20); // Set boss health to 20
+        boss.setShieldProbability(0.0); // Disable shield functionality
         return boss;
     }
-    
+
     @Override
-    protected LevelView instantiateLevelView() {
-        return new LevelView(getRoot(), Constant.PLAYER_INITIAL_HEALTH);
+    protected void checkIfGameOver() {
+        if (userIsDestroyed()) {
+            loseGame();
+        } else if (spawnedBossCount >= Constant.LEVEL_THREE_TOTAL_BOSSES && getCurrentNumberOfEnemies() == 0) {
+            winGame();
+        }
     }
 
     @Override
@@ -115,14 +108,11 @@ public class LevelThree extends LevelParent {
     private void displayInstruction() {
         Label instructionLabel = new Label("Press 'D' to toggle visibility!");
         instructionLabel.setStyle(Constant.MESSAGE_LABEL_STYLE);
-    
-        // Set predefined position
         instructionLabel.setLayoutX(Constant.INSTRUCTION_LABEL_X);
         instructionLabel.setLayoutY(Constant.INSTRUCTION_LABEL_Y);
-    
+
         getRoot().getChildren().add(instructionLabel);
-    
-        // Remove the message after the specified duration
+
         Timeline timeline = new Timeline(
             new KeyFrame(Duration.seconds(Constant.INSTRUCTION_MESSAGE_DURATION),
                 event -> getRoot().getChildren().remove(instructionLabel))
@@ -135,13 +125,16 @@ public class LevelThree extends LevelParent {
             if (event.getCode() == KeyCode.D) {
                 toggleUserPlaneVisibility();
             } else if (event.getCode() == KeyCode.SPACE) {
-                // Delegate projectile firing to the UserPlane's fireProjectile method
-                ActiveActorDestructible projectile = getUser().fireProjectile();
-                if (projectile != null) { // Ensure a projectile was created
-                    addProjectileToScene((UserProjectile) projectile);
-                }
+                handleProjectileFiring();
             }
         });
+    }
+
+    private void handleProjectileFiring() {
+        ActiveActorDestructible projectile = getUser().fireProjectile();
+        if (projectile != null) {
+            addProjectileToScene((UserProjectile) projectile);
+        }
     }
 
     private void addProjectileToScene(UserProjectile projectile) {
@@ -152,11 +145,10 @@ public class LevelThree extends LevelParent {
     private void toggleUserPlaneVisibility() {
         isPlaneVisible = !isPlaneVisible;
         getUser().setVisible(isPlaneVisible);
-    
+
         if (!isPlaneVisible) {
-            // Clear or stop projectiles when the user plane becomes invisible
             getUserProjectiles().forEach(projectile -> projectile.setVisible(false));
-            System.out.println("UserPlane is now invisible. ");
+            System.out.println("UserPlane is now invisible.");
         } else {
             System.out.println("UserPlane is now visible.");
         }
@@ -166,5 +158,10 @@ public class LevelThree extends LevelParent {
     protected void updateScene() {
         super.updateScene();
         updateRedContainerPosition();
+    }
+
+    @Override
+    protected LevelView instantiateLevelView() {
+        return new LevelView(getRoot(), Constant.PLAYER_INITIAL_HEALTH);
     }
 }
