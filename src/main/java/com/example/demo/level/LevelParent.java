@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import com.example.demo.LevelChangeListener;
 import com.example.demo.controller.Main;
 import com.example.demo.manager.GlobalGameTimer;
+import com.example.demo.manager.InputManager;
 import com.example.demo.manager.LeaderboardManager;
+import com.example.demo.manager.ProjectileManager;
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.EnemyPlane;
 import com.example.demo.model.FighterPlane;
@@ -57,6 +59,9 @@ public abstract class LevelParent {
     private LevelView levelView;
     private boolean hasAlerted = false;
     private boolean isTransitioned = false;
+    private final InputManager inputManager;
+    private final ProjectileManager projectileManager;
+
 
     private final GlobalGameTimer gameTimer = GlobalGameTimer.getInstance(); // Use global timer instance
 
@@ -69,6 +74,8 @@ public abstract class LevelParent {
         this.enemyUnits = new ArrayList<>();
         this.userProjectiles = new ArrayList<>();
         this.enemyProjectiles = new ArrayList<>();
+        this.projectileManager = new ProjectileManager(userProjectiles, enemyProjectiles);
+        this.inputManager = new InputManager(user, projectileManager);
 
         this.background = new ImageView(new Image(getClass().getResource(backgroundImageName).toExternalForm()));
         this.screenHeight = screenHeight;
@@ -113,8 +120,9 @@ public abstract class LevelParent {
         background.setFocusTraversable(true);
         background.setFitHeight(screenHeight);
         background.setFitWidth(screenWidth);
-        background.setOnKeyPressed(this::handleKeyPressed);
-        background.setOnKeyReleased(this::handleKeyReleased);
+        background.setOnKeyPressed(e -> inputManager.handleKeyPressed(e, root));
+        background.setOnKeyReleased(inputManager::handleKeyReleased);
+
         root.getChildren().add(background);
     
         background.setOnMouseClicked(event -> background.requestFocus());
@@ -172,7 +180,7 @@ public abstract class LevelParent {
     protected void updateScene() {
         spawnEnemyUnits();
         updateActors();
-        generateEnemyFire();
+        projectileManager.generateEnemyFire(enemyUnits, root);
         updateNumberOfEnemies();
         handleEnemyPenetration();
         handleUserProjectileCollisions();
@@ -330,10 +338,12 @@ public abstract class LevelParent {
         currentNumberOfEnemies = enemyUnits.size();
     }
 
+    // Initialization
     public void setLevelChangeListener(LevelChangeListener listener) {
         this.listener = listener;
     }
 
+    // Game State Management
     public boolean isTransitioned() {
         return isTransitioned;
     }
@@ -363,42 +373,8 @@ public abstract class LevelParent {
         addQuitEventHandler(timeUsed);
     }
 
-    private void handleKeyPressed(KeyEvent e) {
-        KeyCode kc = e.getCode();
-        if (kc == Constant.KEY_UP) user.moveUp();
-        if (kc == Constant.KEY_DOWN) user.moveDown();
-        if (kc == Constant.KEY_LEFT) user.moveLeft();
-        if (kc == Constant.KEY_RIGHT) user.moveRight();
-        if (kc == Constant.KEY_FIRE) fireProjectile();
-    }
 
-    private void handleKeyReleased(KeyEvent e) {
-        KeyCode kc = e.getCode();
-        if (kc == Constant.KEY_UP || kc == Constant.KEY_DOWN) user.stopVertical();
-        if (kc == Constant.KEY_LEFT || kc == Constant.KEY_RIGHT) user.stopHorizontal();
-    }
-
-    private void fireProjectile() {
-        ActiveActorDestructible projectile = user.fireProjectile();
-        if (projectile != null) { // Ensure projectile is not null
-            root.getChildren().add(projectile);
-            userProjectiles.add(projectile);
-        } else {
-            System.out.println("Cannot shoot while the plane is invisible!");
-        }
-    }
-
-    private void generateEnemyFire() {
-        enemyUnits.forEach(enemy -> spawnEnemyProjectile(((FighterPlane) enemy).fireProjectile()));
-    }
-
-    private void spawnEnemyProjectile(ActiveActorDestructible projectile) {
-        if (projectile != null) {
-            root.getChildren().add(projectile);
-            enemyProjectiles.add(projectile);
-        }
-    }
-    
+    // Utility Methods
     public List<ActiveActorDestructible> getUserProjectiles() {
         return userProjectiles;
     }
@@ -437,6 +413,7 @@ public abstract class LevelParent {
         return String.format("%02d:%02d.%03d", minutes, seconds, millis);
     }
 
+    // Leaderboard and Navigation
     private void addQuitEventHandler(String timeUsed) {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.Q) {
