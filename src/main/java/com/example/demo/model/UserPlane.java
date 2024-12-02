@@ -4,10 +4,6 @@ import com.example.demo.manager.MusicPlayer;
 import com.example.demo.projectiles.UserProjectile;
 import com.example.demo.utilities.Constant;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.control.Label;
-
 public class UserPlane extends FighterPlane {
 
 	private int velocityMultiplierX;
