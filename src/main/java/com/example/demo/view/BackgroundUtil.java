@@ -5,8 +5,16 @@ import com.example.demo.utilities.Constant;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
+/**
+ * Utility class for setting background images on a JavaFX {@link Pane}.
+ */
 public class BackgroundUtil {
 
+    /**
+     * Sets the background image for the given {@link Pane}.
+     * 
+     * @param pane The {@link Pane} to which the background image will be applied.
+     */
     public static void setBackgroundImage(Pane pane) {
         Image backgroundImage = new Image(BackgroundUtil.class.getResource(Constant.BACKGROUND_IMAGE_PATH).toExternalForm());
 

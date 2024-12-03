@@ -15,7 +15,21 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.util.List;
 
+/**
+ * Displays the leaderboard screen, showing the player's score and top scores.
+ */
 public class LeaderBoard {
+
+    /**
+     * Constructs a {@code LeaderBoard} view.
+     * 
+     * @param primaryStage The main {@link Stage} to display the leaderboard.
+     * @param manager       The {@link LeaderboardManager} to fetch top scores.
+     * @param playerName    The name of the player.
+     * @param playerScore   The score of the player.
+     * @param onBackToMain  Event handler for returning to the main menu.
+     * @param onRestart     Event handler for restarting the game.
+     */
     public LeaderBoard(Stage primaryStage, LeaderboardManager manager, String playerName, int playerScore, EventHandler<MouseEvent> onBackToMain, EventHandler<MouseEvent> onRestart) {
         VBox contentBox = new VBox(Constant.LEADERBOARD_SPACING);
         contentBox.setAlignment(Pos.CENTER);
@@ -44,6 +58,12 @@ public class LeaderBoard {
         primaryStage.setScene(leaderboardScene);
     }
 
+    /**
+     * Formats a time score into a readable format (MM:SS:MS).
+     * 
+     * @param score The time score in milliseconds.
+     * @return The formatted time string.
+     */
     private String formatTime(int score) {
         int minutes = score / 60000;
         int seconds = (score / 1000) % 60;

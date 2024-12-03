@@ -4,6 +4,10 @@ import com.example.demo.manager.MusicPlayer;
 import com.example.demo.projectiles.UserProjectile;
 import com.example.demo.utilities.Constant;
 
+/**
+ * Represents the user's plane in the game.
+ * The user plane can move, fire projectiles, and take damage.
+ */
 public class UserPlane extends FighterPlane {
 
 	private int velocityMultiplierX;

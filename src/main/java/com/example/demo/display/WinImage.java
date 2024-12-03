@@ -6,11 +6,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
+/**
+ * The {@code WinImage} class manages the display of a win screen and its corresponding instructions.
+ */
 public class WinImage extends Pane {
 
     private final ImageView winImage;
     private final Label instructionLabel;
 
+    /**
+     * Constructs a new {@code WinImage} instance.
+     *
+     * @param xPosition The X-coordinate for the win image's position.
+     * @param yPosition The Y-coordinate for the win image's position.
+     */
     public WinImage(double xPosition, double yPosition) {
         // Initialize the win image
         winImage = new ImageView(new Image(getClass().getResource(Constant.WIN_IMAGE).toExternalForm()));
@@ -35,11 +44,17 @@ public class WinImage extends Pane {
         this.getChildren().addAll(winImage, instructionLabel);
     }
 
+    /**
+     * Displays the win image and the instruction label.
+     */
     public void showWinImage() {
         winImage.setVisible(true);
         instructionLabel.setVisible(true);
     }
 
+    /**
+     * Hides the win image and the instruction label.
+     */
     public void hideWinImage() {
         winImage.setVisible(false);
         instructionLabel.setVisible(false);

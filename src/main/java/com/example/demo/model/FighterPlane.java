@@ -1,5 +1,8 @@
 package com.example.demo.model;
-
+/**
+ * Abstract class representing a fighter plane in the game.
+ * Fighter planes have health, movement, and projectile capabilities.
+ */
 public abstract class FighterPlane extends ActiveActorDestructible {
 
 	private int health;

@@ -8,6 +8,9 @@ import com.example.demo.utilities.Constant;
 
 import javafx.scene.Group;
 
+/**
+ * Handles the visual representation of a game level, including heart display, win/lose images, and shields.
+ */
 public class LevelView {
 	
 	private final Group root;
@@ -16,6 +19,12 @@ public class LevelView {
 	private final GameOverImage gameOverImage;
 	private final HeartDisplay heartDisplay;
 	
+	/**
+     * Constructs a {@code LevelView} with specified number of hearts to display.
+     * 
+     * @param root The root {@link Group} of the level.
+     * @param heartsToDisplay Number of hearts to display.
+     */
 	public LevelView(Group root, int heartsToDisplay) {
         this.root = root;
         this.heartDisplay = new HeartDisplay(Constant.HEART_DISPLAY_X_POSITION, Constant.HEART_DISPLAY_Y_POSITION, heartsToDisplay);

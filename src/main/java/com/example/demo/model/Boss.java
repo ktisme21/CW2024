@@ -7,6 +7,10 @@ import java.util.List;
 import com.example.demo.projectiles.BossProjectile;
 import com.example.demo.utilities.Constant;
 
+/**
+ * Represents a boss plane in the game.
+ * Bosses have unique behaviors such as shields, health, and move patterns.
+ */
 public class Boss extends FighterPlane {
 
     private final List<Integer> movePattern;
@@ -17,6 +21,9 @@ public class Boss extends FighterPlane {
     private int health;
     private double shieldProbability;
 
+    /**
+     * Constructs a {@code Boss} instance with default settings.
+     */
     public Boss() {
         super(Constant.BOSS_PLANE_IMAGE, Constant.BOSS_IMAGE_HEIGHT, Constant.BOSS_INITIAL_X_POSITION,
               Constant.BOSS_INITIAL_Y_POSITION, Constant.BOSS_HEALTH);
@@ -33,11 +40,20 @@ public class Boss extends FighterPlane {
         initializeMovePattern();
     }
 
-    // Public Setters/Getters for Configurability
+    /**
+     * Sets the health of the boss.
+     *
+     * @param health The health value.
+     */
     public void setHealth(int health) {
         this.health = health;
     }
 
+    /**
+     * Returns the health of the boss.
+     *
+     * @return The current health.
+     */
     public int getHealth() {
         return health;
     }
@@ -104,6 +120,9 @@ public class Boss extends FighterPlane {
         }
     }
 
+    /**
+     * Activates or deactivates the shield.
+     */
     public boolean isShielded() {
         return isShielded;
     }

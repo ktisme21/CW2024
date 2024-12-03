@@ -16,10 +16,20 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Represents the settings page of the application.
+ * Provides options to adjust volume and mute/unmute the background music.
+ */
 public class SettingsPage extends StackPane {
 
     private boolean isMuted = false;
 
+    /**
+     * Constructs a new `SettingsPage`.
+     *
+     * @param stage The stage to display the settings page.
+     * @param onBackToMain Event handler to return to the main menu.
+     */
     public SettingsPage(Stage stage, EventHandler<MouseEvent> onBackToMain) {
         // Set background image with proper scaling to fill screen
         Image backgroundImage = new Image(getClass().getResource(Constant.BACKGROUND_IMAGE_6_PATH).toExternalForm());

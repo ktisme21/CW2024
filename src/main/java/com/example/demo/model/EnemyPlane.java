@@ -6,8 +6,18 @@ import com.example.demo.utilities.Constant;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 
+/**
+ * Represents an enemy plane in the game.
+ * Enemy planes move horizontally and can fire projectiles.
+ */
 public class EnemyPlane extends FighterPlane {
 
+	/**
+     * Constructs an {@code EnemyPlane} at the specified position.
+     *
+     * @param initialXPos Initial X position.
+     * @param initialYPos Initial Y position.
+     */
 	public EnemyPlane(double initialXPos, double initialYPos) {
 		super(Constant.ENEMY_PLANE_IMAGE, Constant.ENEMY_PLANE_IMAGE_HEIGHT, initialXPos, initialYPos, Constant.ENEMY_INITIAL_HEALTH);
 	}

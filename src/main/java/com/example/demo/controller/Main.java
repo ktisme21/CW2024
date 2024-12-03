@@ -11,10 +11,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * Main application class for the demo project
+ * Handles the initialization and navigation between different screens.
+ */
 public class Main extends Application {
 
     private Controller myController;
 
+    /**
+     * Starts the JavaFX application.
+     *
+     * @param stage The primary stage for the application.
+     */
     @Override
     public void start(Stage stage) {
         setupStage(stage);
@@ -22,6 +31,11 @@ public class Main extends Application {
         MusicPlayer.startMusic();
     }
 
+    /**
+     * Configures the main stage settings.
+     *
+     * @param stage The primary stage.
+     */
     private void setupStage(Stage stage) {
         stage.initStyle(StageStyle.UNDECORATED); // Remove the top panel
         stage.setTitle(Constant.TITLE);
@@ -30,6 +44,11 @@ public class Main extends Application {
         stage.setHeight(750); // Fixed height
     }
 
+    /**
+     * Displays the main menu screen.
+     *
+     * @param stage The primary stage.
+     */
     public void showMainMenu(Stage stage) {
         MainMenu startScreen = new MainMenu(
             stage,
@@ -43,6 +62,11 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * Launches the game by initializing the game controller.
+     *
+     * @param stage The primary stage.
+     */
     private void launchGame(Stage stage) {
         myController = new Controller(stage);
         try {
@@ -52,6 +76,11 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Displays the settings popup screen.
+     *
+     * @param ownerStage The parent stage for the settings popup.
+     */
     private void showSettings(Stage ownerStage) {
         // Create a new stage for the settings popup
         Stage settingsStage = new Stage();
@@ -68,6 +97,11 @@ public class Main extends Application {
         settingsStage.show();
     }
 
+    /**
+     * Main entry point for the Java application.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         launch();
     }

@@ -13,7 +13,20 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+/**
+ * Represents the main menu screen of the application.
+ * Provides options to start the game, open settings, or quit.
+ */
 public class MainMenu extends StackPane {
+
+    /**
+     * Constructs a new `MainMenu`.
+     *
+     * @param stage The primary stage of the application.
+     * @param onStartGame Event handler for starting the game.
+     * @param onSettings Event handler for opening the settings.
+     * @param onQuit Event handler for quitting the application.
+     */
     public MainMenu(Stage stage, EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onQuit) {
         // Bind the preferred size to the stage's current dimensions
         this.prefWidthProperty().bind(stage.widthProperty());
@@ -25,9 +38,9 @@ public class MainMenu extends StackPane {
         // Create layout for content
         VBox contentBox = createContentBox(onStartGame, onSettings, onQuit);
     
-        StackPane.setAlignment(contentBox, Pos.CENTER);
         // Add VBox to center of StackPane
         this.getChildren().add(contentBox);
+        StackPane.setAlignment(contentBox, Pos.CENTER);
     
         // Listen for stage resize events to ensure proper background adjustments
         stage.widthProperty().addListener((observable, oldValue, newValue) -> BackgroundUtil.setBackgroundImage(this));
@@ -37,6 +50,9 @@ public class MainMenu extends StackPane {
     private VBox createContentBox(EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onQuit) {
         VBox contentBox = new VBox(Constant.GAME_START_BUTTON_SPACING);
         contentBox.setAlignment(Pos.CENTER);
+
+        contentBox.setPrefWidth(1300);
+        contentBox.setPrefHeight(750);
 
         // Add title and buttons to the layout
         contentBox.getChildren().addAll(

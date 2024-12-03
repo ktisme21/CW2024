@@ -1,4 +1,4 @@
-package com.example.demo.level;
+package com.example.demo.manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,11 +6,7 @@ import java.util.stream.Collectors;
 
 import com.example.demo.LevelChangeListener;
 import com.example.demo.controller.Main;
-import com.example.demo.manager.GlobalGameTimer;
-import com.example.demo.manager.InputManager;
-import com.example.demo.manager.LeaderboardManager;
-import com.example.demo.manager.ProjectileManager;
-import com.example.demo.manager.UIManager;
+import com.example.demo.level.LevelOne;
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.EnemyPlane;
 import com.example.demo.model.UserPlane;
@@ -29,7 +25,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public abstract class LevelParent {
+public abstract class LevelManager {
 
     private LevelChangeListener listener;
 
@@ -55,10 +51,19 @@ public abstract class LevelParent {
     private final InputManager inputManager;
     private final ProjectileManager projectileManager;
     private UIManager uiManager;
+    private final CollisionManager collisionManager;
 
     private final GlobalGameTimer gameTimer = GlobalGameTimer.getInstance(); // Use global timer instance
 
-    public LevelParent(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
+    /**
+     * Initializes the level with specified parameters.
+     *
+     * @param backgroundImageName the name of the background image file.
+     * @param screenHeight        the height of the screen.
+     * @param screenWidth         the width of the screen.
+     * @param playerInitialHealth the initial health of the player's plane.
+     */
+    public LevelManager(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
         this.root = new Group();
         this.scene = new Scene(root, screenWidth, screenHeight);
         this.timeline = new Timeline();
@@ -69,6 +74,7 @@ public abstract class LevelParent {
         this.enemyProjectiles = new ArrayList<>();
         this.projectileManager = new ProjectileManager(userProjectiles, enemyProjectiles);
         this.inputManager = new InputManager(user, projectileManager);
+        this.collisionManager = new CollisionManager();
 
         this.background = new ImageView(new Image(getClass().getResource(backgroundImageName).toExternalForm()));
         this.screenHeight = screenHeight;
@@ -82,14 +88,31 @@ public abstract class LevelParent {
         friendlyUnits.add(user);
     }
 
-    // Abstract Methods
+    /**
+     * Abstract method for checking game over conditions. 
+     * Must be implemented by subclasses.
+     */
     protected abstract void checkIfGameOver();
 
+    /**
+     * Abstract method for spawning enemy units.
+     * Must be implemented by subclasses.
+     */
     protected abstract void spawnEnemyUnits();
 
+    /**
+     * Abstract method for initializing the level's UI view.
+     * Must be implemented by subclasses.
+     *
+     * @return the LevelView instance for the level.
+     */
     protected abstract LevelView instantiateLevelView();
 
-    // Initialization Methods
+    /**
+     * Initializes the scene for the level, including background and UI components.
+     *
+     * @return the initialized scene.
+     */
     public Scene initializeScene() {
         initializeBackground();
         initializeFriendlyUnits();
@@ -113,13 +136,18 @@ public abstract class LevelParent {
         root.getChildren().add(background);
     }
 
-    // Gameplay Methods
+    /**
+     * Starts the game, including background focus, timeline, and game timer.
+     */
     public void startGame() {
         background.requestFocus();
         timeline.play();
         GlobalGameTimer.getInstance().start();
     }
 
+    /**
+     * Handles updates to game state during each frame of the game loop.
+     */
     protected void updateScene() {
         spawnEnemyUnits();
         updateActors();
@@ -151,8 +179,8 @@ public abstract class LevelParent {
     }
 
     private void removeInvisibleProjectiles() {
-    projectileManager.removeInvisibleProjectiles(root);
-}
+        projectileManager.removeInvisibleProjectiles(root);
+    }
 
     private void removeAllDestroyedActors() {
         removeDestroyedActors(friendlyUnits);
@@ -179,31 +207,15 @@ public abstract class LevelParent {
 
     // Collision Handling Methods
     private void handlePlaneCollisions() {
-        handleCollisions(friendlyUnits, enemyUnits);
+        collisionManager.handlePlaneCollisions(friendlyUnits, enemyUnits);
     }
-
+    
     private void handleUserProjectileCollisions() {
-        handleCollisions(userProjectiles, enemyUnits);
+        collisionManager.handleUserProjectileCollisions(userProjectiles, enemyUnits);
     }
-
+    
     private void handleEnemyProjectileCollisions() {
-        for (ActiveActorDestructible projectile : new ArrayList<>(enemyProjectiles)) {
-            if (getUser().isVisible() && projectile.getCollisionBounds().intersects(getUser().getCollisionBounds())) {
-                getUser().takeDamage(); // Deduct health only if the UserPlane is visible
-                projectile.destroy();   // Destroy the projectile on collision
-            }
-        }
-    }
-
-    private void handleCollisions(List<ActiveActorDestructible> actors1, List<ActiveActorDestructible> actors2) {
-        for (ActiveActorDestructible actor1 : actors1) {
-            for (ActiveActorDestructible actor2 : actors2) { // Use custom collision bounds for both actors
-                if (actor1.getCollisionBounds().intersects(actor2.getCollisionBounds())) {
-                    actor1.takeDamage();
-                    actor2.takeDamage();
-                }
-            }
-        }
+        collisionManager.handleEnemyProjectileCollisions(enemyProjectiles, getUser(), root);
     }
 
     // UI Handling
@@ -231,7 +243,6 @@ public abstract class LevelParent {
         String elapsedTime = gameTimer.formatElapsedTime();
         uiManager.updateTimer(elapsedTime);
     }
-    
 
     // Utilities
     private boolean hasEnemyExitedScreen(ActiveActorDestructible enemy) {
@@ -307,7 +318,6 @@ public abstract class LevelParent {
         addQuitEventHandler(timeUsed);
     }
 
-    // Utility Methods
     public List<ActiveActorDestructible> getUserProjectiles() {
         return userProjectiles;
     }
@@ -342,7 +352,6 @@ public abstract class LevelParent {
         return gameTimer.formatElapsedTime();
     }
 
-    // Leaderboard and Navigation
     private void addQuitEventHandler(String timeUsed) {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.Q) {
@@ -393,5 +402,4 @@ public abstract class LevelParent {
             root.getChildren().add(enemy);
         }
     }
-
 }

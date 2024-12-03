@@ -17,6 +17,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * Represents the pause screen during gameplay.
+ * Allows players to adjust volume, mute/unmute, or resume/quit the game.
+ */
 public class PauseScreen {
 
     private final Stage pauseStage;
@@ -24,6 +28,13 @@ public class PauseScreen {
     private final Runnable onQuitAction;
     private boolean isMuted = false;
 
+    /**
+     * Constructs a new `PauseScreen`.
+     *
+     * @param parentStage The stage to attach the pause screen to.
+     * @param onResumeAction Runnable action to resume the game.
+     * @param onQuitAction Runnable action to quit the game.
+     */
     public PauseScreen(Stage parentStage, Runnable onResumeAction, Runnable onQuitAction) {
         this.onResumeAction = onResumeAction;
         this.onQuitAction = onQuitAction;
@@ -201,6 +212,9 @@ public class PauseScreen {
         return buttonPane;
     }
 
+    /**
+     * Displays the pause screen.
+     */
     public void show() {
         pauseStage.show();
     }

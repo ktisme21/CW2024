@@ -2,19 +2,33 @@ package com.example.demo.utilities;
 
 import javafx.scene.input.KeyCode;
 
+/**
+ * Provides a centralized location for storing constants used throughout the application.
+ * This class includes constants for screen dimensions, game settings, UI styling,
+ * images, enemy and player properties, and level configurations.
+ *
+ * <p>Note: All constants are declared as static and final.</p>
+ */
 public class Constant {
     // General constants
+    /** The width of the game screen. */
     public static final int SCREEN_WIDTH = 1300;
+    /** The height of the game screen. */
     public static final int SCREEN_HEIGHT = 750;
+    /** The title of the game. */
     public static final String TITLE = "Sky Battle";
-
+    /** The initial health of the player. */
     public static final int PLAYER_INITIAL_HEALTH = 5;
 
     // Button image and styling
-    public static final String TEXTBOX_IMAGE_PATH = "/com/example/demo/icon/textbar.png"; // Path to text box image
+    /** Path to the default text box image for buttons. */
+    public static final String TEXTBOX_IMAGE_PATH = "/com/example/demo/icon/textbar.png";
+    /** Path to an alternate text box image for buttons. */
     public static final String TEXTBAR2_IMAGE_PATH = "/com/example/demo/icon/textbar2.png";
-    public static final double BUTTON_IMAGE_WIDTH = 300.0; // Width of button image
-    public static final double BUTTON_IMAGE_HEIGHT = 60.0; // Height of button image
+    /** Width of the button image. */
+    public static final double BUTTON_IMAGE_WIDTH = 300.0;
+    /** Height of the button image. */
+    public static final double BUTTON_IMAGE_HEIGHT = 60.0;
 
     public static final double SMALL_BUTTON_WIDTH = 100.0; // Width of button image
     public static final double SMALL_BUTTON_HEIGHT = 50.0; // Height of button image
@@ -25,47 +39,55 @@ public class Constant {
 
     public static final String PAUSE_BUTTON_STYLE = "-fx-font-size: 16px;";
 
-    // Background images for levels
+    // Background Images for Levels
+    /** Path to the background image for Level 1. */
     public static final String LEVEL_ONE_BACKGROUND = "/com/example/demo/images/background1.jpg";
+    /** Path to the background image for Level 2. */
     public static final String LEVEL_TWO_BACKGROUND = "/com/example/demo/images/background2.jpg";
+    /** Path to the background image for Level 3. */
     public static final String LEVEL_THREE_BACKGROUND = "/com/example/demo/images/background3.jpg";
     public static final String BACKGROUND_IMAGE_6_PATH = "/com/example/demo/images/background6.jpg";
 
-    // Panel dimensions
-    public static final double SETTINGS_PANEL_WIDTH = 400;
-    public static final double SETTINGS_PANEL_HEIGHT = 300;
-
     // Enemy spawn properties
+    /** Number of enemies in Level 1. */
     public static final int LEVEL_ONE_TOTAL_ENEMIES = 5;
     public static final double LEVEL_ONE_ENEMY_SPAWN_PROBABILITY = 0.20;
+    /** Kill count required to advance from Level 1. */
     public static final int LEVEL_ONE_KILLS_TO_ADVANCE = 10;
 
     // Level transitions
+    /** Class name of the next level after Level 1. */
     public static final String LEVEL_ONE_NEXT = "com.example.demo.level.LevelTwo";
     public static final String LEVEL_TWO_NEXT = "com.example.demo.level.LevelThree";
 
-    // Shield properties
-    public static final double SHIELD_OFFSET_X = -40.0;
-    public static final double SHIELD_OFFSET_Y = 0.0;
-
-    // Red container properties
+    // Shield Properties
+    /** Stroke color for the red container surrounding the user plane. */
     public static final String RED_CONTAINER_STROKE_COLOR = "RED";
+    /** Fill color for the red container surrounding the user plane. */
     public static final String RED_CONTAINER_FILL_COLOR = "TRANSPARENT";
     public static final double RED_CONTAINER_STROKE_WIDTH = 2.0;
     public static final double RED_CONTAINER_SHRINK_FACTOR = 0.5;
 
-    // Game over image constants
+    // Game Over Image Constants
+    /** Path to the game over image. */
     public static final String GAME_OVER_IMAGE = "/com/example/demo/images/gameover.png";
+    /** Width of the game over image. */
     public static final double GAME_OVER_IMAGE_WIDTH = 750;
+    /** Height of the game over image. */
     public static final double GAME_OVER_IMAGE_HEIGHT = 600;
 
-    // Heart display constants
+    // Heart Display Constants
+    /** Path to the heart image for health display. */
     public static final String HEART_IMAGE = "/com/example/demo/images/heart.png";
+    /** Height of the heart image. */
     public static final int HEART_HEIGHT = 50;
+    /** Index of the first heart in the display. */
     public static final int FIRST_ITEM_INDEX = 0;
 
-    // Shield image constants
+    // Shield Image Constants
+    /** Path to the shield image. */
     public static final String SHIELD_IMAGE = "/com/example/demo/images/shield.png";
+    /** Size of the shield image. */
     public static final int SHIELD_SIZE = 200;
 
     // Win image constants
@@ -88,8 +110,11 @@ public class Constant {
     public static final double PAUSE_BUTTON_Y_POSITION = 20;  // Distance from the top
 
     // Timer Label Styling and Position
+    /** X position of the timer label. */
     public static final double TIMER_LABEL_X_POSITION = 225; // Distance from the right edge
+    /** Y position of the timer label. */
     public static final double TIMER_LABEL_Y_POSITION = 35;  // Distance from the top
+    /** Styling for the timer label. */
     public static final String TIMER_LABEL_STYLE = "-fx-font-size: 14px; -fx-text-fill: white;";
 
     // Timer formatting
@@ -101,12 +126,23 @@ public class Constant {
     // Player name (default for leaderboard)
     public static final String DEFAULT_PLAYER_NAME = "Player";
 
-    // Key mappings
+    // Key Mappings
+    /** Key for moving up. */
     public static final KeyCode KEY_UP = KeyCode.UP;
+
+    /** Key for moving down. */
     public static final KeyCode KEY_DOWN = KeyCode.DOWN;
+
+    /** Key for moving left. */
     public static final KeyCode KEY_LEFT = KeyCode.LEFT;
+
+    /** Key for moving right. */
     public static final KeyCode KEY_RIGHT = KeyCode.RIGHT;
+
+    /** Key for firing projectiles. */
     public static final KeyCode KEY_FIRE = KeyCode.SPACE;
+
+    /** Key for quitting the game. */
     public static final KeyCode KEY_QUIT = KeyCode.Q;
 
     //Active Actor Constants
@@ -124,6 +160,7 @@ public class Constant {
     public static final double ENEMY_HORIZONTAL_VELOCITY = -6;
 
     // General Boss Constants
+    /** Image name for the boss plane. */
     public static final String BOSS_PLANE_IMAGE = "bossplane.png";
     public static final double BOSS_INITIAL_X_POSITION = 1000.0;
     public static final double BOSS_INITIAL_Y_POSITION = 400.0;
@@ -132,7 +169,8 @@ public class Constant {
     public static final double BOSS_SHIELD_PROBABILITY = 0.002;
     public static final int BOSS_IMAGE_HEIGHT = 300;
     public static final int BOSS_VERTICAL_VELOCITY = 8;
-    public static final int BOSS_HEALTH = 50;
+    /** Initial health of the boss. */
+    public static final int BOSS_HEALTH = 1;
     public static final int BOSS_MOVE_FREQUENCY = 5;
     public static final int BOSS_MAX_FRAMES_WITH_SAME_MOVE = 10;
     public static final int BOSS_Y_POSITION_UPPER_BOUND = -100;
@@ -150,7 +188,9 @@ public class Constant {
     public static final double USER_PLANE_X_RIGHT_BOUND = 1110.0;
     public static final double USER_PLANE_Y_UPPER_BOUND = -40.0;
     public static final double USER_PLANE_Y_LOWER_BOUND = 640.0;
+    /** Initial X position of the user plane. */
     public static final double USER_PLANE_INITIAL_X = 5.0;
+    /** Initial Y position of the user plane. */
     public static final double USER_PLANE_INITIAL_Y = 300.0;
     public static final int USER_PLANE_IMAGE_HEIGHT = 150;
     public static final int USER_PLANE_VERTICAL_VELOCITY = 8;
@@ -159,7 +199,9 @@ public class Constant {
     public static final int USER_PROJECTILE_Y_POSITION_OFFSET = 20;
 
     // General Projectile Constants
+    /** Image name for the boss plane. */
     public static final String BOSS_PROJECTILE_IMAGE = "fireball.png";
+    /** Height of the boss projectile image. */
     public static final int BOSS_PROJECTILE_IMAGE_HEIGHT = 75;
     public static final int BOSS_PROJECTILE_HORIZONTAL_VELOCITY = -15;
     public static final int BOSS_PROJECTILE_INITIAL_X = 950;
@@ -222,11 +264,6 @@ public class Constant {
     public static final double TIMER_BACKGROUND_HEIGHT = 30; // Height of the background
     public static final String TIMER_BACKGROUND_COLOR = "#00000080"; // Black with 50% opacity
     public static final double TIMER_BACKGROUND_CORNER_RADIUS = 10; // Rounded corner radius
-    public static final double SETTINGS_SCENE_WIDTH = 0;
-    public static final double SETTINGS_SCENE_HEIGHT = 0;
-
-    // In Constant.java
-    public static final double PROJECTILE_OFFSET_Y = -20; // Adjust as needed to align with plane height
 
     // Font size and color for message labels
     public static final String MESSAGE_LABEL_STYLE = "-fx-font-size: 30px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.5); -fx-padding: 10px;";
@@ -237,11 +274,5 @@ public class Constant {
 
     // Message display durations
     public static final double INSTRUCTION_MESSAGE_DURATION = 5; // In seconds
-
-    // Initial Health
-    public static final int HEALTH_DISPLAY_INITIAL_VALUE = 10;
-    public static final int HEALTH_DISPLAY_INITIAL_VALUE_TWO = 50;
-    public static final int HEALTH_DISPLAY_INITIAL_VALUE_THREE = 60;
-
 
 }
