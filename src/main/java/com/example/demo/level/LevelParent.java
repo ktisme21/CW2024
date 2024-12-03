@@ -10,11 +10,10 @@ import com.example.demo.manager.GlobalGameTimer;
 import com.example.demo.manager.InputManager;
 import com.example.demo.manager.LeaderboardManager;
 import com.example.demo.manager.ProjectileManager;
+import com.example.demo.manager.UIManager;
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.EnemyPlane;
-import com.example.demo.model.FighterPlane;
 import com.example.demo.model.UserPlane;
-import com.example.demo.projectiles.UserProjectile;
 import com.example.demo.utilities.Constant;
 import com.example.demo.view.LeaderBoard;
 import com.example.demo.view.LevelView;
@@ -24,14 +23,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -54,14 +48,13 @@ public abstract class LevelParent {
     private final List<ActiveActorDestructible> userProjectiles;
     private final List<ActiveActorDestructible> enemyProjectiles;
 
-    private Label topRightLabel;
     private int currentNumberOfEnemies;
     private LevelView levelView;
     private boolean hasAlerted = false;
     private boolean isTransitioned = false;
     private final InputManager inputManager;
     private final ProjectileManager projectileManager;
-
+    private UIManager uiManager;
 
     private final GlobalGameTimer gameTimer = GlobalGameTimer.getInstance(); // Use global timer instance
 
@@ -101,7 +94,7 @@ public abstract class LevelParent {
         initializeBackground();
         initializeFriendlyUnits();
         levelView.showHeartDisplay();
-        initializeTopRightUI();
+        uiManager = new UIManager(root, screenWidth, this::showPauseScreen);
         return scene;
     }
 
@@ -116,59 +109,9 @@ public abstract class LevelParent {
     }
 
     private void initializeBackground() {
-        background.setId("background"); // Add an ID for lookup
-        background.setFocusTraversable(true);
-        background.setFitHeight(screenHeight);
-        background.setFitWidth(screenWidth);
-        background.setOnKeyPressed(e -> inputManager.handleKeyPressed(e, root));
-        background.setOnKeyReleased(inputManager::handleKeyReleased);
-
+        inputManager.setupInputHandlers(background, root, screenHeight, screenWidth);
         root.getChildren().add(background);
-    
-        background.setOnMouseClicked(event -> background.requestFocus());
-    }    
-
-    private void initializeTopRightUI() {
-        // Create the Pause button with an image
-        Image settingsImage = new Image(getClass().getResource("/com/example/demo/buttons/settings.png").toExternalForm());
-        ImageView settingsImageView = new ImageView(settingsImage);
-        settingsImageView.setFitWidth(Constant.PAUSE_BUTTON_WIDTH); // Set desired button width
-        settingsImageView.setFitHeight(Constant.PAUSE_BUTTON_HEIGHT); // Set desired button height
-
-        Button topRightButton = new Button();
-        topRightButton.setGraphic(settingsImageView);
-        topRightButton.setStyle("-fx-background-color: transparent;"); // Remove default button styling
-
-        // Position the Pause button
-        topRightButton.setLayoutX(screenWidth - Constant.PAUSE_BUTTON_X_POSITION);
-        topRightButton.setLayoutY(Constant.PAUSE_BUTTON_Y_POSITION);
-
-        // Add action to the Pause button
-        topRightButton.setOnAction(event -> showPauseScreen());
-
-        // Create the Label for the timer
-        topRightLabel = new Label("Timer: 00:00:00");
-        topRightLabel.setStyle(Constant.TIMER_LABEL_STYLE);
-        topRightLabel.setLayoutX(screenWidth - Constant.TIMER_LABEL_X_POSITION);
-        topRightLabel.setLayoutY(Constant.TIMER_LABEL_Y_POSITION);
-
-        // Create a semi-transparent rectangle background for the timer
-        Rectangle timerBackground = new Rectangle();
-        timerBackground.setWidth(Constant.TIMER_BACKGROUND_WIDTH);
-        timerBackground.setHeight(Constant.TIMER_BACKGROUND_HEIGHT);
-        timerBackground.setFill(Color.web(Constant.TIMER_BACKGROUND_COLOR)); // Semi-transparent color
-        timerBackground.setArcWidth(Constant.TIMER_BACKGROUND_CORNER_RADIUS); // Rounded corners
-        timerBackground.setArcHeight(Constant.TIMER_BACKGROUND_CORNER_RADIUS);
-        timerBackground.setLayoutX(screenWidth - Constant.TIMER_LABEL_X_POSITION - 10); // Adjust for padding
-        timerBackground.setLayoutY(Constant.TIMER_LABEL_Y_POSITION - 5); // Adjust for padding
-
-        // Add the button, rectangle, and label to the root
-        root.getChildren().addAll(topRightButton, timerBackground, topRightLabel);
-
-        // Start the timer
-        startTimer();
     }
-
 
     // Gameplay Methods
     public void startGame() {
@@ -208,11 +151,8 @@ public abstract class LevelParent {
     }
 
     private void removeInvisibleProjectiles() {
-        userProjectiles.stream()
-            .filter(projectile -> !projectile.isVisible())
-            .forEach(projectile -> root.getChildren().remove(projectile));
-        userProjectiles.removeIf(projectile -> !projectile.isVisible());
-    }
+    projectileManager.removeInvisibleProjectiles(root);
+}
 
     private void removeAllDestroyedActors() {
         removeDestroyedActors(friendlyUnits);
@@ -220,7 +160,7 @@ public abstract class LevelParent {
         removeDestroyedActors(userProjectiles);
         removeDestroyedActors(enemyProjectiles);
     }
-    
+
     private void handleEnemyPenetration() {
         for (ActiveActorDestructible enemy : new ArrayList<>(enemyUnits)) {
             if (enemy instanceof EnemyPlane && hasEnemyExitedScreen(enemy)) {
@@ -288,16 +228,10 @@ public abstract class LevelParent {
     }
 
     private void updateTopRightLabel() {
-        Duration elapsedTime = gameTimer.getElapsedTime();
-        int minutes = (int) elapsedTime.toMinutes();
-        int seconds = (int) elapsedTime.toSeconds() % 60;
-        int millis = (int) (elapsedTime.toMillis() % 1000);
-        topRightLabel.setText(String.format(Constant.TIMER_FORMAT, minutes, seconds, millis));
+        String elapsedTime = gameTimer.formatElapsedTime();
+        uiManager.updateTimer(elapsedTime);
     }
-
-    private void startTimer() {
-        gameTimer.start();
-    }
+    
 
     // Utilities
     private boolean hasEnemyExitedScreen(ActiveActorDestructible enemy) {
@@ -373,7 +307,6 @@ public abstract class LevelParent {
         addQuitEventHandler(timeUsed);
     }
 
-
     // Utility Methods
     public List<ActiveActorDestructible> getUserProjectiles() {
         return userProjectiles;
@@ -406,11 +339,7 @@ public abstract class LevelParent {
     }
 
     private String formatElapsedTime() {
-        Duration elapsedTime = gameTimer.getElapsedTime();
-        int minutes = (int) elapsedTime.toMinutes();
-        int seconds = (int) elapsedTime.toSeconds() % 60;
-        int millis = (int) (elapsedTime.toMillis() % 1000);
-        return String.format("%02d:%02d.%03d", minutes, seconds, millis);
+        return gameTimer.formatElapsedTime();
     }
 
     // Leaderboard and Navigation

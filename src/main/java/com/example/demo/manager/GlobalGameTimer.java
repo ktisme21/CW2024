@@ -17,6 +17,15 @@ public class GlobalGameTimer {
         timer.setCycleCount(Timeline.INDEFINITE); // Run indefinitely
     }
 
+    public String formatElapsedTime() {
+        Duration elapsedTime = getElapsedTime();
+        int minutes = (int) elapsedTime.toMinutes();
+        int seconds = (int) elapsedTime.toSeconds() % 60;
+        int millis = (int) (elapsedTime.toMillis() % 1000);
+        return String.format("%02d:%02d:%03d", minutes, seconds, millis);
+    }
+    
+
     public static GlobalGameTimer getInstance() {
         return INSTANCE;
     }

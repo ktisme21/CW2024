@@ -10,6 +10,11 @@ public class BackgroundUtil {
     public static void setBackgroundImage(Pane pane) {
         Image backgroundImage = new Image(BackgroundUtil.class.getResource(Constant.BACKGROUND_IMAGE_PATH).toExternalForm());
 
+        BackgroundPosition position = new BackgroundPosition(
+            BackgroundPosition.DEFAULT.getHorizontalSide(), 0, false,
+            BackgroundPosition.DEFAULT.getVerticalSide(), 0, false
+        );
+
         BackgroundSize backgroundSize = new BackgroundSize(
             1300, 750,  // Fixed width and height for the background
             false, false, // Width and height not proportional
@@ -20,11 +25,10 @@ public class BackgroundUtil {
             backgroundImage,
             BackgroundRepeat.NO_REPEAT,
             BackgroundRepeat.NO_REPEAT,
-            BackgroundPosition.DEFAULT, // Default position
+            position, // Apply the custom position
             backgroundSize
         );
 
         pane.setBackground(new Background(background));
     }
-
 }

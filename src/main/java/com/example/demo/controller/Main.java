@@ -26,13 +26,9 @@ public class Main extends Application {
         stage.initStyle(StageStyle.UNDECORATED); // Remove the top panel
         stage.setTitle(Constant.TITLE);
         stage.setResizable(false);
-        stage.setFullScreenExitHint("");
-        stage.setFullScreenExitKeyCombination(null);
-        stage.setWidth(Constant.SCREEN_WIDTH);
-        stage.setHeight(Constant.SCREEN_HEIGHT);
+        stage.setWidth(1300); // Fixed width
+        stage.setHeight(750); // Fixed height
     }
-
-
 
     public void showMainMenu(Stage stage) {
         MainMenu startScreen = new MainMenu(

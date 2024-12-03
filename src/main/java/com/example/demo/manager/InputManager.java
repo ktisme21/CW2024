@@ -4,6 +4,7 @@ import com.example.demo.model.UserPlane;
 import com.example.demo.utilities.Constant;
 
 import javafx.scene.Group;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -15,6 +16,17 @@ public class InputManager {
     public InputManager(UserPlane user, ProjectileManager projectileManager) {
         this.user = user;
         this.projectileManager = projectileManager;
+    }
+
+    public void setupInputHandlers(ImageView background, Group root, double screenHeight, double screenWidth) {
+        background.setId("background"); // Add an ID for lookup
+        background.setFocusTraversable(true);
+        background.setFitHeight(screenHeight);
+        background.setFitWidth(screenWidth);
+        background.setOnKeyPressed(e -> handleKeyPressed(e, root));
+        background.setOnKeyReleased(this::handleKeyReleased);
+
+        background.setOnMouseClicked(event -> background.requestFocus());
     }
 
     public void handleKeyPressed(KeyEvent e, Group root) {

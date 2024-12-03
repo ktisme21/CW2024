@@ -18,6 +18,13 @@ public class ProjectileManager {
         this.enemyProjectiles = enemyProjectiles;
     }
 
+    public void removeInvisibleProjectiles(Group root) {
+        userProjectiles.stream()
+            .filter(projectile -> !projectile.isVisible())
+            .forEach(projectile -> root.getChildren().remove(projectile));
+        userProjectiles.removeIf(projectile -> !projectile.isVisible());
+    }
+
     public void fireProjectile(UserPlane user, Group root) {
         ActiveActorDestructible projectile = user.fireProjectile();
         if (projectile != null) {

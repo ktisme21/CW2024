@@ -25,6 +25,7 @@ public class MainMenu extends StackPane {
         // Create layout for content
         VBox contentBox = createContentBox(onStartGame, onSettings, onQuit);
     
+        StackPane.setAlignment(contentBox, Pos.CENTER);
         // Add VBox to center of StackPane
         this.getChildren().add(contentBox);
     
