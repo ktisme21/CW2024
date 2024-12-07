@@ -241,6 +241,10 @@ public class Constant {
     public static final int LOSS_SCREEN_Y_POSITION = 50;
     public static final String HEALTH_BAR_STYLE = "-fx-font-size: 16px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 5px;";
 
+    // Endless Mode Constants
+    public static final double ENDLESS_MODE_SPAWN_INCREMENT = 0.002; // Increment rate for spawn probability
+    public static final double ENDLESS_MODE_MAX_SPAWN_PROBABILITY = 0.1; // Maximum spawn probability
+
     // Shield display constants
     public static final int SHIELD_X_POSITION = 1150;
     public static final int SHIELD_Y_POSITION = 500;

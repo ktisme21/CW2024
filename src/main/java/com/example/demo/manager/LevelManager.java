@@ -131,7 +131,7 @@ public abstract class LevelManager {
         timeline.getKeyFrames().add(gameLoop);
     }
 
-    private void initializeBackground() {
+    protected void initializeBackground() {
         inputManager.setupInputHandlers(background, root, screenHeight, screenWidth);
         root.getChildren().add(background);
     }

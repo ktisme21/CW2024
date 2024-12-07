@@ -24,10 +24,11 @@ public class MainMenu extends StackPane {
      *
      * @param stage The primary stage of the application.
      * @param onStartGame Event handler for starting the game.
+     * @param onEndlessMode Event handler for starting the endless mode.
      * @param onSettings Event handler for opening the settings.
      * @param onQuit Event handler for quitting the application.
      */
-    public MainMenu(Stage stage, EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onQuit) {
+    public MainMenu(Stage stage, EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onEndlessMode, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onQuit) {
         // Bind the preferred size to the stage's current dimensions
         this.prefWidthProperty().bind(stage.widthProperty());
         this.prefHeightProperty().bind(stage.heightProperty());
@@ -36,7 +37,7 @@ public class MainMenu extends StackPane {
         BackgroundUtil.setBackgroundImage(this);
     
         // Create layout for content
-        VBox contentBox = createContentBox(onStartGame, onSettings, onQuit);
+        VBox contentBox = createContentBox(onStartGame, onEndlessMode, onSettings, onQuit);
     
         // Add VBox to center of StackPane
         this.getChildren().add(contentBox);
@@ -47,7 +48,7 @@ public class MainMenu extends StackPane {
         stage.heightProperty().addListener((observable, oldValue, newValue) -> BackgroundUtil.setBackgroundImage(this));
     }
 
-    private VBox createContentBox(EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onQuit) {
+    private VBox createContentBox(EventHandler<MouseEvent> onStartGame, EventHandler<MouseEvent> onEndlessMode, EventHandler<MouseEvent> onSettings, EventHandler<MouseEvent> onQuit) {
         VBox contentBox = new VBox(Constant.GAME_START_BUTTON_SPACING);
         contentBox.setAlignment(Pos.CENTER);
 
@@ -58,6 +59,7 @@ public class MainMenu extends StackPane {
         contentBox.getChildren().addAll(
             createTitle(),
             createButton("Start Game", onStartGame),
+            createButton("Endless Mode", onEndlessMode), // New Endless Mode button
             createButton("Settings", onSettings),
             createButton("Quit", onQuit)
         );

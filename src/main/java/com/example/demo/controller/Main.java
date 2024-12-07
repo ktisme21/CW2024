@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.level.EndlessMode;
 import com.example.demo.manager.MusicPlayer;
 import com.example.demo.utilities.Constant;
 import com.example.demo.view.MainMenu;
@@ -53,6 +54,7 @@ public class Main extends Application {
         MainMenu startScreen = new MainMenu(
             stage,
             event -> launchGame(stage),
+            event -> endlessMode(stage),
             event -> showSettings(stage),
             event -> stage.close()
         );
@@ -74,6 +76,23 @@ public class Main extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Starts the endless mode of the game.
+     *
+     * @param stage The primary stage.
+     */
+    private void endlessMode(Stage stage) {
+        EndlessMode endlessMode = new EndlessMode(Constant.SCREEN_HEIGHT, Constant.SCREEN_WIDTH);
+        Scene endlessModeScene = endlessMode.initializeScene();
+
+        // Set the new scene on the stage
+        stage.setScene(endlessModeScene);
+
+        // Start the endless mode gameplay
+        endlessMode.startGame();
+        stage.show();
     }
 
     /**
