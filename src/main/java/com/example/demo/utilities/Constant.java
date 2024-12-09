@@ -170,17 +170,18 @@ public class Constant {
     public static final int BOSS_IMAGE_HEIGHT = 300;
     public static final int BOSS_VERTICAL_VELOCITY = 8;
     /** Initial health of the boss. */
-    public static final int BOSS_HEALTH = 1;
+    public static final int BOSS_HEALTH = 10;
     public static final int BOSS_MOVE_FREQUENCY = 5;
     public static final int BOSS_MAX_FRAMES_WITH_SAME_MOVE = 10;
     public static final int BOSS_Y_POSITION_UPPER_BOUND = -100;
-    public static final int BOSS_Y_POSITION_LOWER_BOUND = 475;
+    public static final int BOSS_Y_POSITION_LOWER_BOUND = 550;
     public static final int BOSS_MAX_FRAMES_WITH_SHIELD = 500;
     public static final int ZERO = 0;
 
     // Boss constants for LevelThree
     public static final int LEVEL_THREE_BOSS_HEALTH = 20;
-    public static final int LEVEL_THREE_TOTAL_BOSSES = 3; // Example value
+    public static final int LEVEL_THREE_TOTAL_BOSSES = 3;
+    public static final int LEVEL_THREE_BOSS_SHIELD_PROBABILITY = 0;
 
     // General UserPlane Constants
     public static final String USER_PLANE_IMAGE_NAME = "userplane.png";

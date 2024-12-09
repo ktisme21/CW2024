@@ -5,8 +5,12 @@ import java.util.List;
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.FighterPlane;
 import com.example.demo.model.UserPlane;
+import com.example.demo.utilities.Constant;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 
 /**
  * Manages the projectiles fired by the user and enemy units in the game.
@@ -52,8 +56,23 @@ public class ProjectileManager {
             root.getChildren().add(projectile);
             userProjectiles.add(projectile);
         } else {
-            System.out.println("Cannot shoot while the plane is invisible!");
+            displayCannotShootMessage(root);
         }
+    }
+
+    private void displayCannotShootMessage(Group root) {
+        Label cannotShootLabel = new Label("Cannot shoot while the plane is invisible!");
+        cannotShootLabel.setStyle(Constant.MESSAGE_LABEL_STYLE);
+        cannotShootLabel.setLayoutX(Constant.INSTRUCTION_LABEL_X - 100);
+        cannotShootLabel.setLayoutY(Constant.INSTRUCTION_LABEL_Y + 50);
+
+        root.getChildren().add(cannotShootLabel);
+
+        Timeline timeline = new Timeline(
+            new KeyFrame(javafx.util.Duration.seconds(Constant.INSTRUCTION_MESSAGE_DURATION),
+                event -> root.getChildren().remove(cannotShootLabel))
+        );
+        timeline.play();
     }
 
     /**

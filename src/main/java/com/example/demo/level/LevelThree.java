@@ -27,28 +27,16 @@ public class LevelThree extends LevelManager {
     private boolean isPlaneVisible = true;
     private Rectangle redContainer;
 
-    /**
-     * Constructs a new {@code LevelThree} instance.
-     *
-     * @param screenHeight The height of the game screen.
-     * @param screenWidth The width of the game screen.
-     */
     public LevelThree(double screenHeight, double screenWidth) {
         super(Constant.LEVEL_THREE_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH);
         initializeUserPlane();
     }
 
-    /**
-     * Initializes the user's plane and its associated red container for display.
-     */
     private void initializeUserPlane() {
         getUser().setVisible(true);
         initializeRedContainer();
     }
 
-    /**
-     * Initializes the red container, which serves as a visual highlight for the user's plane.
-     */
     private void initializeRedContainer() {
         redContainer = new Rectangle();
         redContainer.setStroke(Color.valueOf(Constant.RED_CONTAINER_STROKE_COLOR));
@@ -57,18 +45,12 @@ public class LevelThree extends LevelManager {
         updateRedContainerPosition();
     }
 
-    /**
-     * Adds the red container to the game root if it is not already present.
-     */
     private void addRedContainerToRoot() {
         if (!getRoot().getChildren().contains(redContainer)) {
             getRoot().getChildren().add(redContainer);
         }
     }
 
-    /**
-     * Updates the position and size of the red container to match the user's plane.
-     */
     private void updateRedContainerPosition() {
         if (getUser() == null) return;
 
@@ -99,24 +81,16 @@ public class LevelThree extends LevelManager {
         }
     }
 
-    /**
-     * Spawns a boss enemy with reduced health and adds it to the game.
-     */
     private void spawnBoss() {
         Boss boss = createBossWithReducedHealth();
         addEnemyUnit(boss);
         spawnedBossCount++;
     }
 
-    /**
-     * Creates a new boss instance with reduced health and disabled shield functionality.
-     *
-     * @return A {@link Boss} instance with custom attributes.
-     */
     private Boss createBossWithReducedHealth() {
         Boss boss = new Boss();
-        boss.setHealth(20);
-        boss.setShieldProbability(0.0);
+        boss.setHealth(Constant.LEVEL_THREE_BOSS_HEALTH); // Use the constant for LevelThree boss health
+        boss.setShieldProbability(Constant.LEVEL_THREE_BOSS_SHIELD_PROBABILITY); // Disable shields
         return boss;
     }
 
@@ -137,9 +111,6 @@ public class LevelThree extends LevelManager {
         return scene;
     }
 
-    /**
-     * Displays an instructional label for the user, showing the available controls.
-     */
     private void displayInstruction() {
         Label instructionLabel = new Label("Press 'D' to toggle visibility!");
         instructionLabel.setStyle(Constant.MESSAGE_LABEL_STYLE);
@@ -155,11 +126,6 @@ public class LevelThree extends LevelManager {
         timeline.play();
     }
 
-    /**
-     * Sets up key listeners for toggling visibility and firing projectiles.
-     *
-     * @param scene The game scene.
-     */
     private void setupKeyListeners(Scene scene) {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.D) {
@@ -170,9 +136,6 @@ public class LevelThree extends LevelManager {
         });
     }
 
-    /**
-     * Handles the firing of projectiles by the user's plane.
-     */
     private void handleProjectileFiring() {
         ActiveActorDestructible projectile = getUser().fireProjectile();
         if (projectile != null) {
@@ -180,19 +143,11 @@ public class LevelThree extends LevelManager {
         }
     }
 
-    /**
-     * Adds a fired projectile to the scene.
-     *
-     * @param projectile The user's fired projectile.
-     */
     private void addProjectileToScene(UserProjectile projectile) {
         getRoot().getChildren().add(projectile);
         getUserProjectiles().add(projectile);
     }
 
-    /**
-     * Toggles the visibility of the user's plane and its projectiles.
-     */
     private void toggleUserPlaneVisibility() {
         isPlaneVisible = !isPlaneVisible;
         getUser().setVisible(isPlaneVisible);
