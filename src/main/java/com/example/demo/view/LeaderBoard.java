@@ -1,6 +1,7 @@
 package com.example.demo.view;
 
 import com.example.demo.manager.LeaderboardManager;
+import com.example.demo.utilities.BackgroundUtil;
 import com.example.demo.utilities.Constant;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;

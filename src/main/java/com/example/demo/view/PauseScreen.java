@@ -75,6 +75,8 @@ public class PauseScreen {
         contentBox.getChildren().addAll(
             createPauseLabel(),
             initializeVolumeControl(),
+            initializeSoundEffectControl(),
+            createMuteButton(), // Mute button moved here
             initializeButtonRow()
         );
 
@@ -88,7 +90,7 @@ public class PauseScreen {
     }
 
     private VBox initializeVolumeControl() {
-        Label volumeLabel = new Label("Volume");
+        Label volumeLabel = new Label("Background Music Volume");
         volumeLabel.setStyle(Constant.PAUSE_BUTTON_STYLE);
 
         Slider volumeSlider = createVolumeSlider();
@@ -99,12 +101,36 @@ public class PauseScreen {
         HBox sliderBox = new HBox(Constant.PAUSE_SPACING, decrementButton, volumeSlider, incrementButton);
         sliderBox.setAlignment(Pos.CENTER);
 
-        StackPane muteButton = createMuteButton(volumeSlider);
-
-        VBox volumeBox = new VBox(Constant.PAUSE_SPACING, volumeLabel, sliderBox, muteButton);
+        VBox volumeBox = new VBox(Constant.PAUSE_SPACING, volumeLabel, sliderBox);
         volumeBox.setAlignment(Pos.CENTER);
 
         return volumeBox;
+    }
+
+    private VBox initializeSoundEffectControl() {
+        Label effectLabel = new Label("Sound Effects Volume");
+        effectLabel.setStyle(Constant.PAUSE_BUTTON_STYLE);
+
+        Slider effectSlider = new Slider(0, 100, 50); // Default volume at 50
+        effectSlider.setShowTickLabels(true);
+        effectSlider.setShowTickMarks(true);
+        effectSlider.setPrefWidth(300);
+        effectSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (!isMuted) {
+                MusicPlayer.setSoundEffectVolume(newVal.doubleValue() / 100.0); // Scale to 0.0-1.0
+            }
+        });
+
+        Button decrementButton = createVolumeButton("-", effectSlider, -5);
+        Button incrementButton = createVolumeButton("+", effectSlider, 5);
+
+        HBox sliderBox = new HBox(Constant.PAUSE_SPACING, decrementButton, effectSlider, incrementButton);
+        sliderBox.setAlignment(Pos.CENTER);
+
+        VBox soundEffectBox = new VBox(Constant.PAUSE_SPACING, effectLabel, sliderBox);
+        soundEffectBox.setAlignment(Pos.CENTER);
+
+        return soundEffectBox;
     }
 
     private Slider createVolumeSlider() {
@@ -120,17 +146,17 @@ public class PauseScreen {
         return volumeSlider;
     }
 
-    private Button createVolumeButton(String text, Slider volumeSlider, int adjustment) {
+    private Button createVolumeButton(String text, Slider slider, int adjustment) {
         Button button = new Button(text);
         button.setStyle(Constant.PAUSE_BUTTON_STYLE);
         button.setOnAction(event -> {
-            double newValue = volumeSlider.getValue() + adjustment;
-            volumeSlider.setValue(Math.min(100, Math.max(0, newValue)));
+            double newValue = slider.getValue() + adjustment;
+            slider.setValue(Math.min(100, Math.max(0, newValue)));
         });
         return button;
     }
 
-    private StackPane createMuteButton(Slider volumeSlider) {
+    private StackPane createMuteButton() {
         StackPane muteButtonPane = new StackPane();
         muteButtonPane.setAlignment(Pos.CENTER);
 
@@ -144,33 +170,23 @@ public class PauseScreen {
         muteText.setTranslateY(-5);
 
         muteButtonPane.getChildren().addAll(imageView, muteText);
-        muteButtonPane.setOnMouseClicked(event -> toggleMute(volumeSlider, muteText));
+        muteButtonPane.setOnMouseClicked(event -> toggleMuteAll(muteText));
 
         return muteButtonPane;
     }
 
-    // Add a getter for isMuted
-    public boolean isMuted() {
-        return isMuted;
-    }
-
-    public void toggleMute(Slider volumeSlider, Label muteText) {
+    private void toggleMuteAll(Label muteText) {
         isMuted = !isMuted;
         if (isMuted) {
             MusicPlayer.setVolume(0.0);
-            volumeSlider.setDisable(true);
-            if (muteText != null) {
-                muteText.setText("Unmute");
-            }
+            MusicPlayer.setSoundEffectVolume(0.0);
+            muteText.setText("Unmute");
         } else {
-            volumeSlider.setDisable(false);
-            MusicPlayer.setVolume(volumeSlider.getValue() / 100.0);
-            if (muteText != null) {
-                muteText.setText("Mute");
-            }
+            MusicPlayer.setVolume(Constant.PAUSE_DEFAULT_VOLUME / 100.0);
+            MusicPlayer.setSoundEffectVolume(0.5); // Restore to a default value (e.g., 50%)
+            muteText.setText("Mute");
         }
     }
-    
 
     private HBox initializeButtonRow() {
         HBox buttonRow = new HBox(Constant.PAUSE_SPACING);
@@ -188,11 +204,6 @@ public class PauseScreen {
         return createTextBarButton("Resume", () -> {
             onResumeAction.run();
             pauseStage.close();
-
-            Stage parentStage = (Stage) pauseStage.getOwner();
-            if (parentStage.getScene() != null) {
-                parentStage.getScene().lookup("#background").requestFocus();
-            }
         });
     }
 

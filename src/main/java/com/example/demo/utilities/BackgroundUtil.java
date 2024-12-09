@@ -1,6 +1,4 @@
-package com.example.demo.view;
-
-import com.example.demo.utilities.Constant;
+package com.example.demo.utilities;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;

@@ -1,6 +1,7 @@
 package com.example.demo.view;
 
 import com.example.demo.testutils.JavaFXTestUtils;
+import com.example.demo.utilities.BackgroundUtil;
 import com.example.demo.utilities.Constant;
 import javafx.application.Platform;
 import javafx.scene.Scene;

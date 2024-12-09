@@ -149,7 +149,7 @@ public class SettingsPage extends StackPane {
         imageView.setFitHeight(Constant.RETURN_BUTTON_HEIGHT);
 
         Label muteText = new Label("Mute");
-        muteText.setStyle(Constant.SETTINGS_BUTTON_STYLE);
+        muteText.setStyle(Constant.TEXTBAR2_IMAGE_PATH);
         muteText.setTranslateY(-5);
 
         muteButtonPane.getChildren().addAll(imageView, muteText);
@@ -179,7 +179,7 @@ public class SettingsPage extends StackPane {
         imageView.setFitHeight(Constant.RETURN_BUTTON_HEIGHT);
 
         Label backText = new Label("Back");
-        backText.setStyle(Constant.SETTINGS_BUTTON_STYLE);
+        backText.setStyle(Constant.TEXTBAR2_IMAGE_PATH);
         backText.setTranslateY(-5);
 
         backButtonPane.getChildren().addAll(imageView, backText);

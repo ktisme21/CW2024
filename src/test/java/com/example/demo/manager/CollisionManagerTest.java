@@ -1,17 +1,18 @@
 package com.example.demo.manager;
 
+import static org.mockito.Mockito.*;
+
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.testutils.JavaFXTestUtils;
 
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.mockito.Mockito.*;
 
 class CollisionManagerTest {
 

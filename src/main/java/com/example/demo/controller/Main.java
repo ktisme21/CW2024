@@ -107,6 +107,22 @@ public class Main extends Application {
         settingsPage.display();
     }
 
+    // For FXML
+    // private void showSettings(Stage stage) {
+    //     try {
+    //         FXMLLoader loader = new FXMLLoader(getClass().getResource("/src/main/resources/com/example/demo/fxml/SettingsPage.fxml"));
+    //         Scene settingsScene = new Scene(loader.load(), stage.getWidth(), stage.getHeight());
+
+    //         SettingsController controller = loader.getController();
+    //         controller.setOnBackAction(() -> showMainMenu(stage));
+
+    //         stage.setScene(settingsScene);
+    //         stage.show();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
+
     /**
      * Main entry point for the Java application.
      *

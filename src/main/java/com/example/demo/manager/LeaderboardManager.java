@@ -22,6 +22,10 @@ public class LeaderboardManager {
         loadLeaderboard();
     }
 
+    protected String getFilePath() {
+        return FILE_PATH;
+    }
+
     /**
      * Adds a new score to the leaderboard and updates the file.
      *
