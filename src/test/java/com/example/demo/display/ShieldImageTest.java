@@ -2,8 +2,6 @@ package com.example.demo.display;
 
 import com.example.demo.testutils.JavaFXTestUtils;
 import com.example.demo.utilities.Constant;
-import javafx.application.Platform;
-import javafx.scene.image.ImageView;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

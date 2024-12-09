@@ -50,7 +50,7 @@ public class Constant {
 
     // Enemy spawn properties
     /** Number of enemies in Level 1. */
-    public static final int LEVEL_ONE_TOTAL_ENEMIES = 5;
+    public static final int LEVEL_ONE_TOTAL_ENEMIES = 10;
     public static final double LEVEL_ONE_ENEMY_SPAWN_PROBABILITY = 0.20;
     /** Kill count required to advance from Level 1. */
     public static final int LEVEL_ONE_KILLS_TO_ADVANCE = 10;

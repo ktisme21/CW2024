@@ -19,6 +19,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -52,6 +53,7 @@ public abstract class LevelManager {
     private final ProjectileManager projectileManager;
     private UIManager uiManager;
     private final CollisionManager collisionManager;
+    private Label healthDisplay;
 
     private final GlobalGameTimer gameTimer = GlobalGameTimer.getInstance(); // Use global timer instance
 
@@ -117,6 +119,7 @@ public abstract class LevelManager {
         initializeBackground();
         initializeFriendlyUnits();
         levelView.showHeartDisplay();
+        levelView.showHealth("Ready Go"); // Set initial text
         uiManager = new UIManager(root, screenWidth, this::showPauseScreen);
         return scene;
     }
@@ -163,6 +166,7 @@ public abstract class LevelManager {
         updateLevelView();
         checkIfGameOver();
         updateTopRightLabel(); // Update the timer
+        levelView.showHealth("Enemies Remaining: " + getCurrentNumberOfEnemies());
     }
 
     private void updateActors() {

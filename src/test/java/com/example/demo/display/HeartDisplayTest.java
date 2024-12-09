@@ -1,11 +1,11 @@
 package com.example.demo.display;
 
-import com.example.demo.utilities.Constant;
-import javafx.application.Platform;
+import com.example.demo.testutils.JavaFXTestUtils;
 import javafx.scene.layout.HBox;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class HeartDisplayTest {
@@ -13,18 +13,12 @@ class HeartDisplayTest {
     private HeartDisplay heartDisplay;
 
     @BeforeAll
-    public static void initJavaFX() {
-        try {
-            Platform.startup(() -> {
-                // No-op, just start the JavaFX platform
-            });
-        } catch (IllegalStateException e) {
-            // If JavaFX is already initialized, ignore this exception
-        }
+    public static void setUp() {
+        JavaFXTestUtils.initializeJavaFX();
     }
 
     @BeforeEach
-    void setUp() {
+    void initHeartDisplay() {
         // Initialize the HeartDisplay with a mock position and a given number of hearts
         heartDisplay = new HeartDisplay(100, 50, 5);
     }

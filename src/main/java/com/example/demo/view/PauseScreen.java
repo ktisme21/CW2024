@@ -23,7 +23,7 @@ import javafx.stage.StageStyle;
  */
 public class PauseScreen {
 
-    private final Stage pauseStage;
+    final Stage pauseStage;
     private final Runnable onResumeAction;
     private final Runnable onQuitAction;
     private boolean isMuted = false;
@@ -149,18 +149,28 @@ public class PauseScreen {
         return muteButtonPane;
     }
 
-    private void toggleMute(Slider volumeSlider, Label muteText) {
+    // Add a getter for isMuted
+    public boolean isMuted() {
+        return isMuted;
+    }
+
+    public void toggleMute(Slider volumeSlider, Label muteText) {
         isMuted = !isMuted;
         if (isMuted) {
             MusicPlayer.setVolume(0.0);
             volumeSlider.setDisable(true);
-            muteText.setText("Unmute");
+            if (muteText != null) {
+                muteText.setText("Unmute");
+            }
         } else {
             volumeSlider.setDisable(false);
             MusicPlayer.setVolume(volumeSlider.getValue() / 100.0);
-            muteText.setText("Mute");
+            if (muteText != null) {
+                muteText.setText("Mute");
+            }
         }
     }
+    
 
     private HBox initializeButtonRow() {
         HBox buttonRow = new HBox(Constant.PAUSE_SPACING);
