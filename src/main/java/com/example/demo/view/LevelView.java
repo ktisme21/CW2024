@@ -68,15 +68,15 @@ public class LevelView {
 		}
 	}
 
-	public void showHealth(String infoText) {
-        if (healthDisplay == null) {
-            healthDisplay = new Label();
-            healthDisplay.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
-            healthDisplay.setLayoutX(15); // Adjust positioning as needed
-            healthDisplay.setLayoutY(80); // Place below the heart display
-            root.getChildren().add(healthDisplay);
-        }
-        healthDisplay.setText(infoText);
-    }
+	// public void showHealth(String infoText) {
+    //     if (healthDisplay == null) {
+    //         healthDisplay = new Label();
+    //         healthDisplay.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
+    //         healthDisplay.setLayoutX(15); // Adjust positioning as needed
+    //         healthDisplay.setLayoutY(80); // Place below the heart display
+    //         root.getChildren().add(healthDisplay);
+    //     }
+    //     healthDisplay.setText(infoText);
+    // }
 
 }

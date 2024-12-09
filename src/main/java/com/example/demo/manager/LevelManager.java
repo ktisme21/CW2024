@@ -119,7 +119,7 @@ public abstract class LevelManager {
         initializeBackground();
         initializeFriendlyUnits();
         levelView.showHeartDisplay();
-        levelView.showHealth("Ready Go"); // Set initial text
+        // levelView.showHealth("Ready Go"); // Set initial text
         uiManager = new UIManager(root, screenWidth, this::showPauseScreen);
         return scene;
     }
@@ -166,7 +166,6 @@ public abstract class LevelManager {
         updateLevelView();
         checkIfGameOver();
         updateTopRightLabel(); // Update the timer
-        levelView.showHealth("Enemies Remaining: " + getCurrentNumberOfEnemies());
     }
 
     private void updateActors() {

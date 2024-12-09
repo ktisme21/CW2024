@@ -3,8 +3,8 @@ package com.example.demo.view;
 import com.example.demo.manager.MusicPlayer;
 import com.example.demo.utilities.Constant;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -23,14 +23,17 @@ import javafx.stage.Stage;
 public class SettingsPage extends StackPane {
 
     private boolean isMuted = false;
+    private final Stage stage;
 
     /**
      * Constructs a new `SettingsPage` for full-screen display.
      *
      * @param stage The stage to display the settings page.
-     * @param onBackToMain Event handler to return to the main menu.
+     * @param onBackToMain Runnable to return to the main menu.
      */
-    public SettingsPage(Stage stage, EventHandler<MouseEvent> onBackToMain) {
+    public SettingsPage(Stage stage, Runnable onBackToMain) {
+        this.stage = stage;
+
         // Set background image with proper scaling to fill screen
         Image backgroundImage = new Image(getClass().getResource(Constant.BACKGROUND_IMAGE_6_PATH).toExternalForm());
         ImageView backgroundView = new ImageView(backgroundImage);
@@ -106,36 +109,36 @@ public class SettingsPage extends StackPane {
     private VBox createSoundEffectSlider() {
         Label effectVolumeLabel = new Label("Sound Effects Volume");
         effectVolumeLabel.setStyle(Constant.SETTINGS_BUTTON_STYLE);
-    
-        Slider effectVolumeSlider = new Slider(0, 100, 100); // Default volume is 100
+
+        Slider effectVolumeSlider = new Slider(0, 100, 50); // Default volume is 100
         effectVolumeSlider.setShowTickLabels(true);
         effectVolumeSlider.setShowTickMarks(true);
         effectVolumeSlider.setPrefWidth(Constant.SETTINGS_SLIDER_WIDTH);
         effectVolumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             MusicPlayer.setSoundEffectVolume(newVal.doubleValue() / 100.0); // Scale to 0.0-1.0
         });
-    
+
         Button decrementButton = new Button("-");
         decrementButton.setStyle(Constant.SETTINGS_BUTTON_STYLE);
         decrementButton.setOnMouseClicked(event -> {
             effectVolumeSlider.setValue(Math.max(0, effectVolumeSlider.getValue() - 5));
         });
-    
+
         Button incrementButton = new Button("+");
         incrementButton.setStyle(Constant.SETTINGS_BUTTON_STYLE);
         incrementButton.setOnMouseClicked(event -> {
             effectVolumeSlider.setValue(Math.min(100, effectVolumeSlider.getValue() + 5));
         });
-    
+
         HBox sliderBox = new HBox(Constant.SETTINGS_SPACING, decrementButton, effectVolumeSlider, incrementButton);
         sliderBox.setAlignment(Pos.CENTER);
-    
+
         VBox effectVolumeBox = new VBox(Constant.SETTINGS_SPACING, effectVolumeLabel, sliderBox);
         effectVolumeBox.setAlignment(Pos.CENTER);
-    
+
         return effectVolumeBox;
     }
-    
+
     private StackPane createMuteButton() {
         StackPane muteButtonPane = new StackPane();
         muteButtonPane.setAlignment(Pos.CENTER);
@@ -166,7 +169,7 @@ public class SettingsPage extends StackPane {
         }
     }
 
-    private StackPane createBackButton(EventHandler<MouseEvent> onBackToMain) {
+    private StackPane createBackButton(Runnable onBackToMain) {
         StackPane backButtonPane = new StackPane();
         backButtonPane.setAlignment(Pos.CENTER);
 
@@ -175,14 +178,24 @@ public class SettingsPage extends StackPane {
         imageView.setFitWidth(Constant.RETURN_BUTTON_WIDTH);
         imageView.setFitHeight(Constant.RETURN_BUTTON_HEIGHT);
 
-        Label backText = new Label("Close");
+        Label backText = new Label("Back");
         backText.setStyle(Constant.SETTINGS_BUTTON_STYLE);
         backText.setTranslateY(-5);
 
         backButtonPane.getChildren().addAll(imageView, backText);
-        backButtonPane.setOnMouseClicked(onBackToMain);
+        backButtonPane.setOnMouseClicked(event -> {
+            onBackToMain.run();
+        });
 
         return backButtonPane;
     }
 
+    /**
+     * Displays the settings page by setting it as the scene of the stage.
+     */
+    public void display() {
+        Scene settingsScene = new Scene(this, stage.getWidth(), stage.getHeight());
+        stage.setScene(settingsScene);
+        stage.show();
+    }
 }

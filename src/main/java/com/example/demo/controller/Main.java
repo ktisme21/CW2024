@@ -8,12 +8,11 @@ import com.example.demo.view.SettingsPage;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
- * Main application class for the demo project
+ * Main application class for the demo project.
  * Handles the initialization and navigation between different screens.
  */
 public class Main extends Application {
@@ -96,24 +95,16 @@ public class Main extends Application {
     }
 
     /**
-     * Displays the settings popup screen.
+     * Displays the settings page as a full-screen replacement.
      *
-     * @param ownerStage The parent stage for the settings popup.
+     * @param stage The primary stage.
      */
-    private void showSettings(Stage ownerStage) {
-        // Create a new stage for the settings popup
-        Stage settingsStage = new Stage();
-        settingsStage.initModality(Modality.APPLICATION_MODAL); // Make it a modal popup
-        settingsStage.initOwner(ownerStage); // Set the owner of the popup
-        settingsStage.initStyle(StageStyle.UNDECORATED); // Remove the top panel (title bar)
+    private void showSettings(Stage stage) {
+        // Create the SettingsPage and set it as the new scene
+        SettingsPage settingsPage = new SettingsPage(stage, () -> showMainMenu(stage));
 
-        // Create the SettingsPage and set it as the root of the scene
-        SettingsPage settingsPage = new SettingsPage(settingsStage, event -> settingsStage.close());
-        Scene settingsScene = new Scene(settingsPage, ownerStage.getWidth() * 0.5, ownerStage.getHeight() * 0.5);
-
-        // Set the scene and show the stage
-        settingsStage.setScene(settingsScene);
-        settingsStage.show();
+        // Display the settings page by setting it as the scene
+        settingsPage.display();
     }
 
     /**
