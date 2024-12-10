@@ -13,6 +13,7 @@ public class UserPlane extends FighterPlane {
 	private int velocityMultiplierX;
 	private int velocityMultiplierY;
 	private int numberOfKills;
+	private boolean destroyed = false;
 
 	public UserPlane(int initialHealth) {
         super(
@@ -25,7 +26,15 @@ public class UserPlane extends FighterPlane {
         velocityMultiplierX = 0;
         velocityMultiplierY = 0;
     }
-	
+
+	public void setDestroyed(boolean destroyed) {
+		this.destroyed = destroyed;
+	}
+
+	public boolean isDestroyed() {
+		return destroyed;
+	}
+
 	@Override
     public void updatePosition() {
         // Update vertical movement
@@ -65,7 +74,10 @@ public class UserPlane extends FighterPlane {
 		return new UserProjectile(projectileXPosition, projectileYPosition);
 	}
 
-	
+	public void setNumberOfKills(int numberOfKills) {
+		this.numberOfKills = numberOfKills;
+	}
+
 	// Vertical and horizontal movement
 	public void moveUp() {
 		velocityMultiplierY = -1;

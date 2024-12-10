@@ -22,4 +22,15 @@ public class JavaFXTestUtils {
             }
         }
     }
+
+    public static void awaitFXTasks() {
+        try {
+            Thread.sleep(100); // Give the JavaFX thread some time to process
+            Platform.runLater(() -> {});
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for JavaFX tasks to complete", e);
+        }
+    }
+
 }

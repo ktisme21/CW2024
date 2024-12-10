@@ -53,7 +53,10 @@ public class LevelView {
 	}
 
 	public void showWinImage() {
-		root.getChildren().add(winImage);
+		if (!root.getChildren().contains(winImage)) {
+			root.getChildren().add(winImage);
+		}
+		
 		winImage.showWinImage();
 	}
 	

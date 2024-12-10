@@ -51,7 +51,7 @@ public class Constant {
     // Enemy spawn properties
     /** Number of enemies in Level 1. */
     public static final int LEVEL_ONE_TOTAL_ENEMIES = 10;
-    public static final double LEVEL_ONE_ENEMY_SPAWN_PROBABILITY = 0.20;
+    public static final double LEVEL_ONE_ENEMY_SPAWN_PROBABILITY = 0.2;
     /** Kill count required to advance from Level 1. */
     public static final int LEVEL_ONE_KILLS_TO_ADVANCE = 10;
 
@@ -243,8 +243,8 @@ public class Constant {
     public static final String HEALTH_BAR_STYLE = "-fx-font-size: 16px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 5px;";
 
     // Endless Mode Constants
-    public static final double ENDLESS_MODE_SPAWN_INCREMENT = 0.002; // Increment rate for spawn probability
-    public static final double ENDLESS_MODE_MAX_SPAWN_PROBABILITY = 0.1; // Maximum spawn probability
+    public static final double ENDLESS_MODE_SPAWN_INCREMENT = 0.01; // Increment rate for spawn probability
+    public static final double ENDLESS_MODE_MAX_SPAWN_PROBABILITY = 0.5; // Maximum spawn probability
 
     // Shield display constants
     public static final int SHIELD_X_POSITION = 1150;

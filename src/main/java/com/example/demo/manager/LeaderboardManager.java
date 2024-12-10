@@ -9,85 +9,44 @@ import java.util.*;
  */
 public class LeaderboardManager {
 
+    /** Path to the file where leaderboard data is stored. */
     private static final String FILE_PATH = "C:\\Users\\Kei\\CW2024\\src\\main\\java\\com\\example\\demo\\data\\leaderboard.txt";
+
+    /** Maximum number of entries allowed on the leaderboard. */
     private static final int MAX_ENTRIES = 5;
+
+    /** List storing the leaderboard entries. */
     private final List<LeaderboardEntry> leaderboard = new ArrayList<>();
 
     /**
-     * Initializes the LeaderboardManager, loading data from the file if it exists.
-     * Creates the directory for the file if it doesn't exist.
+     * Constructor for the {@code LeaderboardManager}.
+     * Ensures the directory for the file exists and loads the leaderboard data from the file.
      */
     public LeaderboardManager() {
         ensureDirectoryExists();
         loadLeaderboard();
     }
 
-    protected String getFilePath() {
-        return FILE_PATH;
-    }
-
     /**
-     * Adds a new score to the leaderboard and updates the file.
-     *
-     * @param playerName the name of the player.
-     * @param score      the player's score (in milliseconds).
+     * Saves the current leaderboard data to the file.
+     * Ensures the file contains the most recent leaderboard entries.
      */
-    public void addEntry(String playerName, int score) {
-        leaderboard.add(new LeaderboardEntry(playerName, score));
-        leaderboard.sort(Comparator.comparingInt(LeaderboardEntry::getScore));
-        if (leaderboard.size() > MAX_ENTRIES) {
-            leaderboard.remove(leaderboard.size() - 1);
-        }
-        saveLeaderboard();
-    }
-
-    /**
-     * Retrieves the top entries from the leaderboard.
-     *
-     * @return a list of the top leaderboard entries.
-     */
-    public List<LeaderboardEntry> getTopEntries() {
-        return new ArrayList<>(leaderboard);
-    }
-
-    /**
-     * Prints all entries in the leaderboard to the console.
-     */
-    public void printAllEntries() {
-        System.out.println("Leaderboard Scores:");
-        for (LeaderboardEntry entry : leaderboard) {
-            System.out.println("Player: " + entry.getPlayerName() + ", Time: " + formatTime(entry.getScore()));
-        }
-    }
-
-    /**
-     * Formats the score from milliseconds to a string in MM:SS:MS format.
-     *
-     * @param score the score in milliseconds.
-     * @return a formatted string representing the score.
-     */
-    private String formatTime(int score) {
-        int minutes = score / 60000;
-        int seconds = (score / 1000) % 60;
-        int millis = score % 1000;
-        return String.format("%02d:%02d:%03d", minutes, seconds, millis);
-    }
-
-    /**
-     * Ensures the directory for the leaderboard file exists.
-     */
-    private void ensureDirectoryExists() {
-        File file = new File(FILE_PATH);
-        File directory = file.getParentFile();
-        if (!directory.exists()) {
-            directory.mkdirs();
+    protected void saveLeaderboard() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            for (LeaderboardEntry entry : leaderboard) {
+                writer.write(entry.getPlayerName() + "," + entry.getScore());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     /**
      * Loads the leaderboard data from the file.
+     * If the file does not exist, a new empty leaderboard is created.
      */
-    private void loadLeaderboard() {
+    protected void loadLeaderboard() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -101,16 +60,40 @@ public class LeaderboardManager {
     }
 
     /**
-     * Saves the current leaderboard data to the file.
+     * Adds a new entry to the leaderboard.
+     * Automatically sorts entries by score in ascending order and ensures
+     * the leaderboard does not exceed the maximum number of entries.
+     *
+     * @param playerName The name of the player.
+     * @param score The player's score in milliseconds.
      */
-    private void saveLeaderboard() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            for (LeaderboardEntry entry : leaderboard) {
-                writer.write(entry.getPlayerName() + "," + entry.getScore());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void addEntry(String playerName, int score) {
+        leaderboard.add(new LeaderboardEntry(playerName, score));
+        leaderboard.sort(Comparator.comparingInt(LeaderboardEntry::getScore));
+        if (leaderboard.size() > MAX_ENTRIES) {
+            leaderboard.remove(leaderboard.size() - 1);
+        }
+        saveLeaderboard();
+    }
+
+    /**
+     * Retrieves the top entries from the leaderboard.
+     *
+     * @return A list of the top leaderboard entries.
+     */
+    public List<LeaderboardEntry> getTopEntries() {
+        return new ArrayList<>(leaderboard);
+    }
+
+    /**
+     * Ensures the directory for the leaderboard file exists.
+     * Creates the directory if it does not already exist.
+     */
+    private void ensureDirectoryExists() {
+        File file = new File(FILE_PATH);
+        File directory = file.getParentFile();
+        if (!directory.exists()) {
+            directory.mkdirs();
         }
     }
 
@@ -118,14 +101,17 @@ public class LeaderboardManager {
      * Represents an entry in the leaderboard.
      */
     public static class LeaderboardEntry {
+        /** The name of the player. */
         private final String playerName;
+
+        /** The player's score in milliseconds. */
         private final int score;
 
         /**
-         * Initializes a LeaderboardEntry.
+         * Constructor for a {@code LeaderboardEntry}.
          *
-         * @param playerName the name of the player.
-         * @param score      the player's score.
+         * @param playerName The name of the player.
+         * @param score The player's score in milliseconds.
          */
         public LeaderboardEntry(String playerName, int score) {
             this.playerName = playerName;
@@ -133,18 +119,18 @@ public class LeaderboardManager {
         }
 
         /**
-         * Gets the player's name.
+         * Retrieves the player's name.
          *
-         * @return the player's name.
+         * @return The player's name.
          */
         public String getPlayerName() {
             return playerName;
         }
 
         /**
-         * Gets the player's score.
+         * Retrieves the player's score.
          *
-         * @return the player's score.
+         * @return The player's score in milliseconds.
          */
         public int getScore() {
             return score;

@@ -165,6 +165,7 @@ SkyBattle is an intense combat game that let players control advanced fighter pl
 #### 3. Leaderboard:
 - Time-based rankings motivate players to complete levels faster.
 - Saved and loaded using the LeaderboardManager class. (loadLeaderboard()).
+- The players lose the game, the time won't be saved in leaderboard.
 - Add every entry only if players win the game. If the leaderboard.txt doesn't exists, then create a new one and save it in a new txt file.
 - Use: Provides a sense of accomplishment and replayability.
 
@@ -186,6 +187,8 @@ SkyBattle is an intense combat game that let players control advanced fighter pl
 #### 2. Screen Alignment Issues:
 - After returning to certain classes or screens, the UI alignment becomes misaligned.
 - This is due to hardcoded dimensions and possible SDK version issues when handling JavaFX layouts.
+- Tried: The alignment changed into center when i changed my project structure into SDK 21.0.2 version, but the game is very laggy. Cause:
+- Tried to change to FXML by adding controller and fxml file but still doesn't display properly.
 - Possible solution: The SDK version could introduce subtle layout changes if there are compatibility issues.
 
 
@@ -326,6 +329,115 @@ SkyBattle is an intense combat game that let players control advanced fighter pl
 ---
 - **SettingsPage** - Allows users to adjust volume and sound effects.
 (createVolumeSlider() - Creates sliders for audio adjustments.)
+
+## Junit Test
+### JavaFXTestUtil
+- This method uses a static boolean javaFXInitialized to ensure the JavaFX platform is initialized only once, avoiding redundant setups.
+- his utility is typically called in the @BeforeAll setup method of every Java unit test class that interacts with JavaFX, ensuring the platform is ready for testing.
+
+#### GameOverImageTest
+- Verifies that the GameOverImage initializes correctly with specified positions and adheres to expected size constraints.
+- Confirms that the GameOverImage visibility toggles properly using showGameOverImage() and hideGameOverImage() methods.
+-  Ensures that the instruction label, part of the GameOverImage, toggles visibility correctly alongside the main image.
+
+#### HeartDisplayTest
+- Confirms that the HeartDisplay initializes with the correct number of hearts matching the player's health.
+- Validates that addHeart() and removeHeart() functions correctly modify the number of hearts displayed.
+- Tests edge cases like removing more hearts than available or adding hearts beyond the maximum capacity.
+
+#### ShieldImageTest
+- Verifies the position, size, and visibility of the ShieldImage upon creation.
+- Ensures that showShield() and hideShield() methods toggle the shield's visibility correctly.
+
+#### WinImageTest
+- Verifies that the WinImage and its accompanying instruction label are correctly initialized and hidden by default.
+- Tests showWinImage() and hideWinImage() methods to confirm they properly toggle the visibility of the win image and its instruction label.
+
+#### EndlessModeTest
+- Initialization of endless mode elements and parameters.
+- Proper spawning and management of enemies.
+- Ensuring the game transitions correctly when conditions are met, such as user health depletion or specific milestones.
+
+#### LevelOneTest
+- Initialization of the level and its UI components.
+- Spawning and behavior of enemies unique to Level One.
+- Game-over conditions when the user plane is destroyed.
+- Verifying successful completion of the level and the appropriate transition to the next stage.
+
+#### LevelTwoTest
+- Ensures the initialization of the level and its visual elements.
+- Tests the spawning of the boss and its shield mechanics, checking the shield visibility and interaction logic.
+- Validates transitions upon the destruction of the boss, ensuring smooth progression to the next level.
+- Includes tests for game-over scenarios if the user's plane is destroyed.
+
+#### LevelThreeTest
+- Confirms the initialization of level elements like the user plane and additional visual components.
+- Verifies the spawning of multiple bosses with reduced health.
+- Tests the visibility toggle mechanic for the user's plane.
+- Checks the game-over logic when the user plane is destroyed.
+- Ensures the level transitions properly upon defeating all bosses.
+
+#### CollisionManagerTest
+- Checks that collisions between friendly and enemy planes are correctly detected and processed.
+- Validates that collisions between projectiles and targets (both user and enemy) are identified and handled appropriately.
+- Ensures game objects are removed when they collide or leave the scene.
+
+#### GlobalGameTimerTest
+- Confirms the timer starts and stops accurately.
+Elapsed Time Calculation: Verifies that the timer correctly calculates elapsed time.
+- Ensures the timer resets to zero when required.
+- Validates that only one instance of the timer exists throughout the game.
+
+#### InputManagerTest
+- Verifies that key press events for movement (up, down, left, right) correctly invoke the corresponding UserPlane methods (moveUp, moveDown, etc.).
+- Ensures the InputManager triggers the fireProjectile method on ProjectileManager when the fire key is pressed.
+- Validates that releasing movement keys stops the user's vertical or horizontal movement.
+- Confirms that input handlers are properly set up on the background, ensuring it can process key and mouse inputs.
+
+#### LeaderboardManagerTest
+- Tests adding new entries and ensures they are ordered by score, with the lowest score first.
+- Ensures the leaderboard does not exceed its maximum allowed entries, and older/lower-ranking entries are removed appropriately.
+- Validates that the leaderboard data persists to a file and can be correctly reloaded.
+- Confirms the leaderboard is empty when no entries exist.
+- Verifies the printing functionality, ensuring it outputs leaderboard entries correctly.
+
+#### ActiveActorDestructibleTest
+- This file appears to be a placeholder for tests related to destructible actors in the game. No test logic is currently implemented.
+
+#### BossProjectileTest
+- Validates that the projectile is initialized correctly with the expected image, X position, and Y position.
+- Verifies that calling updatePosition correctly updates the X position based on the velocity constant.
+- Ensures that updateActor behaves as expected by invoking updatePosition.
+- Checks that the projectile's image can be successfully loaded using the image path.
+
+#### BackgroundUtilTest
+- Verifies that the background is loaded correctly with the specified dimensions and properties.
+- Confirms that the background image is set to preserve its ratio and fit within the provided dimensions (width and height).
+- Checks that the utility handles null or invalid inputs gracefully without throwing unexpected exceptions.
+
+#### LeaderBoardTest
+- Ensures that the leaderboard initializes with the correct data structure to store player scores.
+- Verifies that new scores are added correctly to the leaderboard.
+- Confirms that the leaderboard correctly sorts the scores in descending order of performance.
+- Ensures that the leaderboard is rendered correctly on the screen, displaying the player names and scores properly.
+
+#### LevelViewTest
+- Verifies that the health display updates correctly when the player's health changes.
+- Ensures that the kill count updates accurately as enemies are defeated.
+- Confirms that the UI elements such as health, score, and kill counters are initialized and displayed correctly.
+- Ensures the "Game Over" message or screen is displayed correctly when the player's health reaches zero.
+
+#### MainMenuTest
+- This file verifies that the main menu is properly initialized with the ocrrect structure, such as a StackPane root and a VBox content box with five children(title and buttons). 
+- Checks that all the buttons exits and respond correctly to mouse clicks
+- Confirms that the background image is correctly set for the main menu using the BackgroundUtil utility.
+
+#### PauseScreenTest
+- Ensures that the pause screen initializes and display correctly.
+- Tests the volume slider to confirm it adjusts the volume in the Music Player correctly.
+- Uses reflection to verify the toggleMuteAll functionality, confirming that the isMuted state changes correctly and updates the MusicPlayer volume.
+- Simulates a click on the resume button and verifies that the pause screen closes.
+- Simulates a click on the quit button and ensures the pause screen closes.
 
 
 ## Git

@@ -57,7 +57,7 @@ public class EndlessMode extends LevelManager {
      */
     private void adjustDifficulty() {
         spawnProbability = Math.min(spawnProbability + Constant.ENDLESS_MODE_SPAWN_INCREMENT, Constant.ENDLESS_MODE_MAX_SPAWN_PROBABILITY);
-    }
+    }    
 
     /**
      * Creates and returns the LevelView for this mode.
@@ -69,4 +69,9 @@ public class EndlessMode extends LevelManager {
     protected LevelView instantiateLevelView() {
         return new LevelView(getRoot(), Constant.PLAYER_INITIAL_HEALTH);
     }
+
+    public double getSpawnProbability() {
+        return spawnProbability;
+    }
+
 }

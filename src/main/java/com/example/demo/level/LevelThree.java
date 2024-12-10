@@ -70,7 +70,9 @@ public class LevelThree extends LevelManager {
 
     @Override
     protected void initializeFriendlyUnits() {
-        getUser().addToParent(getRoot());
+        if (!getRoot().getChildren().contains(getUser())) {
+            getUser().addToParent(getRoot());
+        }
         addRedContainerToRoot();
     }
 
