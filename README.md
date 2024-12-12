@@ -330,7 +330,7 @@ SkyBattle is an intense combat game that let players control advanced fighter pl
 - **SettingsPage** - Allows users to adjust volume and sound effects.
 (createVolumeSlider() - Creates sliders for audio adjustments.)
 
-## Junit Test
+## Junit Test (Not all included)
 ### JavaFXTestUtil
 - This method uses a static boolean javaFXInitialized to ensure the JavaFX platform is initialized only once, avoiding redundant setups.
 - his utility is typically called in the @BeforeAll setup method of every Java unit test class that interacts with JavaFX, ensuring the platform is ready for testing.
@@ -401,14 +401,77 @@ Elapsed Time Calculation: Verifies that the timer correctly calculates elapsed t
 - Confirms the leaderboard is empty when no entries exist.
 - Verifies the printing functionality, ensuring it outputs leaderboard entries correctly.
 
+#### MusicPlayer
+- Verifies that starting the music initializes the MediaPlayer and starts playback.
+- Tests if music can be paused and resumed correctly.
+- Ensures the MediaPlayer is disposed after stopping music.
+- Verifies the correct behavior of setVolume and getVolume methods.
+- Tests the volume controls for sound effects.
+- Ensures that playing the shooting sound effect works without exceptions.
+
+#### ProjectileManager
+- Verifies that a user projectile is added to both the userProjectiles list and the scene (root).
+- Ensures a message is displayed when the user plane cannot shoot.
+- Confirms that invisible projectiles are removed from both the userProjectiles list and the scene.
+- Checks that enemy projectiles are added to both the enemyProjectiles list and the scene.
+
+#### LevelManager
+
+#### ActiveActor
+- Verifies that the actor is properly initialized with the correct image, position, and dimensions.
+-  Ensures that the actor is added to a parent Group.
+- Validates the horizontal and vertical movement methods (moveHorizontally and moveVertically).
+- Ensures the collision bounds are calculated correctly with the shrinking factor.
+- A TestActiveActor subclass is used to instantiate the abstract ActiveActor for testing.
+
 #### ActiveActorDestructibleTest
-- This file appears to be a placeholder for tests related to destructible actors in the game. No test logic is currently implemented.
+- Verifies that the ActiveActorDestructible is correctly initialized and not destroyed initially.
+- Checks the behavior of the destroy method and ensures the state is updated correctly.
+- Tests the behavior of the setDestroyed method to manually modify the destruction state.
+- TestActiveActorDestructible is a concrete implementation of the abstract class, enabling unit testing.
+
+#### BossTest
+- Ensure the Boss object is initialized with the correct health and no active shield.
+- Verify that health can be set and retrieved correctly.
+- Test if the shield activates based on probability and deactivates after the allowed frames.
+- Verify that damage is applied correctly when the shield is inactive and ignored when the shield is active.
+- Test that the Boss fires projectiles and the fired projectiles are of the correct type.
+- Ensure the Boss follows its movement pattern and stays within bounds.
+- Test the effect of changing shield probability on shield activation.
+
+#### EnemyPlane
+- Validates that the updatePosition method moves the EnemyPlane horizontally by the correct amount.
+- Checks if the EnemyPlane fires an EnemyProjectile using a probabilistic loop.
+- Verifies the hasExitedScreen method detects when the plane moves off-screen.
+- Ensures that the collision bounds are reduced by the specified shrink factor for better collision detection.
+
+#### FighterPlane
+- Validate initial health.
+- Check health decrement and destruction upon taking damage.
+- Ensure fireProjectile() returns a valid projectile.
+- Test the calculation of projectile positions.
+
+#### UserPlane
+- Ensures the UserPlane initializes correctly.
+- Verifies vertical and horizontal movements and stopping.
+- Validates projectile creation and position.
+- Checks the health decrement and destruction logic.
+- Ensures the kill count increments correctly.
 
 #### BossProjectileTest
-- Validates that the projectile is initialized correctly with the expected image, X position, and Y position.
-- Verifies that calling updatePosition correctly updates the X position based on the velocity constant.
-- Ensures that updateActor behaves as expected by invoking updatePosition.
-- Checks that the projectile's image can be successfully loaded using the image path.
+- Validates that the projectile is initialized with the correct image, height, and initial positions.
+- Confirms that the horizontal position updates correctly when updatePosition is called.
+- Ensures that calling updateActor also updates the position of the projectile.
+
+#### EnemyProjectile
+- Verifies that the projectile's image, size, and initial position are set correctly.
+Uses the file name from the URL for comparison to avoid path mismatches.
+- Tests whether the updatePosition method correctly updates the projectile's horizontal position based on the defined velocity.
+- Ensures the updateActor method calls updatePosition and updates the projectile's state as expected.
+
+#### Projectile
+
+#### UserProjectile
 
 #### BackgroundUtilTest
 - Verifies that the background is loaded correctly with the specified dimensions and properties.

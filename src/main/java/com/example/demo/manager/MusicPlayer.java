@@ -29,6 +29,10 @@ public class MusicPlayer {
         }
     }
 
+    public static MediaPlayer getBackgroundMediaPlayer() {
+        return backgroundMediaPlayer;
+    }
+
     /**
      * Adjusts the volume of the background music.
      *

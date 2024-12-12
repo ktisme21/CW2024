@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.example.demo.LevelChangeListener;
 import com.example.demo.controller.Main;
+import com.example.demo.display.HealthDisplay;
 import com.example.demo.level.LevelOne;
 import com.example.demo.model.ActiveActorDestructible;
 import com.example.demo.model.EnemyPlane;
@@ -51,7 +52,9 @@ public abstract class LevelManager {
     private final InputManager inputManager;
     private final ProjectileManager projectileManager;
     private UIManager uiManager;
+    private HealthDisplay healthDisplay;
     private final CollisionManager collisionManager;
+    private int totalEnemies;
 
     private final GlobalGameTimer gameTimer = GlobalGameTimer.getInstance(); // Use global timer instance
 
@@ -65,7 +68,7 @@ public abstract class LevelManager {
      * @param screenWidth         the width of the screen.
      * @param playerInitialHealth the initial health of the player's plane.
      */
-    public LevelManager(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth) {
+    public LevelManager(String backgroundImageName, double screenHeight, double screenWidth, int playerInitialHealth, int totalEnemies) {
         this.root = new Group();
         this.scene = new Scene(root, screenWidth, screenHeight);
         this.timeline = new Timeline();
@@ -83,6 +86,7 @@ public abstract class LevelManager {
         this.screenWidth = screenWidth;
         this.enemyMaximumYPosition = screenHeight - Constant.SCREEN_HEIGHT_ADJUSTMENT;
         this.levelView = instantiateLevelView();
+        this.totalEnemies = totalEnemies;
         this.currentNumberOfEnemies = 0;
         this.hasAlerted = false;
         this.isTransitioned = false;
@@ -118,6 +122,12 @@ public abstract class LevelManager {
     public Scene initializeScene() {
         initializeBackground();
         initializeFriendlyUnits();
+
+        // Create and position the HealthDisplay
+        double centerX = 550;
+        double topY = 25; // 20 pixels from the top of the screen
+        healthDisplay = new HealthDisplay(centerX, topY, totalEnemies);
+        root.getChildren().add(healthDisplay.getContainer());
         levelView.showHeartDisplay();
         uiManager = new UIManager(root, screenWidth, this::showPauseScreen);
         return scene;
@@ -164,7 +174,7 @@ public abstract class LevelManager {
         updateKillCount();
         updateLevelView();
         checkIfGameOver();
-        updateTopRightLabel(); // Update the timer
+        updateTopRightLabel();
     }
 
     private void updateActors() {
@@ -177,6 +187,7 @@ public abstract class LevelManager {
     private void updateKillCount() {
         for (int i = 0; i < currentNumberOfEnemies - enemyUnits.size(); i++) {
             user.incrementKillCount();
+            healthDisplay.decrementKillCount(); // Update the HealthDisplay
         }
     }
 

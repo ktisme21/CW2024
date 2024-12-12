@@ -23,7 +23,7 @@ public class EndlessMode extends LevelManager {
      * @param screenWidth the width of the game screen.
      */
     public EndlessMode(double screenHeight, double screenWidth) {
-        super(Constant.LEVEL_ONE_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH);
+        super(Constant.LEVEL_ONE_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH, 0);
     }
 
     /**
@@ -57,7 +57,7 @@ public class EndlessMode extends LevelManager {
      */
     private void adjustDifficulty() {
         spawnProbability = Math.min(spawnProbability + Constant.ENDLESS_MODE_SPAWN_INCREMENT, Constant.ENDLESS_MODE_MAX_SPAWN_PROBABILITY);
-    }    
+    }
 
     /**
      * Creates and returns the LevelView for this mode.

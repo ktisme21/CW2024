@@ -28,12 +28,17 @@ public abstract class ActiveActor extends ImageView {
     }
 
     private void initializeImage(String imageName, int imageHeight, double initialXPos, double initialYPos) {
-        this.setImage(new Image(getClass().getResource(IMAGE_LOCATION + imageName).toExternalForm()));
+        var resource = getClass().getResource(IMAGE_LOCATION + imageName);
+        if (resource == null) {
+            throw new IllegalArgumentException("Image resource not found: " + IMAGE_LOCATION + imageName);
+        }
+        this.setImage(new Image(resource.toExternalForm()));
         this.setLayoutX(initialXPos);
         this.setLayoutY(initialYPos);
         this.setFitHeight(imageHeight);
         this.setPreserveRatio(true);
     }
+
 
     /**
      * Adds the actor to a parent {@link Group}.

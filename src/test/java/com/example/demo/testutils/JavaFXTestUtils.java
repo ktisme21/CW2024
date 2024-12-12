@@ -1,5 +1,7 @@
 package com.example.demo.testutils;
 
+import java.util.concurrent.CountDownLatch;
+
 import javafx.application.Platform;
 
 public class JavaFXTestUtils {
@@ -30,6 +32,16 @@ public class JavaFXTestUtils {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted while waiting for JavaFX tasks to complete", e);
+        }
+    }
+
+    public static void waitForFxEvents() {
+        try {
+            CountDownLatch latch = new CountDownLatch(1);
+            Platform.runLater(latch::countDown);
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

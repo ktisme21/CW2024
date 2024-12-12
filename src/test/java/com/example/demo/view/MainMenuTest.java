@@ -21,39 +21,43 @@ class MainMenuTest {
     private MainMenu mainMenu;
 
     @BeforeAll
-    public static void initJavaFX() {
-        JavaFXTestUtils.initializeJavaFX();
+    public static void initJavaFX() throws InterruptedException {
+        Platform.startup(() -> {});
+        Thread.sleep(500); // Ensure JavaFX is initialized properly
     }
 
     @BeforeEach
     void setUp() {
-        stage = new Stage();
-        mainMenu = new MainMenu(
-                stage,
-                event -> System.out.println("Start Game Clicked"),
-                event -> System.out.println("Endless Mode Clicked"),
-                event -> System.out.println("Settings Clicked"),
-                event -> System.out.println("Quit Clicked")
-        );
+        Platform.runLater(() -> {
+            stage = new Stage();
+            mainMenu = new MainMenu(
+                    stage,
+                    event -> System.out.println("Start Game Clicked"),
+                    event -> System.out.println("Endless Mode Clicked"),
+                    event -> System.out.println("Settings Clicked"),
+                    event -> System.out.println("Quit Clicked")
+            );
+        });
     }
 
     @Test
-    void testMainMenuInitialization() {
+    void testMainMenuInitialization() throws Exception {
         Platform.runLater(() -> {
-            // Verify that the main menu is properly initialized
             Scene scene = new Scene(mainMenu, Constant.SCREEN_WIDTH, Constant.SCREEN_HEIGHT);
             stage.setScene(scene);
 
-            // Check the StackPane root
             StackPane root = (StackPane) scene.getRoot();
             assertNotNull(root, "Main menu root should not be null.");
 
-            // Check the VBox content box
             VBox contentBox = (VBox) root.getChildren().get(0);
             assertNotNull(contentBox, "Content box should not be null.");
-            assertEquals(5, contentBox.getChildren().size(), "Content box should have 5 children (title + 4 buttons).");
+            assertEquals(5, contentBox.getChildren().size(), "Content box should have 5 children.");
         });
+
+        // Wait for the JavaFX thread to execute the code
+        Thread.sleep(500);
     }
+
 
     @Test
     void testButtonEventHandlers() {

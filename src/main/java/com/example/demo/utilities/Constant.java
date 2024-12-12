@@ -170,7 +170,8 @@ public class Constant {
     public static final int BOSS_IMAGE_HEIGHT = 300;
     public static final int BOSS_VERTICAL_VELOCITY = 8;
     /** Initial health of the boss. */
-    public static final int BOSS_HEALTH = 10;
+    public static final int BOSS_HEALTH = 50;
+    public static final int BOSS_COUNT = 1;
     public static final int BOSS_MOVE_FREQUENCY = 5;
     public static final int BOSS_MAX_FRAMES_WITH_SAME_MOVE = 10;
     public static final int BOSS_Y_POSITION_UPPER_BOUND = -100;
@@ -179,11 +180,12 @@ public class Constant {
     public static final int ZERO = 0;
 
     // Boss constants for LevelThree
-    public static final int LEVEL_THREE_BOSS_HEALTH = 20;
+    public static final int LEVEL_THREE_BOSS_HEALTH = 60;
     public static final int LEVEL_THREE_TOTAL_BOSSES = 3;
     public static final int LEVEL_THREE_BOSS_SHIELD_PROBABILITY = 0;
 
     // General UserPlane Constants
+    public static final int USER_PLANE_INITIAL_HEALTH = 5;
     public static final String USER_PLANE_IMAGE_NAME = "userplane.png";
     public static final double USER_PLANE_X_LEFT_BOUND = -30.0;
     public static final double USER_PLANE_X_RIGHT_BOUND = 1110.0;
@@ -194,8 +196,8 @@ public class Constant {
     /** Initial Y position of the user plane. */
     public static final double USER_PLANE_INITIAL_Y = 300.0;
     public static final int USER_PLANE_IMAGE_HEIGHT = 150;
-    public static final int USER_PLANE_VERTICAL_VELOCITY = 8;
-    public static final int USER_PLANE_HORIZONTAL_VELOCITY = 8;
+    public static final int USER_PLANE_VERTICAL_VELOCITY = 10;
+    public static final int USER_PLANE_HORIZONTAL_VELOCITY = 10;
     public static final int USER_PROJECTILE_X_POSITION = 110;
     public static final int USER_PROJECTILE_Y_POSITION_OFFSET = 20;
 
@@ -213,7 +215,7 @@ public class Constant {
 
     public static final String USER_PROJECTILE_IMAGE = "userfire.png";
     public static final int USER_PROJECTILE_IMAGE_HEIGHT = 125;
-    public static final int USER_PROJECTILE_HORIZONTAL_VELOCITY = 15;
+    public static final int USER_PROJECTILE_HORIZONTAL_VELOCITY = 16;
 
     // Background image paths
     public static final String BACKGROUND_IMAGE_PATH = "/com/example/demo/images/background4.jpg";

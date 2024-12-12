@@ -27,7 +27,7 @@ public class LevelTwo extends LevelManager {
      * @param screenWidth The width of the game screen.
      */
     public LevelTwo(double screenHeight, double screenWidth) {
-        super(Constant.LEVEL_TWO_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH);
+        super(Constant.LEVEL_TWO_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH, Constant.BOSS_COUNT);
         boss = new Boss();
         this.shieldImage = new ShieldImage(0, 0);
         this.isBlinking = false;

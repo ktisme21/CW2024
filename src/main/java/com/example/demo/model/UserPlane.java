@@ -104,11 +104,12 @@ public class UserPlane extends FighterPlane {
 		velocityMultiplierX = 0;
 	}
 
-	private boolean isMovingVertically() {
+	// Update access modifiers for isMovingVertically and isMovingHorizontally
+	protected boolean isMovingVertically() {
 		return velocityMultiplierY != 0;
 	}
 
-	private boolean isMovingHorizontally() {
+	protected boolean isMovingHorizontally() {
 		return velocityMultiplierX != 0;
 	}
 

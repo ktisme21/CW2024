@@ -7,17 +7,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 /**
- * Manages the UI elements of the game, including the timer and pause button.
+ * Manages the UI elements of the game, including the timer, health display, and pause button.
  * Responsible for creating, styling, and updating UI components.
  */
 public class UIManager {
 
     private final Label timerLabel;
-    private final Rectangle timerBackground;
     private final Button pauseButton;
 
     /**
@@ -30,10 +27,9 @@ public class UIManager {
     public UIManager(Group root, double screenWidth, Runnable onPauseAction) {
         // Create and add UI components
         timerLabel = createTimerLabel(screenWidth);
-        timerBackground = createTimerBackground(screenWidth);
         pauseButton = createPauseButton(screenWidth, onPauseAction);
 
-        root.getChildren().addAll(timerBackground, timerLabel, pauseButton);
+        root.getChildren().addAll(timerLabel, pauseButton);
     }
 
     /**
@@ -48,24 +44,6 @@ public class UIManager {
         label.setLayoutX(screenWidth - Constant.TIMER_LABEL_X_POSITION);
         label.setLayoutY(Constant.TIMER_LABEL_Y_POSITION);
         return label;
-    }
-
-    /**
-     * Creates the background for the timer.
-     *
-     * @param screenWidth The width of the game screen.
-     * @return A {@code Rectangle} styled as the timer background.
-     */
-    private Rectangle createTimerBackground(double screenWidth) {
-        Rectangle background = new Rectangle();
-        background.setWidth(Constant.TIMER_BACKGROUND_WIDTH);
-        background.setHeight(Constant.TIMER_BACKGROUND_HEIGHT);
-        background.setFill(Color.web(Constant.TIMER_BACKGROUND_COLOR)); // Semi-transparent
-        background.setArcWidth(Constant.TIMER_BACKGROUND_CORNER_RADIUS);
-        background.setArcHeight(Constant.TIMER_BACKGROUND_CORNER_RADIUS);
-        background.setLayoutX(screenWidth - Constant.TIMER_LABEL_X_POSITION - 10); // Adjust padding
-        background.setLayoutY(Constant.TIMER_LABEL_Y_POSITION - 5); // Adjust padding
-        return background;
     }
 
     /**

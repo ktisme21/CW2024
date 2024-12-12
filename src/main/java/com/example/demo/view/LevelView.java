@@ -7,7 +7,6 @@ import com.example.demo.display.WinImage;
 import com.example.demo.utilities.Constant;
 
 import javafx.scene.Group;
-import javafx.scene.control.Label;
 
 /**
  * Handles the visual representation of a game level, including heart display, win/lose images, and shields.
@@ -19,7 +18,6 @@ public class LevelView {
 	private final WinImage winImage;
 	private final GameOverImage gameOverImage;
 	private final HeartDisplay heartDisplay;
-	private Label healthDisplay;
 	
 	/**
      * Constructs a {@code LevelView} with specified number of hearts to display.
@@ -71,15 +69,5 @@ public class LevelView {
 		}
 	}
 
-	// public void showHealth(String infoText) {
-    //     if (healthDisplay == null) {
-    //         healthDisplay = new Label();
-    //         healthDisplay.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
-    //         healthDisplay.setLayoutX(15); // Adjust positioning as needed
-    //         healthDisplay.setLayoutY(80); // Place below the heart display
-    //         root.getChildren().add(healthDisplay);
-    //     }
-    //     healthDisplay.setText(infoText);
-    // }
 
 }

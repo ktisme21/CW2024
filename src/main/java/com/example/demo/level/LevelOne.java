@@ -19,7 +19,7 @@ public class LevelOne extends LevelManager {
      * @param screenWidth The width of the game screen.
      */
     public LevelOne(double screenHeight, double screenWidth) {
-        super(Constant.LEVEL_ONE_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH);
+        super(Constant.LEVEL_ONE_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH, Constant.LEVEL_ONE_TOTAL_ENEMIES);
     }
 
     /**
