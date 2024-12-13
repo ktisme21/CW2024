@@ -109,14 +109,9 @@ public class Boss extends FighterPlane {
     private void ensureWithinBounds(double initialTranslateY) {
         double currentPosition = getLayoutY() + getTranslateY();
         if (currentPosition < Constant.BOSS_Y_POSITION_UPPER_BOUND || currentPosition > Constant.BOSS_Y_POSITION_LOWER_BOUND) {
-            // Reset position to initial Y position
             setTranslateY(initialTranslateY);
-
-            // Reset movement pattern to avoid getting stuck
-            resetMovePattern();
         }
     }
-
 
     // Shield Management
     private void manageShieldState() {

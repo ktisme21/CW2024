@@ -189,6 +189,11 @@ SkyBattle is an intense combat game that let players control advanced fighter pl
 - Solution: The isBlinking flag ensures that the blinking animation does not restart if it's already running.
 - The shieldImage.setVisible(true) and shieldImage.setOpacity(1.0) finalize the activation after blinking.
 
+#### 3. HardCoded Screen
+- Create FXML (file)Controller.java and (file).fxml
+- FXML files are easier to read and update compared to hard-coded UI, as the layout is declarative and XML-based.
+- Can be supported by using SceneBuilder
+- Create a clear separation of the UIlayout and the application logic
 
 ## Feature would like to add
 #### Input and Record Players' Names in LeaderboardManager.java
