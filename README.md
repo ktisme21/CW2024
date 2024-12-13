@@ -132,7 +132,7 @@ SkyBattle is an intense combat game that let players control advanced fighter pl
 ## Additional Features
 #### 1. Level Adjustments:
 * Level 3
-- Introduce invisibility mode. Triggered by pressing 'D'. 
+- Introduce invisibility mode. Triggered by pressing 'D'.
 - When 'D' is pressed, the p;ayer's plane becomes invisible, dodging enemy projectiles but unable to shoot. Pressing 'D' again reverts the plane back to visible mode.
 - Adds multiple bosses for increased difficulty. Make the player has multiple target.
 
@@ -184,12 +184,10 @@ SkyBattle is an intense combat game that let players control advanced fighter pl
 - Possible Solution: Decouple timer logic from animations / Optimize Animations
 - Use a dedicated thread or task for the timer to avoid conflicts. Running GlobalGameTimer using a ScheduledExecutorService instead of replying solely on JavaFX's Animation threads
 
-#### 2. Screen Alignment Issues:
-- After returning to certain classes or screens, the UI alignment becomes misaligned.
-- This is due to hardcoded dimensions and possible SDK version issues when handling JavaFX layouts.
-- Tried: The alignment changed into center when i changed my project structure into SDK 21.0.2 version, but the game is very laggy. Cause:
-- Tried to change to FXML by adding controller and fxml file but still doesn't display properly.
-- Possible solution: The SDK version could introduce subtle layout changes if there are compatibility issues.
+#### 2. ShieldImage Blinking Animation
+- Shield Image should blinking before the shield is activate.
+- Solution: The isBlinking flag ensures that the blinking animation does not restart if it's already running.
+- The shieldImage.setVisible(true) and shieldImage.setOpacity(1.0) finalize the activation after blinking.
 
 
 ## Feature would like to add
@@ -377,22 +375,11 @@ SkyBattle is an intense combat game that let players control advanced fighter pl
 - Checks the game-over logic when the user plane is destroyed.
 - Ensures the level transitions properly upon defeating all bosses.
 
-#### CollisionManagerTest
-- Checks that collisions between friendly and enemy planes are correctly detected and processed.
-- Validates that collisions between projectiles and targets (both user and enemy) are identified and handled appropriately.
-- Ensures game objects are removed when they collide or leave the scene.
-
 #### GlobalGameTimerTest
 - Confirms the timer starts and stops accurately.
 Elapsed Time Calculation: Verifies that the timer correctly calculates elapsed time.
 - Ensures the timer resets to zero when required.
 - Validates that only one instance of the timer exists throughout the game.
-
-#### InputManagerTest
-- Verifies that key press events for movement (up, down, left, right) correctly invoke the corresponding UserPlane methods (moveUp, moveDown, etc.).
-- Ensures the InputManager triggers the fireProjectile method on ProjectileManager when the fire key is pressed.
-- Validates that releasing movement keys stops the user's vertical or horizontal movement.
-- Confirms that input handlers are properly set up on the background, ensuring it can process key and mouse inputs.
 
 #### LeaderboardManagerTest
 - Tests adding new entries and ensures they are ordered by score, with the lowest score first.
@@ -409,13 +396,16 @@ Elapsed Time Calculation: Verifies that the timer correctly calculates elapsed t
 - Tests the volume controls for sound effects.
 - Ensures that playing the shooting sound effect works without exceptions.
 
-#### ProjectileManager
-- Verifies that a user projectile is added to both the userProjectiles list and the scene (root).
-- Ensures a message is displayed when the user plane cannot shoot.
-- Confirms that invisible projectiles are removed from both the userProjectiles list and the scene.
-- Checks that enemy projectiles are added to both the enemyProjectiles list and the scene.
+#### DestructibleTest
+- Verifies that a mock implementation of the Destructible interface starts with the correct initial health value (3 in this case).
+- Ensures that the takeDamage method reduces health correctly (decrements by 1 each time it's called).
+- Confirms that the destroy method is triggered when health reaches 0, marking the object as destroyed.
+- Validates that once the object is destroyed (health = 0), it can no longer take damage, and health does not decrease below 0.
 
-#### LevelManager
+#### CollisionManagerTest
+- Checks that collisions between friendly and enemy planes are correctly detected and processed.
+- Validates that collisions between projectiles and targets (both user and enemy) are identified and handled appropriately.
+- Ensures game objects are removed when they collide or leave the scene.
 
 #### ActiveActor
 - Verifies that the actor is properly initialized with the correct image, position, and dimensions.
@@ -469,31 +459,11 @@ Uses the file name from the URL for comparison to avoid path mismatches.
 - Tests whether the updatePosition method correctly updates the projectile's horizontal position based on the defined velocity.
 - Ensures the updateActor method calls updatePosition and updates the projectile's state as expected.
 
-#### Projectile
-
 #### UserProjectile
-
-#### BackgroundUtilTest
-- Verifies that the background is loaded correctly with the specified dimensions and properties.
-- Confirms that the background image is set to preserve its ratio and fit within the provided dimensions (width and height).
-- Checks that the utility handles null or invalid inputs gracefully without throwing unexpected exceptions.
-
-#### LeaderBoardTest
-- Ensures that the leaderboard initializes with the correct data structure to store player scores.
-- Verifies that new scores are added correctly to the leaderboard.
-- Confirms that the leaderboard correctly sorts the scores in descending order of performance.
-- Ensures that the leaderboard is rendered correctly on the screen, displaying the player names and scores properly.
-
-#### LevelViewTest
-- Verifies that the health display updates correctly when the player's health changes.
-- Ensures that the kill count updates accurately as enemies are defeated.
-- Confirms that the UI elements such as health, score, and kill counters are initialized and displayed correctly.
-- Ensures the "Game Over" message or screen is displayed correctly when the player's health reaches zero.
-
-#### MainMenuTest
-- This file verifies that the main menu is properly initialized with the ocrrect structure, such as a StackPane root and a VBox content box with five children(title and buttons). 
-- Checks that all the buttons exits and respond correctly to mouse clicks
-- Confirms that the background image is correctly set for the main menu using the BackgroundUtil utility.
+- Ensures that the projectile is initialized correctly with the specified image, size, and initial position.
+- Tests the updatePosition method to ensure the projectile's position updates correctly when it is within bounds.
+- Tests the behavior of the updatePosition method when the projectile is initialized outside the screen bounds.
+- Tests the updateActor method to ensure the projectile's position updates correctly when it is within bounds.
 
 #### PauseScreenTest
 - Ensures that the pause screen initializes and display correctly.
@@ -503,6 +473,21 @@ Uses the file name from the URL for comparison to avoid path mismatches.
 - Simulates a click on the quit button and ensures the pause screen closes.
 
 
-## Git
-- fork from kooitt/CW2024 - https://github.com/kooitt/CW2024.git
-- code recorded in - https://github.com/ktisme21/CW2024.git
+## Compliation Instruction
+### Git Repository
+- Forked from kooitt/CW2024 - https://github.com/kooitt/CW2024.git
+- Code maintained - https://github.com/ktisme21/CW2024.git
+
+### Complie and Run
+1. Clone the repository
+git clone https://github.com/ktisme21/CW2024.git
+cd CW2024
+
+2. Automated Compilation
+Run the provided start.bat script located in the root directory to install, compile, and launch the application automatically.
+
+3. Manual Compilation
+mvnw install -DskipTests
+cd target
+"%JAVA_HOME%\bin\java" --module-path "%PATH_TO_FX%" --add-modules javafx.controls,javafx.fxml
+

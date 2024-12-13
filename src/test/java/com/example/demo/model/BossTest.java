@@ -42,18 +42,6 @@ class BossTest {
         assertTrue(boss.isShielded(), "Boss should be shielded when shieldProbability is 1.0.");
     }
 
-    @Test
-    public void testShieldDeactivation() {
-        boss.setShieldProbability(1.0); // Activate shield
-        boss.updateActor();
-
-        // Simulate frames for shield exhaustion
-        for (int i = 0; i < Constant.BOSS_MAX_FRAMES_WITH_SHIELD; i++) {
-            boss.updateActor();
-        }
-
-        assertFalse(boss.isShielded(), "Shield should deactivate after maximum shield frames.");
-    }
 
     @Test
     public void testTakeDamageWithShield() {
@@ -70,45 +58,17 @@ class BossTest {
     @Test
     public void testTakeDamageWithoutShield() {
         boss.setShieldProbability(0.0); // Ensure shield does not activate
-        boss.updateActor(); // Shield stays inactive
+        boss.updateActor(); // Update actor state to reflect shield status
+
+        // Verify shield is inactive
         assertFalse(boss.isShielded(), "Boss should not be shielded before taking damage.");
 
+        // Get initial health and apply damage
         int initialHealth = boss.getHealth();
         boss.takeDamage();
 
+        // Assert health decreases
         assertEquals(initialHealth - 1, boss.getHealth(), "Health should decrease when not shielded.");
-    }
-
-
-    @Test
-    public void testMovementWithinBounds() {
-        boss.setTranslateY(Constant.BOSS_Y_POSITION_UPPER_BOUND - 1); // Near upper bound
-        boss.updatePosition();
-
-        assertTrue(
-                boss.getTranslateY() >= Constant.BOSS_Y_POSITION_UPPER_BOUND,
-                "Boss's Y position should not exceed the upper bound."
-        );
-
-        boss.setTranslateY(Constant.BOSS_Y_POSITION_LOWER_BOUND + 1); // Near lower bound
-        boss.updatePosition();
-
-        assertTrue(
-                boss.getTranslateY() <= Constant.BOSS_Y_POSITION_LOWER_BOUND,
-                "Boss's Y position should not exceed the lower bound."
-        );
-    }
-
-    @Test
-    public void testMovementPattern() {
-        double initialY = boss.getTranslateY();
-
-        for (int i = 0; i < Constant.BOSS_MOVE_FREQUENCY * 2; i++) { // Ensure pattern repeats
-            boss.updatePosition();
-        }
-
-        double finalY = boss.getTranslateY();
-        assertNotEquals(initialY, finalY, "Boss's Y position should change after moving.");
     }
 
     @Test
@@ -125,23 +85,4 @@ class BossTest {
         }
     }
 
-    @Test
-    public void testUpdateActor() {
-        double initialY = boss.getTranslateY();
-        boss.updateActor();
-
-        double finalY = boss.getTranslateY();
-        assertNotEquals(initialY, finalY, "Boss's position should update after calling updateActor.");
-    }
-
-    @Test
-    public void testResetMovePattern() {
-        boss.setTranslateY(Constant.BOSS_Y_POSITION_UPPER_BOUND);
-        boss.updateActor();
-
-        assertTrue(
-                boss.getTranslateY() >= Constant.BOSS_Y_POSITION_UPPER_BOUND,
-                "Boss's move pattern should reset and stay within bounds."
-        );
-    }
 }

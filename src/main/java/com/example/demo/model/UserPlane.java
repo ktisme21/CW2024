@@ -6,16 +6,21 @@ import com.example.demo.utilities.Constant;
 
 /**
  * Represents the user's plane in the game.
- * The user plane can move, fire projectiles, and take damage.
+ * The user plane can move, fire projectiles, take damage, and track kills.
  */
 public class UserPlane extends FighterPlane {
 
-	private int velocityMultiplierX;
-	private int velocityMultiplierY;
-	private int numberOfKills;
-	private boolean destroyed = false;
+    private int velocityMultiplierX;
+    private int velocityMultiplierY;
+    private int numberOfKills;
+    private boolean destroyed = false;
 
-	public UserPlane(int initialHealth) {
+    /**
+     * Constructs a {@code UserPlane} with the specified initial health.
+     *
+     * @param initialHealth The initial health of the user's plane.
+     */
+    public UserPlane(int initialHealth) {
         super(
             Constant.USER_PLANE_IMAGE_NAME,
             Constant.USER_PLANE_IMAGE_HEIGHT,
@@ -27,15 +32,29 @@ public class UserPlane extends FighterPlane {
         velocityMultiplierY = 0;
     }
 
-	public void setDestroyed(boolean destroyed) {
-		this.destroyed = destroyed;
-	}
+    /**
+     * Sets the destruction state of the user's plane.
+     *
+     * @param destroyed {@code true} if the plane is destroyed, {@code false} otherwise.
+     */
+    public void setDestroyed(boolean destroyed) {
+        this.destroyed = destroyed;
+    }
 
-	public boolean isDestroyed() {
-		return destroyed;
-	}
+    /**
+     * Checks if the user's plane is destroyed.
+     *
+     * @return {@code true} if the plane is destroyed, {@code false} otherwise.
+     */
+    public boolean isDestroyed() {
+        return destroyed;
+    }
 
-	@Override
+    /**
+     * Updates the position of the user's plane based on its velocity multipliers.
+     * Ensures the plane stays within the defined boundaries.
+     */
+    @Override
     public void updatePosition() {
         // Update vertical movement
         if (isMovingVertically()) {
@@ -58,67 +77,118 @@ public class UserPlane extends FighterPlane {
         }
     }
 
-	@Override
-	public void updateActor() {
-		updatePosition();
-	}
+    /**
+     * Updates the state of the user's plane.
+     * Calls the method to update the position.
+     */
+    @Override
+    public void updateActor() {
+        updatePosition();
+    }
 
-	@Override
-	public ActiveActorDestructible fireProjectile() {
-		if (!this.isVisible()) {
-			return null; // Return null to prevent firing when invisible
-		}
-		MusicPlayer.playShootingSound();
-		double projectileXPosition = getLayoutX() + getTranslateX() + Constant.USER_PROJECTILE_X_POSITION;
-		double projectileYPosition = getLayoutY() + getTranslateY() + Constant.USER_PROJECTILE_Y_POSITION_OFFSET;
-		return new UserProjectile(projectileXPosition, projectileYPosition);
-	}
+    /**
+     * Fires a projectile from the user's plane.
+     * Plays a shooting sound and creates a new projectile at the correct position.
+     *
+     * @return An {@link ActiveActorDestructible} representing the fired projectile, or {@code null} if the plane is invisible.
+     */
+    @Override
+    public ActiveActorDestructible fireProjectile() {
+        if (!this.isVisible()) {
+            return null; // Return null to prevent firing when invisible
+        }
+        MusicPlayer.playShootingSound();
+        double projectileXPosition = getLayoutX() + getTranslateX() + Constant.USER_PROJECTILE_X_POSITION;
+        double projectileYPosition = getLayoutY() + getTranslateY() + Constant.USER_PROJECTILE_Y_POSITION_OFFSET;
+        return new UserProjectile(projectileXPosition, projectileYPosition);
+    }
 
-	public void setNumberOfKills(int numberOfKills) {
-		this.numberOfKills = numberOfKills;
-	}
+    /**
+     * Sets the number of kills made by the user.
+     *
+     * @param numberOfKills The number of kills to set.
+     */
+    public void setNumberOfKills(int numberOfKills) {
+        this.numberOfKills = numberOfKills;
+    }
 
-	// Vertical and horizontal movement
-	public void moveUp() {
-		velocityMultiplierY = -1;
-	}
+    /**
+     * Increments the kill count for the user's plane.
+     */
+    public void incrementKillCount() {
+        numberOfKills++;
+    }
 
-	public void moveDown() {
-		velocityMultiplierY = 1;
-	}
+    /**
+     * Retrieves the number of kills made by the user.
+     *
+     * @return The current kill count.
+     */
+    public int getNumberOfKills() {
+        return numberOfKills;
+    }
 
-	public void moveLeft() {
-		velocityMultiplierX = -1;
-	}
+    // Movement methods
 
-	public void moveRight() {
-		velocityMultiplierX = 1;
-	}
+    /**
+     * Initiates upward movement of the user's plane.
+     */
+    public void moveUp() {
+        velocityMultiplierY = -1;
+    }
 
-	// Stop vertical and horizontal movement
-	public void stopVertical() {
-		velocityMultiplierY = 0;
-	}
+    /**
+     * Initiates downward movement of the user's plane.
+     */
+    public void moveDown() {
+        velocityMultiplierY = 1;
+    }
 
-	public void stopHorizontal() {
-		velocityMultiplierX = 0;
-	}
+    /**
+     * Initiates leftward movement of the user's plane.
+     */
+    public void moveLeft() {
+        velocityMultiplierX = -1;
+    }
 
-	// Update access modifiers for isMovingVertically and isMovingHorizontally
-	protected boolean isMovingVertically() {
-		return velocityMultiplierY != 0;
-	}
+    /**
+     * Initiates rightward movement of the user's plane.
+     */
+    public void moveRight() {
+        velocityMultiplierX = 1;
+    }
 
-	protected boolean isMovingHorizontally() {
-		return velocityMultiplierX != 0;
-	}
+    /**
+     * Stops vertical movement of the user's plane.
+     */
+    public void stopVertical() {
+        velocityMultiplierY = 0;
+    }
 
-	public int getNumberOfKills() {
-		return numberOfKills;
-	}
+    /**
+     * Stops horizontal movement of the user's plane.
+     */
+    public void stopHorizontal() {
+        velocityMultiplierX = 0;
+    }
 
-	public void incrementKillCount() {
-		numberOfKills++;
-	}
+    // Helper methods
 
+    /**
+     * Checks if the user's plane is currently moving vertically.
+     *
+     * @return {@code true} if moving vertically, {@code false} otherwise.
+     */
+    protected boolean isMovingVertically() {
+        return velocityMultiplierY != 0;
+    }
+
+    /**
+     * Checks if the user's plane is currently moving horizontally.
+     *
+     * @return {@code true} if moving horizontally, {@code false} otherwise.
+     */
+    protected boolean isMovingHorizontally() {
+        return velocityMultiplierX != 0;
+    }
 }

@@ -150,7 +150,7 @@ public class Constant {
     public static final double COLLISION_SHRINK_FACTOR = 0.5;
 
     // Enemy Plane Constant
-    public static final double ENEMY_FIRE_RATE = 0.01;
+    public static double ENEMY_FIRE_RATE = 0.01;
     public static final int ENEMY_PLANE_IMAGE_HEIGHT = 150;
     public static final int ENEMY_INITIAL_HEALTH = 1;
     public static final String ENEMY_PLANE_IMAGE = "enemyplane.png";
@@ -246,7 +246,7 @@ public class Constant {
 
     // Endless Mode Constants
     public static final double ENDLESS_MODE_SPAWN_INCREMENT = 0.01; // Increment rate for spawn probability
-    public static final double ENDLESS_MODE_MAX_SPAWN_PROBABILITY = 0.5; // Maximum spawn probability
+    public static final double ENDLESS_MODE_MAX_SPAWN_PROBABILITY = 0.05; // Maximum spawn probability
 
     // Shield display constants
     public static final int SHIELD_X_POSITION = 1150;

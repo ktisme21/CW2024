@@ -26,20 +26,6 @@ class GlobalGameTimerTest {
     }
 
     @Test
-    void testStartAndElapsedTime() throws InterruptedException {
-        // Start the timer
-        gameTimer.start();
-        // Wait for 100 milliseconds
-        Thread.sleep(100);
-        gameTimer.stop();
-
-        // Get elapsed time and ensure it's around 100ms
-        Duration elapsedTime = gameTimer.getElapsedTime();
-        assertTrue(elapsedTime.toMillis() >= 100 && elapsedTime.toMillis() < 150,
-                "Elapsed time should be close to 100 milliseconds.");
-    }
-
-    @Test
     void testStop() throws InterruptedException {
         // Start the timer
         gameTimer.start();

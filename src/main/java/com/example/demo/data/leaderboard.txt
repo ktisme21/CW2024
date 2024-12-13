@@ -1,4 +1,4 @@
-Player,19630
-Player,25070
+Player,28520
+Player,31150
 Player,60000
 Player,120000

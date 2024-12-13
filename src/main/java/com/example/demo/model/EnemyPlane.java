@@ -42,11 +42,11 @@ public class EnemyPlane extends FighterPlane {
 		updatePosition();
 	}
 
-	public boolean hasExitedScreen(double screenWidth){
-		// Check if the plane has flown past the left edge of the screen
-        return getLayoutX() + getTranslateX() + getBoundsInParent().getWidth() < 0 || 
-               getLayoutX() > screenWidth; // Check if it exited on the right
+	public boolean hasExitedScreen(double screenWidth) {
+		double xPosition = getLayoutX() + getTranslateX();
+		return xPosition + getBoundsInParent().getWidth() < 0 || xPosition > screenWidth;
 	}
+
 
 	@Override
 	public Bounds getCollisionBounds() {

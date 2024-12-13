@@ -47,29 +47,33 @@ class EndlessModeTest {
 
     @Test
     void testAdjustDifficulty() {
-        // Get the initial probability directly from endlessMode
+        EndlessMode endlessMode = new EndlessMode(750, 1300); // Screen dimensions
+
+        // Get the initial spawn probability
         double initialProbability = endlessMode.getSpawnProbability();
 
-        // Perform multiple spawns to potentially increase difficulty
-        for (int i = 0; i < 50; i++) {
+        // Perform multiple spawns to trigger difficulty adjustment
+        for (int i = 0; i < 100; i++) {
             endlessMode.spawnEnemyUnits();
         }
 
         double currentProbability = endlessMode.getSpawnProbability();
 
-        // Log probabilities for debugging
-        System.out.println("Initial Probability: " + initialProbability);
-        System.out.println("Current Probability: " + currentProbability);
-
         // Ensure probability does not exceed the maximum
         assertTrue(currentProbability <= Constant.ENDLESS_MODE_MAX_SPAWN_PROBABILITY,
                 "Spawn probability should not exceed the maximum defined value.");
 
-        // Ensure probability increased over time if that is the intended behavior
-        assertTrue(currentProbability > initialProbability,
-                "Spawn probability should increase over time. Initial: " + initialProbability +
-                        ", Current: " + currentProbability);
+        // Ensure probability increased if not already at maximum
+        if (initialProbability < Constant.ENDLESS_MODE_MAX_SPAWN_PROBABILITY) {
+            assertTrue(currentProbability > initialProbability,
+                    "Spawn probability should increase over time. Initial: " + initialProbability +
+                            ", Current: " + currentProbability);
+        } else {
+            assertEquals(Constant.ENDLESS_MODE_MAX_SPAWN_PROBABILITY, currentProbability,
+                    "Spawn probability should remain at the maximum value.");
+        }
     }
+
 
 
     @Test

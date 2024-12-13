@@ -18,8 +18,10 @@ import javafx.util.Duration;
 
 /**
  * The {@code LevelThree} class represents the third level of the game.
- * This level includes unique mechanics, such as a toggleable visibility feature
- * for the user's plane and spawning multiple bosses with reduced health.
+ * This level includes unique mechanics such as:
+ * - Multiple bosses with reduced health.
+ * - Toggleable visibility for the user's plane.
+ * - A visual red container surrounding the user plane.
  */
 public class LevelThree extends LevelManager {
 
@@ -27,16 +29,28 @@ public class LevelThree extends LevelManager {
     private boolean isPlaneVisible = true;
     private Rectangle redContainer;
 
+    /**
+     * Constructs a new {@code LevelThree} instance.
+     *
+     * @param screenHeight The height of the game screen.
+     * @param screenWidth  The width of the game screen.
+     */
     public LevelThree(double screenHeight, double screenWidth) {
-        super(Constant.LEVEL_THREE_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH, Constant.LEVEL_THREE_BOSS_HEALTH);
+        super(Constant.LEVEL_THREE_BACKGROUND, screenHeight, screenWidth, Constant.PLAYER_INITIAL_HEALTH, Constant.LEVEL_THREE_TOTAL_BOSSES);
         initializeUserPlane();
     }
 
+    /**
+     * Initializes the user's plane and sets its visibility to true.
+     */
     private void initializeUserPlane() {
         getUser().setVisible(true);
         initializeRedContainer();
     }
 
+    /**
+     * Initializes the red container surrounding the user's plane.
+     */
     private void initializeRedContainer() {
         redContainer = new Rectangle();
         redContainer.setStroke(Color.valueOf(Constant.RED_CONTAINER_STROKE_COLOR));
@@ -45,12 +59,18 @@ public class LevelThree extends LevelManager {
         updateRedContainerPosition();
     }
 
+    /**
+     * Adds the red container to the scene if not already present.
+     */
     private void addRedContainerToRoot() {
         if (!getRoot().getChildren().contains(redContainer)) {
             getRoot().getChildren().add(redContainer);
         }
     }
 
+    /**
+     * Updates the position of the red container to follow the user's plane.
+     */
     private void updateRedContainerPosition() {
         if (getUser() == null) return;
 
@@ -68,6 +88,9 @@ public class LevelThree extends LevelManager {
         redContainer.setY(userY + (userHeight - shrinkHeight) / 2);
     }
 
+    /**
+     * Adds friendly units, including the user's plane and red container, to the scene.
+     */
     @Override
     protected void initializeFriendlyUnits() {
         if (!getRoot().getChildren().contains(getUser())) {
@@ -76,6 +99,9 @@ public class LevelThree extends LevelManager {
         addRedContainerToRoot();
     }
 
+    /**
+     * Spawns enemy units (bosses) until the required number is reached.
+     */
     @Override
     protected void spawnEnemyUnits() {
         while (spawnedBossCount < Constant.LEVEL_THREE_TOTAL_BOSSES) {
@@ -83,19 +109,31 @@ public class LevelThree extends LevelManager {
         }
     }
 
+    /**
+     * Spawns a boss with reduced health and increments the boss spawn count.
+     */
     private void spawnBoss() {
         Boss boss = createBossWithReducedHealth();
         addEnemyUnit(boss);
         spawnedBossCount++;
     }
 
+    /**
+     * Creates a boss instance with reduced health and no shields.
+     *
+     * @return A {@link Boss} instance with the specified configurations.
+     */
     private Boss createBossWithReducedHealth() {
         Boss boss = new Boss();
-        boss.setHealth(Constant.LEVEL_THREE_BOSS_HEALTH); // Use the constant for LevelThree boss health
-        boss.setShieldProbability(Constant.LEVEL_THREE_BOSS_SHIELD_PROBABILITY); // Disable shields
+        boss.setHealth(Constant.LEVEL_THREE_BOSS_HEALTH);
+        boss.setShieldProbability(Constant.LEVEL_THREE_BOSS_SHIELD_PROBABILITY);
         return boss;
     }
 
+    /**
+     * Checks if the game is over or if the player has won.
+     * The game ends if the user plane is destroyed or all bosses are defeated.
+     */
     @Override
     protected void checkIfGameOver() {
         if (userIsDestroyed()) {
@@ -105,6 +143,11 @@ public class LevelThree extends LevelManager {
         }
     }
 
+    /**
+     * Initializes the scene with additional setup for key listeners and instructions.
+     *
+     * @return The initialized {@link Scene}.
+     */
     @Override
     public Scene initializeScene() {
         Scene scene = super.initializeScene();
@@ -113,6 +156,9 @@ public class LevelThree extends LevelManager {
         return scene;
     }
 
+    /**
+     * Displays an instruction message to the player for toggling visibility.
+     */
     private void displayInstruction() {
         Label instructionLabel = new Label("Press 'D' to toggle visibility!");
         instructionLabel.setStyle(Constant.MESSAGE_LABEL_STYLE);
@@ -128,6 +174,11 @@ public class LevelThree extends LevelManager {
         timeline.play();
     }
 
+    /**
+     * Sets up key listeners for toggling plane visibility and firing projectiles.
+     *
+     * @param scene The scene to attach the listeners to.
+     */
     private void setupKeyListeners(Scene scene) {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.D) {
@@ -138,6 +189,9 @@ public class LevelThree extends LevelManager {
         });
     }
 
+    /**
+     * Handles the firing of projectiles by the user's plane.
+     */
     private void handleProjectileFiring() {
         ActiveActorDestructible projectile = getUser().fireProjectile();
         if (projectile != null) {
@@ -145,11 +199,19 @@ public class LevelThree extends LevelManager {
         }
     }
 
+    /**
+     * Adds a user projectile to the scene and projectile list.
+     *
+     * @param projectile The projectile to be added.
+     */
     private void addProjectileToScene(UserProjectile projectile) {
         getRoot().getChildren().add(projectile);
         getUserProjectiles().add(projectile);
     }
 
+    /**
+     * Toggles the visibility of the user's plane and its projectiles.
+     */
     private void toggleUserPlaneVisibility() {
         isPlaneVisible = !isPlaneVisible;
         getUser().setVisible(isPlaneVisible);
@@ -162,12 +224,20 @@ public class LevelThree extends LevelManager {
         }
     }
 
+    /**
+     * Updates the scene, including the position of the red container.
+     */
     @Override
     protected void updateScene() {
         super.updateScene();
         updateRedContainerPosition();
     }
 
+    /**
+     * Instantiates the {@link LevelView} for this level.
+     *
+     * @return A new instance of {@link LevelView}.
+     */
     @Override
     protected LevelView instantiateLevelView() {
         return new LevelView(getRoot(), Constant.PLAYER_INITIAL_HEALTH);

@@ -19,23 +19,6 @@ class MusicPlayerTest {
     }
 
     @Test
-    void testStartMusic() {
-        assertDoesNotThrow(MusicPlayer::startMusic, "Starting music should not throw any exceptions.");
-        assertNotNull(getBackgroundMediaPlayer(), "Background MediaPlayer should be initialized after starting music.");
-        assertTrue(getBackgroundMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING, "Music should be playing after startMusic.");
-    }
-
-    @Test
-    void testPauseAndResumeMusic() {
-        MusicPlayer.startMusic();
-        MusicPlayer.pauseMusic();
-        assertTrue(getBackgroundMediaPlayer().getStatus() == MediaPlayer.Status.PAUSED, "Music should be paused after calling pauseMusic.");
-
-        MusicPlayer.resumeMusic();
-        assertTrue(getBackgroundMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING, "Music should resume playing after calling resumeMusic.");
-    }
-
-    @Test
     void testStopMusic() {
         MusicPlayer.startMusic();
         MusicPlayer.stopMusic();

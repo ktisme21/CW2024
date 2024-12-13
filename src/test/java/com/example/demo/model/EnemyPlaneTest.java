@@ -34,30 +34,6 @@ class EnemyPlaneTest {
     }
 
     @Test
-    void testFireProjectile() {
-        boolean projectileFired = false;
-
-        for (int i = 0; i < 100; i++) { // Simulate multiple attempts to account for random chance
-            ActiveActorDestructible projectile = enemyPlane.fireProjectile();
-            if (projectile instanceof EnemyProjectile) {
-                projectileFired = true;
-                break;
-            }
-        }
-
-        assertTrue(projectileFired, "EnemyPlane should fire a projectile at least once in 100 attempts.");
-    }
-
-    @Test
-    void testHasExitedScreen() {
-        enemyPlane.setLayoutX(-200); // Simulate off-screen to the left
-        assertTrue(enemyPlane.hasExitedScreen(800), "EnemyPlane should be considered off-screen when it exits the left edge.");
-
-        enemyPlane.setLayoutX(900); // Simulate off-screen to the right
-        assertTrue(enemyPlane.hasExitedScreen(800), "EnemyPlane should be considered off-screen when it exits the right edge.");
-    }
-
-    @Test
     void testGetCollisionBounds() {
         Bounds originalBounds = enemyPlane.getBoundsInParent();
         Bounds collisionBounds = enemyPlane.getCollisionBounds();

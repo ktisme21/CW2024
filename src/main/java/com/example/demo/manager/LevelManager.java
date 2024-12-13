@@ -335,6 +335,7 @@ public abstract class LevelManager {
         }
         timeline.stop();
         GlobalGameTimer.getInstance().stop();
+        MusicPlayer.playWinGameSound();
         String timeUsed = formatElapsedTime();
         saveToLeaderboard(timeUsed);
         levelView.showWinImage(); // Ensure this won't add duplicate nodes
@@ -346,6 +347,7 @@ public abstract class LevelManager {
     protected void loseGame() {
         timeline.stop();
         GlobalGameTimer.getInstance().stop();
+        MusicPlayer.playGameOverSound();
         String timeUsed = formatElapsedTime();
         levelView.showGameOverImage();
         addQuitEventHandler(timeUsed);

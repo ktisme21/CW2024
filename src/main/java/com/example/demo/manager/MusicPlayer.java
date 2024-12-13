@@ -10,6 +10,9 @@ public class MusicPlayer {
 
     private static final String MUSIC_FILE_PATH = "/com/example/demo/music/backgroundmusic.mp3";
     private static final String SHOOTING_SOUND_PATH = "/com/example/demo/music/shoot.mp3";
+    private static final String GAME_OVER_SOUND_PATH = "/com/example/demo/music/gameover.mp3";
+    private static final String WIN_GAME_SOUND_PATH = "/com/example/demo/music/wingame.mp3";
+
     private static MediaPlayer backgroundMediaPlayer;
     private static double backgroundVolume = 0.5; // Default background music volume
     private static double soundEffectVolume = 1.0; // Default sound effect volume
@@ -112,5 +115,31 @@ public class MusicPlayer {
 
         // Dispose of resources after playback is finished
         shootingMediaPlayer.setOnEndOfMedia(shootingMediaPlayer::dispose);
+    }
+
+    /**
+     * Plays the game over sound effect once.
+     */
+    public static void playGameOverSound() {
+        Media gameOverSound = new Media(MusicPlayer.class.getResource(GAME_OVER_SOUND_PATH).toExternalForm());
+        MediaPlayer gameOverMediaPlayer = new MediaPlayer(gameOverSound);
+        gameOverMediaPlayer.setVolume(soundEffectVolume); // Use the sound effect volume
+        gameOverMediaPlayer.play();
+
+        // Dispose of resources after playback is finished
+        gameOverMediaPlayer.setOnEndOfMedia(gameOverMediaPlayer::dispose);
+    }
+
+    /**
+     * Plays the win game sound effect once.
+     */
+    public static void playWinGameSound() {
+        Media winGameSound = new Media(MusicPlayer.class.getResource(WIN_GAME_SOUND_PATH).toExternalForm());
+        MediaPlayer winGameMediaPlayer = new MediaPlayer(winGameSound);
+        winGameMediaPlayer.setVolume(soundEffectVolume); // Use the sound effect volume
+        winGameMediaPlayer.play();
+
+        // Dispose of resources after playback is finished
+        winGameMediaPlayer.setOnEndOfMedia(winGameMediaPlayer::dispose);
     }
 }

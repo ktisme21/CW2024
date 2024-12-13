@@ -40,9 +40,11 @@ public class Main extends Application {
         stage.initStyle(StageStyle.UNDECORATED); // Remove the top panel
         stage.setTitle(Constant.TITLE);
         stage.setResizable(false);
-        stage.setWidth(1300); // Fixed width
-        stage.setHeight(750); // Fixed height
+
+        // Enable full-screen mode
+        stage.setFullScreen(false);
     }
+
 
     /**
      * Displays the main menu screen.
