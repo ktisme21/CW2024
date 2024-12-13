@@ -95,7 +95,7 @@ public abstract class LevelManager {
     }
 
     /**
-     * Abstract method for checking game over conditions. 
+     * Abstract method for checking game over conditions.
      * Must be implemented by subclasses.
      */
     protected abstract void checkIfGameOver();

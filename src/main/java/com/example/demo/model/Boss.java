@@ -20,7 +20,6 @@ public class Boss extends FighterPlane {
     private int framesWithShieldActivated;
     private int health;
     private double shieldProbability;
-    private boolean shielded;
 
     /**
      * Constructs a {@code Boss} instance with default settings.

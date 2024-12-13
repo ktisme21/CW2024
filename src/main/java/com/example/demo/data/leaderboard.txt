@@ -1,5 +1,5 @@
+Player,15540
+Player,20440
 Player,28520
 Player,31150
 Player,31890
-Player,60000
-Player,120000

@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.projectiles.EnemyProjectile;
 import com.example.demo.utilities.Constant;
 import com.example.demo.testutils.JavaFXTestUtils;
 

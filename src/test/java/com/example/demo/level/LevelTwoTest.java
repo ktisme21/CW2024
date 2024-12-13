@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import com.example.demo.model.Boss;
 import com.example.demo.testutils.JavaFXTestUtils;
-import com.example.demo.utilities.Constant;
 
 import javafx.scene.Group;
 

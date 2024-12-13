@@ -2,7 +2,6 @@ package com.example.demo.view;
 
 import com.example.demo.manager.MusicPlayer;
 import com.example.demo.testutils.JavaFXTestUtils;
-import com.example.demo.utilities.Constant;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

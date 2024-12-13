@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import com.example.demo.testutils.JavaFXTestUtils;
 import com.example.demo.utilities.Constant;
-import com.example.demo.level.LevelOne;
 
 public class LevelOneTest {
 
